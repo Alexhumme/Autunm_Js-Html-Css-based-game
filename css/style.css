@@ -1,0 +1,113 @@
+/* *** pagina *** */
+
+html {
+  height: 100%;
+}
+body {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(45deg, #92baac 45px, transparent 45px) 64px 64px,
+    linear-gradient(
+      45deg,
+      #92baac 45px,
+      transparent 45px,
+      transparent 91px,
+      #e1ebbd 91px,
+      #e1ebbd 135px,
+      transparent 135px
+    ),
+    linear-gradient(
+      -45deg,
+      #92baac 23px,
+      transparent 23px,
+      transparent 68px,
+      #92baac 68px,
+      #92baac 113px,
+      transparent 113px,
+      transparent 158px,
+      #92baac 158px
+    );
+  background-color: #e1ebbd;
+  background-size: 128px 128px;
+}
+
+/* *** Interfaz *** */
+
+#project__container {
+  display: grid;
+}
+#game__navbar {
+  height: 50px;
+  background-color: rgb(201, 201, 201);
+}
+#game__container {
+  position: relative;
+  overflow: hidden;
+  width: 700px;
+  height: 400px;
+  background-color: rgb(0, 0, 0);
+  background-image: url(../assets/images/backgrounds/background-clouds.png);
+}
+#game__bottombar {
+  height: 50px;
+  background-color: rgb(136, 136, 136);
+}
+
+/* *** tiles *** */
+
+.tile {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+}
+.ground {
+  background-image: url(../assets/images/walls/ground.png);
+}
+.ground-corner-left {
+  background-image: url(../assets/images/walls/ground-corner-left.png);
+}
+.ground-corner-right {
+  background-image: url(../assets/images/walls/ground-corner-right.png);
+}
+
+.platform-ground {
+  background-image: url(../assets/images/walls/platform-ground.png);
+}
+.platform-ground-left {
+  background-image: url(../assets/images/walls/platform-ground-left.png);
+}
+.platform-ground-right {
+  background-image: url(../assets/images/walls/platform-ground-right.png);
+}
+.platform-ground-between {
+  background-image: url(../assets/images/walls/platform-ground-between.png);
+}
+
+/* *** middleground *** */
+
+.bush-small {
+  background-image: url(../assets/images/middleground/bush-small.png);
+}
+.bush-small-creature {
+  background-image: url(../assets/images/middleground/bush-small-creature.png);
+}
+
+/* *** player *** */
+
+#player {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+}
+.left {
+  transform: scaleX(-1);
+}
+#player.idle::after {
+  content: url(../assets/images/entities/player/idle/idle-player.gif);
+}
+#player.run::after {
+  content: url(../assets/images/entities/player/run/run-player.gif);
+}
