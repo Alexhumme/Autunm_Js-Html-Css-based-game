@@ -1,15 +1,22 @@
 function showFrameRate(){
     var sec = Math.floor(Date.now()/1000);
-    if (sec != config.currentSec)
+    if (sec != game.currentSec)
     {
-        config.currentSec = sec;
-        config.fps = config.frameRate;
-        config.frameRate = 1;
-    } else {config.frameRate++};
-    document.getElementById("test_info").innerHTML =("FPS: "+ config.fps );
+        game.currentSec = sec;
+        game.fps = game.frameRate;
+        game.frameRate = 1;
+    } else {game.frameRate++};
+    game.info("FPS: "+ game.fps );
 }
 
 const refreshGame = () => {
-    config.player.move()
-    showFrameRate()
+    game.infoSpace.innerText = "";
+    game.checkGameOver();
+    game.player.update();
+    //game.generateDrops();
+    game.drops.forEach(drop => {
+        drop.update()
+    });
+    game.checkMapChange();
+    showFrameRate();
 };

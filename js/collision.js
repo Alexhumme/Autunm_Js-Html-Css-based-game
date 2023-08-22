@@ -1,3 +1,0 @@
-const collision = (actor, element) =>{
-
-}

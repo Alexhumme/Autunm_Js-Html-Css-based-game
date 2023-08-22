@@ -4,20 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/style.css">
-    <title>Corredor</title>
+    <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon">
+    <title>game1</title>
 </head>
 <body>
     <div id="project__container">
-        <div id="game__navbar"></div>
+        <div id="game__navbar">
+            <div id="game__maps"></div>
+            <div id="game__actions">
+                <div id="game__reset"></div>
+                <div id="game__pause"></div>
+            </div>
+        </div>
         <div id="game__container"></div>
-        <div id="game__bottombar"></div>
+        <div id="game__bottombar">
+            <div id="game__items"></div>
+            <div id="game__hearts"></div>
+            <div id="game__points"></div>
+        </div>
         <span id="test_info"></span>
     </div>
-    
-    <script src="./js/drawmap.js"></script>
-    <script src="./js/tiles.js"></script>
-    <script src="./js/config.js"></script>
+    <!-- dibujar mapa -->
     <script src="./js/map.js"></script>
+    <script src="./js/tiles.js"></script>
+    <!-- entidades -->
+    <script src="./js/entities/Entity.js"></script>
+    <script src="./js/entities/Player.js"></script>
+    <script src="./js/entities/Drop.js"></script>
+    <!-- instanciar juego -->
+    <script src="./js/config.js"></script>
+
     <script src="./js/refresh.js"></script>
     <script src="./js/eventListeners.js"></script>
     <script src="./js/index.js"></script>

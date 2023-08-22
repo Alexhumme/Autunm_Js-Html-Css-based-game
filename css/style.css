@@ -1,37 +1,23 @@
 /* *** pagina *** */
-
+@font-face {
+  font-family: "press-start";
+  src: url(../assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf);
+}
 html {
   height: 100%;
 }
 body {
+  font-family: "press-start";
   display: flex;
   height: 100%;
   width: 100%;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(45deg, #92baac 45px, transparent 45px) 64px 64px,
-    linear-gradient(
-      45deg,
-      #92baac 45px,
-      transparent 45px,
-      transparent 91px,
-      #e1ebbd 91px,
-      #e1ebbd 135px,
-      transparent 135px
-    ),
-    linear-gradient(
-      -45deg,
-      #92baac 23px,
-      transparent 23px,
-      transparent 68px,
-      #92baac 68px,
-      #92baac 113px,
-      transparent 113px,
-      transparent 158px,
-      #92baac 158px
-    );
-  background-color: #e1ebbd;
+  background-color: #000000;
   background-size: 128px 128px;
+}
+#test_info {
+  color: white;
 }
 
 /* *** Interfaz *** */
@@ -39,10 +25,7 @@ body {
 #project__container {
   display: grid;
 }
-#game__navbar {
-  height: 50px;
-  background-color: rgb(201, 201, 201);
-}
+
 #game__container {
   position: relative;
   overflow: hidden;
@@ -51,9 +34,96 @@ body {
   background-color: rgb(0, 0, 0);
   background-image: url(../assets/images/backgrounds/background-clouds.png);
 }
-#game__bottombar {
+#game__container.game__over::after {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  font-size: x-large;
+  content: "Game Over";
+  color: white;
+  z-index: 3;
+  background-color: rgba(0, 0, 0, 0.338);
+}
+
+/* navbar */
+#game__navbar {
   height: 50px;
-  background-color: rgb(136, 136, 136);
+  background-image: url(../assets/images/interface/nav-bar.png);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-inline: 8px;
+}
+#game__maps {
+  display: flex;
+}
+.map-item,.map-item__disabled {
+  width: 94px;
+  height: 32px;
+  font-size: x-small;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.map-item{
+  background-image: url(../assets/images/interface/map-item.png);
+}
+.map-item__disabled{
+  background-image: url(../assets/images/interface/map-item-disabled.png);
+}
+#game__actions {
+  display: flex;
+}
+#game__actions div {
+  width: 42px;
+  height: 36px;
+  cursor: pointer;
+  background-size: cover;
+}
+#game__actions div::after {
+  width: 42px;
+  height: 36px;
+  content:"";
+  display: block;
+  position: absolute;
+}
+#game__actions div:hover::after {
+  background-color: #00000054;
+}
+#game__reset {
+  background-image: url(../assets/images/interface/button-reset.png);
+}
+#game__pause {
+  background-image: url(../assets/images/interface/button-pause.png);
+}
+/* bottom bar */
+#game__bottombar {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-image: url(../assets/images/interface/player-menu.png);
+}
+
+
+
+#game__hearts {
+  display: flex;
+}
+.heart {
+  margin-inline: 3px;
+  background-image: url(../assets/images/interface/heart.png);
+  height: 25px;
+  width: 25px;
+}
+.heart__container {
+  margin-inline: 3px;
+  background-image: url(../assets/images/interface/heart-container.png);
+  height: 25px;
+  width: 25px;
 }
 
 /* *** tiles *** */
@@ -62,6 +132,12 @@ body {
   width: 50px;
   height: 50px;
   position: absolute;
+  background-repeat: no-repeat;
+}
+
+/* walls */
+.wall {
+  z-index: 1;
 }
 .ground {
   background-image: url(../assets/images/walls/ground.png);
@@ -85,9 +161,19 @@ body {
 .platform-ground-between {
   background-image: url(../assets/images/walls/platform-ground-between.png);
 }
-
+.ground-pilar-top {
+  background-image: url(../assets/images/walls/ground-pilar-top.png);
+}
+.ground-pilar-body {
+  background-image: url(../assets/images/walls/ground-pilar-body.png);
+}
+.ground-pilar-node {
+  background-image: url(../assets/images/walls/ground-pilar-node.png);
+}
 /* *** middleground *** */
-
+.middle {
+  z-index: 0;
+}
 .bush-small {
   background-image: url(../assets/images/middleground/bush-small.png);
 }
@@ -98,6 +184,7 @@ body {
 /* *** player *** */
 
 #player {
+  z-index: 1;
   width: 50px;
   height: 50px;
   position: absolute;
@@ -110,4 +197,34 @@ body {
 }
 #player.run::after {
   content: url(../assets/images/entities/player/run/run-player.gif);
+}
+#player.jump::after {
+  content: url(../assets/images/entities/player/jump/jump-player.png);
+}
+
+/* *** drops *** */
+.drop {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+}
+.drop.blue {
+  background-image: url(../assets/images/entities/gifts/blue/gift-blue.gif);
+}
+.drop.green {
+  background-image: url(../assets/images/entities/gifts/green/gift-green.gif);
+}
+.drop.red {
+  background-image: url(../assets/images/entities/gifts/red/gift-red.gif);
+}
+
+/* animaciones */
+
+.blinking {
+  animation: blink-animation 0.3s steps(5, start) infinite;
+}
+@keyframes blink-animation {
+  to {
+    visibility: hidden;
+  }
 }

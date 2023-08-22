@@ -1,39 +1,165 @@
-const config = {
+const game = {
+    gameSpace: document.getElementById("game__container"),
+    currentMap: 0,
+    maps: [defaultMap, map2],
+    drops: [],
+    gameOver: false,
     fps: 25,
+    dropSpan: {
+        rate: 50,
+        counter: 0,
+        limit: 4,
+    },
     frameRate: 0,
     currentSec: 0,
     loop: null,
     gameSize: { x: 700, y: 400 },
     tileWidth: 50,
     tileHeight: 50,
-    gravity: 3,
+    gravity: 2,
     fallLimit: 8,
-    glide: 0.6,
+    glide: 0.8,
     keys: [],
-    player: {
-        vel: { x: 0, y: 0 },
-        idle: true,
-        floor: true,
-        acelerationX: 1.3,
-        jump: 15,
-        speedLimit: 10,
-        element: HTMLElement.prototype,
-        move() {
-            if (config.keys) {
-                if (config.keys[65] && this.vel.x > -this.speedLimit) { this.vel.x -= this.acelerationX; this.element.classList = "run left"; }
-                if (config.keys[68] && this.vel.x < this.speedLimit) { this.vel.x += this.acelerationX; this.element.classList = "run right"; }
-                if (config.keys[87] && this.floor) { this.vel.y = -this.jump }
-            }
-            // friccion y detenerse
-            if (this.element.classList.contains("idle") && this.vel.x != 0) this.vel.x = this.vel.x*config.glide;
-            if (this.vel.x < 0.1 && this.vel.x > -0.1) this.vel.x = 0;
-            // movimiento horizontal
-            this.element.style.left = `${parseInt(this.element.style.left) + this.vel.x}px`;
-            // caer por la gravedad
-            if (this.vel.y < config.fallLimit) this.vel.y += config.gravity;
-            if (parseInt(this.element.style.top) >= config.gameSize.y-109) {this.element.style.top = config.gameSize.y-109 + "px"; this.floor = true} 
-            else this.floor = false;
-            this.element.style.top = `${parseInt(this.element.style.top) + this.vel.y}px`;
+    infoSpace: document.getElementById("test_info"),
+    handleKeyDown: (ev) => {
+        game.keys = (game.keys || []);
+        game.keys[ev.keyCode] = true;
+        game.player.idle = false;
+    },
+    handleKeyUp: (ev) => {
+        game.keys[ev.keyCode] = false;
+        game.player.idle = true;
+        (ev.key === ("a") || ev.key === ("d"))
+            && game.player.element.classList.remove("run");
+        game.player.element.classList.add("idle");
+    },
+    player: new Player(), // crear jugador
+    // Función para mostrar información en el espacio de información
+    info: (info) => {
+        game.infoSpace.innerText += `\n${info}`;
+    },
+
+    // Generar gotas de manera más eficiente
+    generateDrops: () => {
+        if (game.dropSpan.counter > game.dropSpan.rate) {
+            const xPos = Math.random() * (game.gameSize.x - game.tileWidth);
+            const yPos = -100;
+            const types = ["blue", "red", "green"];
+            const drop = new Drop(Math.random() * 0.3, types[Math.floor(Math.random() * 3)], { x: xPos, y: yPos });
+            drop.createElement();
+            game.drops.push(drop);
+            game.dropSpan.counter = 0;
+        } else {
+            game.dropSpan.counter++;
+        }
+        if (game.drops.length > game.dropSpan.limit) {
+            game.drops.shift().destroy();
+        }
+    },
+
+    // Dibujar la interfaz del juego de manera más eficiente
+    drawInterface: () => {
+        const resetButton = document.getElementById("game__reset");
+        resetButton.addEventListener("click", () => game.reset(), false);
+        const mapsContainer = document.getElementById("game__maps");
+        const hContainer = document.getElementById("game__hearts");
+        mapsContainer.innerHTML = "";
+        hContainer.innerHTML = "";
+
+        game.maps.forEach((map, index) => {
+            const mapItem = document.createElement("div");
+            mapItem.className = index === game.currentMap ? "map-item" : "map-item__disabled";
+            mapItem.innerText = map.name;
+            mapsContainer.appendChild(mapItem);
+        });
+
+        for (let index = 0; index < game.player.hearts.max; index++) {
+            const heart = document.createElement("div");
+            heart.className = index >= game.player.hearts.quantity ? "heart__container" : "heart";
+            hContainer.appendChild(heart);
+        }
+    },
+    // dibujar los tiles del mapa actual incluyendo al jugador
+    drawMap: () => {
+        // limpiar el gameSpace
+        game.gameSpace.querySelectorAll(".wall").forEach((wall)=>{
+            wall.remove()
+        })
+        game.gameSpace.querySelectorAll(".middle").forEach((middle)=>{
+            middle.remove()
+        })
+        game.gameSpace.querySelector("#trash")?.remove();
+
+        // rellenar el gameSpace
+        game.maps[game.currentMap].middleground.forEach((row, y) => {
+            row.forEach((t, x) => {
+                t !== " " &&
+                game.gameSpace
+                    .insertBefore(
+                        tile(t, { x: x, y: y }, "middle"),
+                        null);
+            });
+        });
+        game.maps[game.currentMap].walls.forEach((row, y) => {
+            row.forEach((t, x) => {
+                t !== " " &&
+                game.gameSpace
+                    .insertBefore(
+                        tile(t, { x: x, y: y }, "wall"),
+                        null);
+            });
+        });
+    },
+    
+    // Verificar si el juego ha terminado de manera más eficiente
+    checkGameOver: () => {
+        if (game.player.lives <= 0 || parseInt(game.player.element.style.top) > game.gameSize.y) {
+            game.gameOver = true;
+        }
+        if (game.gameOver) {
+            clearInterval(game.loop);
+            game.gameSpace.classList.add("game__over");
+        }
+        game.info(`gameOver: ${game.gameOver}`);
+    },
+    start: () => {
+        game.drawMap();
+        game.drawInterface();
+        game.player.element = document.getElementById("player");
+        setEventListeners();
+        game.loop = window.setInterval(() => refreshGame(), 25);
+    },
+    // Función de reinicio (dejar en blanco o agregar lógica si es necesario)
+    reset: () => {
+        clearInterval(game.loop);
+        game.player = new Player;
+        game.drops = [];
+        game.gameSpace.innerHTML = "";
+        game.gameOver = false;
+        game.gameSpace.className = "";
+        game.currentMap = 0;
+        window.removeEventListener("keydown",
+            game.handleKeyDown
+            , false);
+        window.removeEventListener("keyup",
+            game.handleKeyUp
+            , false);
+        game.start()
+    },
+    // cambiar de mapa
+    checkMapChange: () => {
+        game.info("mapa actual: "+game.currentMap)
+        if (parseInt(game.player.element.style.left) >= game.gameSize.x-25 && game.currentMap < game.maps.length-1) {
+            game.currentMap++;
+            game.drawInterface();
+            game.drawMap();
+            game.player.element.style.left = "26px";
+        }
+        if (parseInt(game.player.element.style.left) < 25 && game.currentMap > 0) {
+            game.currentMap--;
+            game.drawInterface();
+            game.drawMap();
+            game.player.element.style.left = `${game.gameSize.x-26}px`;
         }
     }
-}
+};
