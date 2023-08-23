@@ -32,7 +32,5 @@ class Drop extends Entity {
         game.gameSpace.insertBefore(element, null);
         this.element = element;
     }
-    destroy() {
-        this.element.remove()
-    }
+    
 }

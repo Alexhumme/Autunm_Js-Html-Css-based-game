@@ -5,29 +5,31 @@ class Entity {
         this.floor = true;
         this.acelerationX = 1.3;
         this.jump = 15;
-        this.maxSpeed = 4;
+        this.maxSpeed = 6;
         this.element = HTMLElement.prototype;
         this.weight = 1;
         this.lives = 3;
         this.maxVives = 3;
     }
 
-    handleWallCollision(collision) {
+    handleWallCollision(collision, {right = true, left = true, top = true, bottom = true}) {
         if (collision) {
             const rect1 = this.element.getBoundingClientRect();
             const rect2 = collision.element.getBoundingClientRect();
-            if (collision.data.y === "bottom") {
+            if (collision.data.y === "bottom" && bottom) {
                 this.element.style.top = `${parseInt(collision.element.style.top) - rect1.height}px`
                 this.floor = true;
+            } 
+            if (collision.data.y === "top" && top){
+                this.vel.y = -this.vel.y/2
             }
-            /*
-            if (collision.data.x === "right"){
-                this.element.style.left = `${parseInt(collision.wall.style.left)-rect1.width}px`
+            if (collision.data.x === "right" && right){
+                this.element.style.left = `${parseInt(collision.element.style.left)-rect1.width}px`
             }
-            if (collision.data.x === "left"){
-                this.element.style.left = `${parseInt(collision.wall.style.left)+rect2.width}px`
+            if (collision.data.x === "left" && left){
+                this.element.style.left = `${parseInt(collision.element.style.left)+rect2.width}px`
             }
-            */
+            
         }
     }
 
@@ -59,7 +61,6 @@ class Entity {
         const yOverlap = height - Math.abs(dy);
 
         if (Math.abs(dx) <= width && Math.abs(dy) <= height) {
-
             if (xOverlap > yOverlap) {
                 collisionY = dy > 0 ? 'top' : 'bottom';
             } else {
@@ -70,5 +71,10 @@ class Entity {
         } else {
             return false;
         }
+    }
+    destroy() {
+        console.log("muerte");
+        this.element.remove();
+        delete this;
     }
 }

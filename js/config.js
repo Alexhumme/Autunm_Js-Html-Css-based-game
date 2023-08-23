@@ -1,4 +1,5 @@
 const game = {
+    pause: false,
     gameSpace: document.getElementById("game__container"),
     currentMap: 0,
     maps: [defaultMap, map2],
@@ -59,8 +60,6 @@ const game = {
 
     // Dibujar la interfaz del juego de manera más eficiente
     drawInterface: () => {
-        const resetButton = document.getElementById("game__reset");
-        resetButton.addEventListener("click", () => game.reset(), false);
         const mapsContainer = document.getElementById("game__maps");
         const hContainer = document.getElementById("game__hearts");
         mapsContainer.innerHTML = "";
@@ -82,10 +81,10 @@ const game = {
     // dibujar los tiles del mapa actual incluyendo al jugador
     drawMap: () => {
         // limpiar el gameSpace
-        game.gameSpace.querySelectorAll(".wall").forEach((wall)=>{
+        game.gameSpace.querySelectorAll(".wall").forEach((wall) => {
             wall.remove()
         })
-        game.gameSpace.querySelectorAll(".middle").forEach((middle)=>{
+        game.gameSpace.querySelectorAll(".middle").forEach((middle) => {
             middle.remove()
         })
         game.gameSpace.querySelector("#trash")?.remove();
@@ -94,33 +93,32 @@ const game = {
         game.maps[game.currentMap].middleground.forEach((row, y) => {
             row.forEach((t, x) => {
                 t !== " " &&
-                game.gameSpace
-                    .insertBefore(
-                        tile(t, { x: x, y: y }, "middle"),
-                        null);
+                    game.gameSpace
+                        .insertBefore(
+                            tile(t, { x: x, y: y }, "middle"),
+                            null);
             });
         });
         game.maps[game.currentMap].walls.forEach((row, y) => {
             row.forEach((t, x) => {
                 t !== " " &&
-                game.gameSpace
-                    .insertBefore(
-                        tile(t, { x: x, y: y }, "wall"),
-                        null);
+                    game.gameSpace
+                        .insertBefore(
+                            tile(t, { x: x, y: y }, "wall"),
+                            null);
             });
         });
     },
-    
+
     // Verificar si el juego ha terminado de manera más eficiente
     checkGameOver: () => {
-        if (game.player.lives <= 0 || parseInt(game.player.element.style.top) > game.gameSize.y) {
+        if (game.player.hearts.quantity <= 0 || parseInt(game.player.element.style.top) > game.gameSize.y) {
             game.gameOver = true;
         }
         if (game.gameOver) {
             clearInterval(game.loop);
             game.gameSpace.classList.add("game__over");
         }
-        game.info(`gameOver: ${game.gameOver}`);
     },
     start: () => {
         game.drawMap();
@@ -132,6 +130,7 @@ const game = {
     // Función de reinicio (dejar en blanco o agregar lógica si es necesario)
     reset: () => {
         clearInterval(game.loop);
+        if (game.pause) game.changePause();
         game.player = new Player;
         game.drops = [];
         game.gameSpace.innerHTML = "";
@@ -144,22 +143,44 @@ const game = {
         window.removeEventListener("keyup",
             game.handleKeyUp
             , false);
-        game.start()
+        game.start();
+    },
+    // pausar el juego
+    changePause: () => {
+        game.pause = !game.pause;
+        if (game.gameSpace.classList.contains("game__paused")) {
+            game.gameSpace.classList.remove("game__paused");
+            document.getElementById("game__pause").className = "";
+
+            console.log("continue");
+        } else {
+            game.gameSpace.classList.add("game__paused");
+            document.getElementById("game__pause").className = "game__continue";
+            console.log("pause");
+        }
     },
     // cambiar de mapa
     checkMapChange: () => {
-        game.info("mapa actual: "+game.currentMap)
-        if (parseInt(game.player.element.style.left) >= game.gameSize.x-25 && game.currentMap < game.maps.length-1) {
-            game.currentMap++;
-            game.drawInterface();
-            game.drawMap();
-            game.player.element.style.left = "26px";
+        game.info("mapa actual: " + game.currentMap)
+        if (parseInt(game.player.element.style.left) >= game.gameSize.x - 25) {
+            if (game.currentMap < game.maps.length - 1) {
+                game.currentMap++;
+                game.drawInterface();
+                game.drawMap();
+                game.player.element.style.left = "-24px";
+            } else {
+                game.player.element.style.left = `${game.gameSize.x - 26}px`;
+            }
         }
-        if (parseInt(game.player.element.style.left) < 25 && game.currentMap > 0) {
-            game.currentMap--;
-            game.drawInterface();
-            game.drawMap();
-            game.player.element.style.left = `${game.gameSize.x-26}px`;
+        if (parseInt(game.player.element.style.left) < -25) {
+            if (game.currentMap > 0) {
+                game.currentMap--;
+                game.drawInterface();
+                game.drawMap();
+                game.player.element.style.left = `${game.gameSize.x - 26}px`;
+            } else {
+                game.player.element.style.left = "-24px";
+            }
         }
     }
 };

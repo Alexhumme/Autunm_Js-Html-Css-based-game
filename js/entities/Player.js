@@ -6,11 +6,19 @@ class Player extends Entity {
             quantity: 5,
             max: 6,
         };
+        this.invincibility = {
+            active: 0,
+            max: 25
+        };
         this.shoot = {
             active: false,
             duration: 6,
             force: this.maxSpeed,
             counter: 0,
+            bullets: {
+                actives: [],
+                quantity: 10
+            }
         };
     }
 
@@ -29,7 +37,8 @@ class Player extends Entity {
         const walls = document.querySelectorAll(".wall");
         walls.forEach(wall => {
             this.handleWallCollision(
-                this.checkCollisionWith(wall)
+                this.checkCollisionWith(wall),
+                { top: false, left: false, right: false }
             );
         });
         const drops = document.querySelectorAll(".drop");
@@ -38,13 +47,45 @@ class Player extends Entity {
                 this.checkCollisionWith(drop)
             );
         });
+        const harms = document.querySelectorAll(".harmful");
+        harms.forEach(harm => {
+            this.handleHarm(
+                this.checkCollisionWith(harm)
+            );
+        })
+    }
+
+    handleHarm(collision = { element: HTMLElement.prototype, data: { x: String, y: String } }) {
+        if (collision) {
+            if (!this.invincibility.active) {
+
+                this.invincibility.active = this.invincibility.max;
+                this.element.classList.add("blinking");
+                this.hearts.quantity--;
+                game.drawInterface();
+
+                this.vel.y -= 10;
+                this.vel.x =
+                    collision.data.x === "right"
+                        ? -5
+                        : collision.data.x === "left"
+                            ? 5
+                            : this.vel.x > 0
+                                ? -5
+                                : 5
+
+            }
+        }
+        if (this.invincibility.active) this.invincibility.active--;
+        if (!this.invincibility.active && this.element.classList.contains("blinking")) this.element.classList.remove("blinking");
     }
 
     handleDropCollision(collision = { element: HTMLElement.prototype, data: { x: Number, y: Number } }) {
-        if (collision){ 
+        if (collision) {
             collision.element.remove();
         }
     }
+
     handleJumpAndRun() {
         if (this.floor && this.element.classList.contains("jump")) {
             this.element.classList.remove("jump");
@@ -53,12 +94,16 @@ class Player extends Entity {
 
         if (game.keys[65] && this.vel.x > -this.maxSpeed) {
             this.vel.x -= this.acelerationX;
-            this.element.classList = "run left";
+            this.element.classList.remove("right");
+            this.element.classList.add("run");
+            this.element.classList.add("left");
         }
 
         if (game.keys[68] && this.vel.x < this.maxSpeed) {
             this.vel.x += this.acelerationX;
-            this.element.classList = "run right";
+            this.element.classList.remove("left");
+            this.element.classList.add("run");
+            this.element.classList.add("right");
         }
 
         if (game.keys[87] && this.floor) {
@@ -69,9 +114,29 @@ class Player extends Entity {
     }
 
     handleShooting() {
-        if (game.keys[75] && !this.shoot.active) {
+        if (game.keys[75] && !this.shoot.active && this.shoot.bullets.quantity) {
             this.vel.x -= this.shoot.force * (this.element.classList.contains("left") ? -1 : 1);
             this.shoot.active = true;
+
+            const newBullet = new Bullet(
+                {
+                    x: 
+                    parseInt(this.element.style.left)
+                    + (this.element.classList.contains("left")
+                    ? 50//parseInt(this.element.style.width)
+                    : 0),
+                    y: 
+                    parseInt(this.element.style.top)+25
+                    //+parseInt(this.element.style.height)/2
+                },
+                this.element.classList.contains("left") ?
+                -1 : 1
+            );
+            newBullet.createElement();
+            this.shoot.bullets.actives.push(
+                newBullet
+            );
+            this.shoot.bullets.quantity--;
         }
     }
 
@@ -93,7 +158,6 @@ class Player extends Entity {
                 this.shoot.active = false;
             }
         }
-        game.info(`shootStatus:${this.shoot.active}`);
     }
 
 }
