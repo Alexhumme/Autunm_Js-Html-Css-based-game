@@ -5,25 +5,56 @@ class Bullet extends Entity {
         this.pos = pos;
         this.maxSpeed = 30;
         this.vel = { x: 30 * dir, y: 0 };
-        this.hits = 2
+        this.hits = 2;
+        this.dying = 0;
+        this.createElement();
     }
+    
     update() {
-        //this.vel.x = 20;
         this.handleHorizontalMovement();
         this.handleGravity();
+        this.checkWallCollisions();
+        this.checkOutOfBounds(game.player.shoot.bullets.actives);
+    }
 
-        game.info("hola")
+    checkWallCollisions() {
         const walls = document.querySelectorAll(".wall");
-        walls.forEach(wall => {
-            this.checkCollisionWith(wall) && this.destroy();
+        walls.forEach((wall) => {
+            if (this.checkCollisionWith(wall)) {
+                this.handleWallCollision();
+            }
+        });
+        const zombies = document.querySelectorAll(".zombie");
+        zombies.forEach((zombie) => {
+            if (this.checkCollisionWith(zombie)) {
+                this.handleWallCollision();
+            }
         });
     }
+
+    handleWallCollision() {
+        if (this.dying === 100) {
+            this.element.classList.add("blinking", "broken");
+            this.element.classList.remove("weapon")
+            this.weight = 2;
+            this.vel.x *= -0.2;
+            this.vel.y -= 20;
+            this.dying -= 1;
+        } else if (!this.dying) {
+            this.dying = 100;
+        }
+    }
+
     createElement() {
         this.element = document.createElement("div");
-        this.element.className = "bullet";
-        game.gameSpace.insertBefore(this.element, null);
+        this.element.classList.add(
+            "bullet",
+            this.vel.x < 0 ? "left" : "right",
+            "weapon"
+        );
+        game.gameSpace.appendChild(this.element);
         this.element.style.left = `${this.pos.x}px`;
-        this.element.style.top = `${this.pos.y}px`;
-
+        this.element.style.top = `${this
+.pos.y}px`;
     }
 }

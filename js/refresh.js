@@ -11,14 +11,9 @@ function showFrameRate() {
 const refreshGame = () => {
     if (!game.pause) {
         game.infoSpace.innerText = "";
-        game.info(`pause: ${game.pause}`);
-
         game.checkGameOver();
         game.player.update();
-        //game.generateDrops();
-        game.drops.forEach(drop => {
-            drop.update()
-        });
+        game.updateEnemies();
         game.player.shoot.bullets.actives.forEach(bullet =>{
             bullet.update();
         })

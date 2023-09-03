@@ -18,6 +18,13 @@ body {
 }
 #test_info {
   color: white;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  padding: 10px;
+  background-color: #00000038;
+  border-radius: 10px;
+  z-index: 999;
 }
 
 /* *** Interfaz *** */
@@ -56,7 +63,11 @@ body {
   content: "Pause";
   opacity: 1;
 }
-
+#game__container.game__loading::after {
+  content: url(../assets/images/interface/loading.gif);
+  background-color: aliceblue;
+  opacity: 1;
+}
 /* navbar */
 #game__navbar {
   height: 50px;
@@ -117,10 +128,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding-inline: 20px;
   background-image: url(../assets/images/interface/player-menu.png);
 }
-
-
 
 #game__hearts {
   display: flex;
@@ -137,6 +147,32 @@ body {
   height: 25px;
   width: 25px;
 }
+.hearts-mini_container {
+  height: 25px;
+  width: 80px;
+  position: absolute;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.hearts-mini_container div{
+  background-image: url(../assets/images/interface/heart.png);
+  background-size: cover;
+  height: 20px;
+  width: 20px;
+}
+#game__items {
+  display: flex;
+}
+.player_slot {
+  margin-inline: 3px;
+  width: 37px;
+  height: 37px;
+  background-image: url(../assets/images/interface/slot.png);
+}
+#game__points {
+  color: white;
+}
 
 /* *** tiles *** */
 
@@ -146,7 +182,10 @@ body {
   position: absolute;
   background-repeat: no-repeat;
 }
+.tile[class*="platform"] {
+  height: 32px;
 
+}
 /* walls */
 .wall {
   z-index: 2;
@@ -159,6 +198,23 @@ body {
 }
 .ground-corner-right {
   background-image: url(../assets/images/walls/ground-corner-right.png);
+}
+
+.ground-left-top {
+  background-image: url(../assets/images/walls/ground-curve-left-top.png);
+}
+.ground-right-top {
+  background-image: url(../assets/images/walls/ground-curve-right-top.png);
+}
+.ground-solid {
+  background-image: url(../assets/images/walls/ground-solid.png);
+}
+
+.ground-wall-right {
+  background-image: url(../assets/images/walls/ground-wall-right.png);
+}
+.ground-wall-left {
+  background-image: url(../assets/images/walls/ground-wall-left.png);
 }
 
 .platform-ground {
@@ -213,13 +269,33 @@ body {
 #player.jump::after {
   content: url(../assets/images/entities/player/jump/jump-player.png);
 }
-
+#player.shooting::after {
+  content: url(../assets/images/entities/player/shot/shot-player.gif);
+}
+#player.run.shooting::after {
+  content: url(../assets/images/entities/player/shot/shot-running-player.gif);
+}
 /* bullet */
 .bullet {
   position: absolute;
-  width: 10px;
+  width: 20px;
   height: 10px;
   background-image: url(../assets/images/entities/bullet/bullet.png);
+  background-repeat: no-repeat;
+}
+.bullet:not(.broken)::after {
+  content: "";
+  animation: stella 1s;
+  margin-left: -20px;
+  background-image: linear-gradient(to Left, rgba(255, 255, 255, 0.59), rgba(255, 255, 255, 0.155));
+  position: absolute;
+  height: 10px;
+  width: 20px;
+}
+.bullet.broken {
+  width: 10px;
+  height: 10px;
+  background-image: url(../assets/images/entities/bullet/broken-bullet.png);
 }
 /* *** drops *** */
 .drop {
@@ -237,6 +313,29 @@ body {
   background-image: url(../assets/images/entities/gifts/red/gift-red.gif);
 }
 
+/*** enemies ***/
+
+.pumpkin {
+  height: 40px;
+  width: 40px;
+  background-color: red;
+  position: absolute;
+}
+/* zombie */
+
+.zombie {
+  height: 80px;
+  width: 60px;
+  background-image: url(../assets/images/entities/zombie/walk/zombie-walk.gif);
+  position: absolute;
+  background-repeat: no-repeat;
+}
+.zombie-heart {
+  background-size: cover;
+  height: 10px;
+  width: 10px;
+}
+
 /* animaciones */
 
 .blinking {
@@ -245,5 +344,11 @@ body {
 @keyframes blink-animation {
   to {
     visibility: hidden;
+  }
+}
+@keyframes stella {
+  to {
+    margin-left: -100px;
+    width: 100px;
   }
 }

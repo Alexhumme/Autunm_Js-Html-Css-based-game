@@ -2,15 +2,16 @@ const game = {
     pause: false,
     gameSpace: document.getElementById("game__container"),
     currentMap: 0,
-    maps: [defaultMap, map2],
-    drops: [],
+    maps: [map1, map2, map3],
     gameOver: false,
     fps: 25,
+    drops: [],
     dropSpan: {
-        rate: 50,
+        rate: 2000,
         counter: 0,
-        limit: 4,
+        limit: 30,
     },
+    enemies: [],
     frameRate: 0,
     currentSec: 0,
     loop: null,
@@ -18,7 +19,7 @@ const game = {
     tileWidth: 50,
     tileHeight: 50,
     gravity: 2,
-    fallLimit: 8,
+    fallLimit: 12,
     glide: 0.8,
     keys: [],
     infoSpace: document.getElementById("test_info"),
@@ -57,13 +58,22 @@ const game = {
             game.drops.shift().destroy();
         }
     },
-
+    updateEnemies: () => {
+        game.enemies.forEach(enemie => {
+            enemie.update()
+        });
+    },
     // Dibujar la interfaz del juego de manera más eficiente
     drawInterface: () => {
         const mapsContainer = document.getElementById("game__maps");
         const hContainer = document.getElementById("game__hearts");
+        const slotsContainer = document.getElementById("game__items");
+        const pointsContainer = document.getElementById("game__points");
+
         mapsContainer.innerHTML = "";
         hContainer.innerHTML = "";
+        slotsContainer.innerHTML = "";
+        pointsContainer.innerHTML = "";
 
         game.maps.forEach((map, index) => {
             const mapItem = document.createElement("div");
@@ -71,16 +81,28 @@ const game = {
             mapItem.innerText = map.name;
             mapsContainer.appendChild(mapItem);
         });
-
         for (let index = 0; index < game.player.hearts.max; index++) {
             const heart = document.createElement("div");
             heart.className = index >= game.player.hearts.quantity ? "heart__container" : "heart";
             hContainer.appendChild(heart);
         }
+        for (slot in game.player.slots) {
+            const newSlot = document.createElement("div");
+            newSlot.classList.add("player_slot");
+            slotsContainer.appendChild(newSlot);
+        }
+        pointsContainer.innerText = game.player.shoot.bullets.quantity + " Bullets";
+
     },
-    // dibujar los tiles del mapa actual incluyendo al jugador
-    drawMap: () => {
-        // limpiar el gameSpace
+    cleanMap: () => {
+        game.player.shoot.bullets.actives.forEach(bullet => bullet.destroy());
+        game.player.shoot.bullets.actives = [];
+        game.enemies.forEach(enemie => enemie.destroy());
+        game.enemies = [];
+
+        game.gameSpace.querySelectorAll(".hearts-mini_container").forEach((container) => {
+            container.remove()
+        })
         game.gameSpace.querySelectorAll(".wall").forEach((wall) => {
             wall.remove()
         })
@@ -88,7 +110,11 @@ const game = {
             middle.remove()
         })
         game.gameSpace.querySelector("#trash")?.remove();
-
+    },
+    // dibujar los tiles del mapa actual incluyendo al jugador
+    drawMap: () => {
+        // limpiar el gameSpace
+        game.cleanMap();
         // rellenar el gameSpace
         game.maps[game.currentMap].middleground.forEach((row, y) => {
             row.forEach((t, x) => {
@@ -108,8 +134,24 @@ const game = {
                             null);
             });
         });
+        game.drawMapEnemies();
     },
+    drawMapEnemies: () => {
+        game.maps[game.currentMap].enemies.forEach((row, y) => {
+            row.forEach((enemieType, x) => {
+                let enemie = false;
+                switch (enemieType) {
+                    case "z": enemie = new Zombie(); break;
+                    case "k": enemie = new Pumpkin(); break;
+                    default: return false;
+                }
+                enemie.element.style.top = `${y * 50}px`;
+                enemie.element.style.left = `${x * 50}px`;
+                game.enemies.push(enemie);
 
+            })
+        });
+    },
     // Verificar si el juego ha terminado de manera más eficiente
     checkGameOver: () => {
         if (game.player.hearts.quantity <= 0 || parseInt(game.player.element.style.top) > game.gameSize.y) {
@@ -161,7 +203,6 @@ const game = {
     },
     // cambiar de mapa
     checkMapChange: () => {
-        game.info("mapa actual: " + game.currentMap)
         if (parseInt(game.player.element.style.left) >= game.gameSize.x - 25) {
             if (game.currentMap < game.maps.length - 1) {
                 game.currentMap++;
