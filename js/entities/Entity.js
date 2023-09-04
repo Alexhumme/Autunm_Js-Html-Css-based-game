@@ -3,12 +3,15 @@ class Entity {
         this.vel = { x: 0, y: 0 };
         this.idle = true;
         this.floor = true;
+        this.floorType = "";
         this.acelerationX = 1.3;
         this.jump = 15;
         this.maxSpeed = 7;
         this.element = HTMLElement.prototype;
         this.weight = 1;
         this.lives = 3;
+        this.autoLeft = false;
+        this.collisions = [];
         this.hearts = {
             quantity: 2,
             max: 2,
@@ -40,7 +43,7 @@ class Entity {
         if (Math.abs(dx) <= width && Math.abs(dy) <= height) {
             if (
                 xOverlap >=
-                yOverlap - 10 // se restan 10 a overlap para corregir la deteccion supersencible de colisiones left
+                yOverlap - 20 // se restan 20 a overlap para corregir la deteccion supersencible de colisiones left
             ) { collisionY = dy > 0 ? "top" : "bottom" } else { collisionX = dx > 0 ? "left" : "right" }
 
             return { element: otherElement, data: { x: collisionX, y: collisionY } };
@@ -50,7 +53,41 @@ class Entity {
     }
     destroy() {
         this.element.remove();
+        this.cliffChecker && this.cliffChecker.destroy();
         delete this;
+    }
+
+    handleWallCollision(
+        collision = { element: HTMLElement.prototype },
+        { right = true, left = true, top = true, bottom = true }
+    ) {
+        if (collision) {
+            collision.element.style.opacity =
+            parseFloat(collision.element.style.opacity) * 0.9;
+            const rect1 = this.element.getBoundingClientRect();
+            const rect2 = collision.element.getBoundingClientRect();
+            if (collision.data.y === "bottom" && bottom) {
+                this.floorType = collision.element.className;
+                this.element.style.top =
+                `${parseInt(collision.element.style.top) - rect1.height}px`;
+                this.floor = true;
+            }
+            if (collision.data.y === "top" && top) {
+                this.vel.y = -this.vel.y / 2;
+            }
+            if (collision.data.x === "right" && right) {
+                this.element.style.left =
+                    `${parseInt(collision.element.style.left) - rect1.width}px`;
+                this.autoLeft = true;
+            }
+            if (collision.data.x === "left" && left) {
+                this.element.style.left =
+                    `${parseInt(collision.element.style.left) + rect2.width}px`;
+                this.autoLeft = false;
+            }
+        }else{
+
+        }
     }
 
     checkWallCollision() {
@@ -118,34 +155,6 @@ class Entity {
             this.element.classList.remove("blinking");
     }
 
-    handleWallCollision(
-        collision = { element: HTMLElement.prototype },
-        { right = true, left = true, top = true, bottom = true }
-    ) {
-        if (collision) {
-            collision.element.style.opacity =
-                parseFloat(collision.element.style.opacity) * 0.9;
-            const rect1 = this.element.getBoundingClientRect();
-            const rect2 = collision.element.getBoundingClientRect();
-            if (collision.data.y === "bottom" && bottom) {
-                this.element.style.top = `${parseInt(collision.element.style.top) - rect1.height
-                    }px`;
-                this.floor = true;
-            }
-            if (collision.data.y === "top" && top) {
-                this.vel.y = -this.vel.y / 2;
-            }
-            if (collision.data.x === "right" && right) {
-                this.element.style.left = `${parseInt(collision.element.style.left) - rect1.width
-                    }px`;
-            }
-            if (collision.data.x === "left" && left) {
-                this.element.style.left = `${parseInt(collision.element.style.left) + rect2.width
-                    }px`;
-            }
-        }
-    }
-
     handleHorizontalMovement() {
         this.element.style.left = `${parseInt(this.element.style.left) + this.vel.x
             }px`;
@@ -201,8 +210,22 @@ class Entity {
 
         this.updateHeartsContainer()
 
-
         this.element = element;
+    }
+    createCliffChecker() {
+        this.cliffChecker = new Entity();
+        this.cliffChecker.createElement("cliff-checker");
+        this.cliffChecker.element.style.width =
+            `${this.element.getBoundingClientRect().width}px`
+    }
+    moveCliffChecker() {
+        this.cliffChecker.element.style.left =
+            `${parseInt(this.element.style.left) -
+            (this.cliffChecker.element.getBoundingClientRect().width / 2) +
+            (this.element.getBoundingClientRect().width / 2)}px`
+        this.cliffChecker.element.style.top =
+            `${parseInt(this.element.style.top) +
+            this.element.getBoundingClientRect().height}px`
     }
     updateHeartsContainer() {
         this.heartsContainer.innerHTML = "";
@@ -219,6 +242,32 @@ class Entity {
             this.element.getBoundingClientRect().width / 2
             }px`;
     }
+    autoMove() {
+        if (this.autoLeft) this.accelerateLeft();
+        else this.accelerateRight();
+        this.handleHorizontalMovement();
+        //this.moveCliffChecker();
+        this.checkCliff();
+        game.info(this.floorType.includes("platform-ground-right"))
+    }
+    checkCliff() {
+        if(this.floor){
+            if(
+                this.floorType.includes("ground-corner-right") ||
+                this.floorType.includes("platform-ground-left") ||
+                parseInt(this.element.style.left) <= 0
+                 ){
+                this.autoLeft = false;
+            } else if (
+                this.floorType.includes("ground-corner-left") ||
+                this.floorType.includes("platform-ground-right") ||
+                this.element.getBoundingClientRect().left >= game.gameSize.x
+                 ){
+                this.autoLeft = true;
+            }
+        }
+    }
+
     checkWeaponCollision() {
         const weapons = document.querySelectorAll(".weapon");
         weapons.forEach((weapon) => {

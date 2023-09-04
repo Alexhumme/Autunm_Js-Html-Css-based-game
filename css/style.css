@@ -318,7 +318,7 @@ body {
 .pumpkin {
   height: 40px;
   width: 40px;
-  background-color: red;
+  background-image: url(../assets/images/entities/pumpkin/run/run-pumpkin.gif);
   position: absolute;
 }
 /* zombie */
@@ -334,6 +334,15 @@ body {
   background-size: cover;
   height: 10px;
   width: 10px;
+}
+
+
+/* cliff-checker */
+.cliff-checker {
+  background-color: red;
+  position: absolute;
+  height: 50px;
+  z-index: 999999;
 }
 
 /* animaciones */
