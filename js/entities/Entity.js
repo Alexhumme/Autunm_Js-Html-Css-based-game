@@ -9,13 +9,12 @@ class Entity {
         this.maxSpeed = 7;
         this.element = HTMLElement.prototype;
         this.weight = 1;
-        this.lives = 3;
-        this.autoLeft = false;
         this.collisions = [];
         this.hearts = {
             quantity: 2,
             max: 2,
         };
+        this.death = false;
         this.slots = {
             slot1: { item: null, amount: 0 },
         };
@@ -43,7 +42,7 @@ class Entity {
         if (Math.abs(dx) <= width && Math.abs(dy) <= height) {
             if (
                 xOverlap >=
-                yOverlap - 20 // se restan 20 a overlap para corregir la deteccion supersencible de colisiones left
+                yOverlap - 13 // se restan 20 a overlap para corregir la deteccion supersencible de colisiones left
             ) { collisionY = dy > 0 ? "top" : "bottom" } else { collisionX = dx > 0 ? "left" : "right" }
 
             return { element: otherElement, data: { x: collisionX, y: collisionY } };
@@ -62,27 +61,28 @@ class Entity {
         { right = true, left = true, top = true, bottom = true }
     ) {
         if (collision) {
-            collision.element.style.opacity =
-            parseFloat(collision.element.style.opacity) * 0.9;
             const rect1 = this.element.getBoundingClientRect();
             const rect2 = collision.element.getBoundingClientRect();
             if (collision.data.y === "bottom" && bottom) {
                 this.floorType = collision.element.className;
                 this.element.style.top =
-                `${parseInt(collision.element.style.top) - rect1.height}px`;
+                `${parseFloat(collision.element.style.top) - rect1.height}px`;
                 this.floor = true;
             }
             if (collision.data.y === "top" && top) {
+                this.floorType = collision.element.className;
+                this.element.style.top =
+                `${parseFloat(collision.element.style.top) + rect2.height + 1}px`;
                 this.vel.y = -this.vel.y / 2;
             }
             if (collision.data.x === "right" && right) {
                 this.element.style.left =
-                    `${parseInt(collision.element.style.left) - rect1.width}px`;
+                    `${parseFloat(collision.element.style.left) - rect1.width}px`;
                 this.autoLeft = true;
             }
             if (collision.data.x === "left" && left) {
                 this.element.style.left =
-                    `${parseInt(collision.element.style.left) + rect2.width}px`;
+                    `${parseFloat(collision.element.style.left) + rect2.width}px`;
                 this.autoLeft = false;
             }
         }else{
@@ -97,6 +97,7 @@ class Entity {
                 top: true,
                 left: true,
                 right: true,
+                bottom: true,
             });
         });
     }
@@ -110,6 +111,7 @@ class Entity {
             -this.element.getBoundingClientRect().width * 2 ||
             parseInt(this.element.style.top) > parseInt(gameSize.y)
         ) {
+            this.heartsContainer && this.heartsContainer.remove();
             this.destroy();
             const thisIndex = list.indexOf(this);
             if (thisIndex !== -1) {
@@ -119,7 +121,8 @@ class Entity {
     }
     checkDeath() {
         if (this.hearts.quantity <= 0) {
-            this.destroy();
+            this.death = true;
+            this.element.classList.remove("harmful");
         }
     }
 
@@ -145,6 +148,7 @@ class Entity {
                             : this.vel.x > 0
                                 ? -5
                                 : 5;
+                this.handleJump()
             }
         }
         if (this.invincibility.active) this.invincibility.active--;
@@ -212,61 +216,7 @@ class Entity {
 
         this.element = element;
     }
-    createCliffChecker() {
-        this.cliffChecker = new Entity();
-        this.cliffChecker.createElement("cliff-checker");
-        this.cliffChecker.element.style.width =
-            `${this.element.getBoundingClientRect().width}px`
-    }
-    moveCliffChecker() {
-        this.cliffChecker.element.style.left =
-            `${parseInt(this.element.style.left) -
-            (this.cliffChecker.element.getBoundingClientRect().width / 2) +
-            (this.element.getBoundingClientRect().width / 2)}px`
-        this.cliffChecker.element.style.top =
-            `${parseInt(this.element.style.top) +
-            this.element.getBoundingClientRect().height}px`
-    }
-    updateHeartsContainer() {
-        this.heartsContainer.innerHTML = "";
-        for (let heartN = 0; heartN < this.hearts.quantity; heartN++) {
-            this.heartsContainer.appendChild(document.createElement("div"));
-        }
-    }
-    updateHearts() {
-        this.heartsContainer.style.top = `${parseInt(this.element.style.top) -
-            this.heartsContainer.getBoundingClientRect().height
-            }px`;
-        this.heartsContainer.style.left = `${parseInt(this.element.style.left) -
-            this.heartsContainer.getBoundingClientRect().width / 2 +
-            this.element.getBoundingClientRect().width / 2
-            }px`;
-    }
-    autoMove() {
-        if (this.autoLeft) this.accelerateLeft();
-        else this.accelerateRight();
-        this.handleHorizontalMovement();
-        //this.moveCliffChecker();
-        this.checkCliff();
-        game.info(this.floorType.includes("platform-ground-right"))
-    }
-    checkCliff() {
-        if(this.floor){
-            if(
-                this.floorType.includes("ground-corner-right") ||
-                this.floorType.includes("platform-ground-left") ||
-                parseInt(this.element.style.left) <= 0
-                 ){
-                this.autoLeft = false;
-            } else if (
-                this.floorType.includes("ground-corner-left") ||
-                this.floorType.includes("platform-ground-right") ||
-                this.element.getBoundingClientRect().left >= game.gameSize.x
-                 ){
-                this.autoLeft = true;
-            }
-        }
-    }
+
 
     checkWeaponCollision() {
         const weapons = document.querySelectorAll(".weapon");

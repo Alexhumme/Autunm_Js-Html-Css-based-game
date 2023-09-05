@@ -52,7 +52,7 @@ body {
   display: flex;
   font-size: x-large;
   color: white;
-  z-index: 3;
+  z-index: 5;
   background-color: rgba(0, 0, 0, 0.338);
 }
 #game__container.game__over::after {
@@ -193,10 +193,10 @@ body {
 .ground {
   background-image: url(../assets/images/walls/ground.png);
 }
-.ground-corner-left {
+.ground-corner-right {
   background-image: url(../assets/images/walls/ground-corner-left.png);
 }
-.ground-corner-right {
+.ground-corner-left {
   background-image: url(../assets/images/walls/ground-corner-right.png);
 }
 
@@ -336,7 +336,23 @@ body {
   width: 10px;
 }
 
-
+/* water */
+.water-top {
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  background-image: url(../assets/images/middleground/water-top.gif);
+  opacity: 0.9;
+  z-index: 4;
+}
+.water-solid {
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  background-image: url(../assets/images/middleground/water-solid.png);
+  opacity: 0.9;
+  z-index: 4;
+}
 /* cliff-checker */
 .cliff-checker {
   background-color: red;

@@ -9,8 +9,8 @@ const tile = (t, pos = { x: 50, y: 50 }, depth) => {
         case "0": newTile.classList.add("tile", "ground-solid", depth); break;
         case "1": newTile.classList.add("tile", "ground", depth); break;
         case "2": newTile.classList.add("tile", "item", depth); break;
-        case "y": newTile.classList.add("tile", "ground-corner-right", depth); break;
-        case "p": newTile.classList.add("tile", "ground-corner-left", depth); break;
+        case "y": newTile.classList.add("tile", "ground-corner-left", depth); break;
+        case "p": newTile.classList.add("tile", "ground-corner-right", depth); break;
         case "?": newTile.classList.add("tile", "platform-ground-right", depth); break;
         case "¿": newTile.classList.add("tile", "platform-ground-left", depth); break;
         case "-": newTile.classList.add("tile", "platform-ground", depth); break;
@@ -24,6 +24,8 @@ const tile = (t, pos = { x: 50, y: 50 }, depth) => {
         case "f": newTile.classList.add("tile", "ground-right-top", depth); break;
         case "r": newTile.classList.add("tile", "ground-wall-right", depth); break;
         case "l": newTile.classList.add("tile", "ground-wall-left", depth); break;
+        case "W": newTile.classList.add("tile", "water-top", depth); break;
+        case "s": newTile.classList.add("tile", "water-solid", depth); break;
         default: break;
     };
     newTile.style.left = pos.x * game.tileWidth + "px";

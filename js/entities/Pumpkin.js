@@ -1,14 +1,13 @@
-class Pumpkin extends Entity {
+class Pumpkin extends Npc {
     constructor() {
         super();
-        this.hearts.quantity = 1;
+        this.hearts.quantity = 4;
         this.maxSpeed = 3
         this.createElement("pumpkin harmful");
-        //this.createCliffChecker();
     }
     update () {
         this.handleGravity();
-        this.checkWallCollision();
+        if (!this.death) this.checkWallCollision();
         this.checkWeaponCollision();
         this.checkOutOfBounds(game.enemies);
         this.updateHearts();
