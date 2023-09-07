@@ -26,6 +26,7 @@ const tile = (t, pos = { x: 50, y: 50 }, depth) => {
         case "l": newTile.classList.add("tile", "ground-wall-left", depth); break;
         case "W": newTile.classList.add("tile", "water-top", depth); break;
         case "s": newTile.classList.add("tile", "water-solid", depth); break;
+        case "t": newTile.classList.add("tile", "tree", depth); break;
         default: break;
     };
     newTile.style.left = pos.x * game.tileWidth + "px";

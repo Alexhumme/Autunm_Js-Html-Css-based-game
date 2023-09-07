@@ -19,7 +19,7 @@ class Npc extends Entity {
                  ){
                 this.autoLeft = false;
             } else if (
-                this.floorType.includes("ground-corner-rifht") ||
+                this.floorType.includes("ground-corner-right") ||
                 this.floorType.includes("platform-ground-right") ||
                 this.element.getBoundingClientRect().left >= game.gameSize.x
                  ){

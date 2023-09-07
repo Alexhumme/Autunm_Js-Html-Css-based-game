@@ -1,9 +1,9 @@
 class Pumpkin extends Npc {
     constructor() {
         super();
-        this.hearts.quantity = 4;
-        this.maxSpeed = 3
-        this.createElement("pumpkin harmful");
+        this.hearts.quantity = 1;
+        this.maxSpeed = 3;
+        this.createElement("pumpkin harmful enemie");
     }
     update () {
         this.handleGravity();

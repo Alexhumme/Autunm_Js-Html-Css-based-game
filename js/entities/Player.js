@@ -4,7 +4,7 @@ class Player extends Entity {
         this.acelerationX = 5.5;
         this.weight = weight;
         this.hearts = {
-            quantity: 5,
+            quantity: 6,
             max: 6,
         };
         this.invincibility.max = 25;
@@ -16,13 +16,14 @@ class Player extends Entity {
             counter: 0,
             bullets: {
                 actives: [],
-                quantity: 100
+                quantity: 10
             }
         };
         this.slots = {
             slot1: { item: null, amount: 0 },
             slot2: { item: null, amount: 0 },
             slot3: { item: null, amount: 0 },
+            slot4: { item: null, amount: 0 },
         }
     }
 

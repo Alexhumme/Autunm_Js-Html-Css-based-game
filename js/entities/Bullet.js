@@ -24,9 +24,9 @@ class Bullet extends Entity {
                 this.handleWallCollision();
             }
         });
-        const zombies = document.querySelectorAll(".zombie");
-        zombies.forEach((zombie) => {
-            if (this.checkCollisionWith(zombie)) {
+        const enemies = document.querySelectorAll(".enemie");
+        enemies.forEach((enemie) => {
+            if (this.checkCollisionWith(enemie)) {
                 this.handleWallCollision();
             }
         });

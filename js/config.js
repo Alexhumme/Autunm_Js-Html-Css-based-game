@@ -12,6 +12,7 @@ const game = {
         limit: 30,
     },
     enemies: [],
+    currentScene: "menu",
     frameRate: 0,
     currentSec: 0,
     loop: null,
@@ -23,6 +24,22 @@ const game = {
     glide: 0.8,
     keys: [],
     infoSpace: document.getElementById("test_info"),
+    player: new Player(), // crear jugador
+    changeScene: (scene) => {
+        game.currentScene = scene;
+        switch (game.currentScene) {
+            case "startMenu":
+                game.pause = true;
+                game.gameOver = true;
+                game.drawMenu();
+                break;
+            case "game":
+                game.start();
+                break;
+            default:
+                break;
+        }
+    },
     handleKeyDown: (ev) => {
         game.keys = (game.keys || []);
         game.keys[ev.keyCode] = true;
@@ -35,7 +52,6 @@ const game = {
             && game.player.element.classList.remove("run");
         game.player.element.classList.add("idle");
     },
-    player: new Player(), // crear jugador
     // Función para mostrar información en el espacio de información
     info: (info) => {
         game.infoSpace.innerText += `\n${info}`;
@@ -95,11 +111,11 @@ const game = {
 
     },
     cleanMap: () => {
+        game.gameSpace.querySelector("#startMenu")?.remove();
         game.player.shoot.bullets.actives.forEach(bullet => bullet.destroy());
         game.player.shoot.bullets.actives = [];
         game.enemies.forEach(enemie => enemie.destroy());
         game.enemies = [];
-
         game.gameSpace.querySelectorAll(".hearts-mini_container").forEach((container) => {
             container.remove()
         })
@@ -110,6 +126,31 @@ const game = {
             middle.remove()
         })
         game.gameSpace.querySelector("#trash")?.remove();
+    },
+    drawMenu: () => {
+        game.cleanMap()
+        //game.gameSpace.style.backgroundImage = "."
+        const options = [
+            { title: "Iniciar", scene: "game" },
+            { title: "Opciones", scene: "" },
+            { title: "Creditos", scene: "" },
+        ];
+        const menu = document.createElement("ul");
+        menu.id = "startMenu";
+        const menuTitle = document.createElement("h2");
+        menuTitle.innerText = "Menu";
+        menu.appendChild(menuTitle);
+        options.forEach((option) => {
+            const opt = document.createElement("li");
+            opt.addEventListener("click", () => {
+                game.changeScene(option.scene);
+            })
+            //opt.innerHTML = document.createElement("button");
+            opt.innerText = option.title;
+            menu.appendChild(opt);
+        })
+        game.gameSpace.appendChild(menu);
+
     },
     // dibujar los tiles del mapa actual incluyendo al jugador
     drawMap: () => {
@@ -164,10 +205,14 @@ const game = {
     },
     start: () => {
         game.drawMap();
+        const container = document.getElementById("project__container");
+        container.className = "started"
         game.drawInterface();
         game.player.element = document.getElementById("player");
         setEventListeners();
         game.loop = window.setInterval(() => refreshGame(), 25);
+        game.gameOver = false;
+        game.pause = false;
     },
     // Función de reinicio (dejar en blanco o agregar lógica si es necesario)
     reset: () => {

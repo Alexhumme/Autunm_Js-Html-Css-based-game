@@ -28,7 +28,13 @@ body {
 }
 
 /* *** Interfaz *** */
-
+#startMenu li:hover {
+  cursor: pointer;
+  color: aliceblue;
+}
+#startMenu li:active {
+  color: yellow;
+}
 #project__container {
   display: grid;
 }
@@ -70,13 +76,29 @@ body {
 }
 /* navbar */
 #game__navbar {
-  height: 50px;
+  height: 20px;
+  overflow: hidden;
   background-image: url(../assets/images/interface/nav-bar.png);
   display: flex;
+  background-size:contain;
+  background-repeat: no-repeat;
+  background-position: center;
   justify-content: space-between;
   align-items: center;
   padding-inline: 8px;
+  transition: 0.3s;
 }
+#game__navbar div {
+  opacity: 0;
+  transition: 0.4s;
+}
+.started #game__navbar{
+  height: 50px;
+}
+.started #game__navbar div{
+  opacity: 1;
+}
+
 #game__maps {
   display: flex;
 }
@@ -104,14 +126,22 @@ body {
   background-size: cover;
 }
 #game__actions div::after {
-  width: 42px;
-  height: 36px;
+  width: 40px;
+  height: 33px;
   content:"";
   display: block;
   position: absolute;
+  background-color: #00000054;
+
 }
 #game__actions div:hover::after {
-  background-color: #00000054;
+  background-color: #ffffff00;
+}
+#game__actions div:active::after {
+  border: solid 2px yellow;
+  background-color: rgb(255, 255, 0);
+  mix-blend-mode:color;
+
 }
 #game__reset {
   background-image: url(../assets/images/interface/button-reset.png);
@@ -248,13 +278,19 @@ body {
 .bush-small-creature {
   background-image: url(../assets/images/middleground/bush-small-creature.png);
 }
+.tree {
+  margin-top: -150px;
+  height: 200px;
+  width: 150px;
+  background-image: url(../assets/images/middleground/tree.png);
+}
 
 /* *** player *** */
 
 #player {
   z-index: 1;
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 49px;
   position: absolute;
 }
 .left {
@@ -342,7 +378,7 @@ body {
   width: 50px;
   position: absolute;
   background-image: url(../assets/images/middleground/water-top.gif);
-  opacity: 0.9;
+  opacity: 0.5;
   z-index: 4;
 }
 .water-solid {
@@ -350,17 +386,9 @@ body {
   width: 50px;
   position: absolute;
   background-image: url(../assets/images/middleground/water-solid.png);
-  opacity: 0.9;
+  opacity: 0.5;
   z-index: 4;
 }
-/* cliff-checker */
-.cliff-checker {
-  background-color: red;
-  position: absolute;
-  height: 50px;
-  z-index: 999999;
-}
-
 /* animaciones */
 
 .blinking {
@@ -368,7 +396,9 @@ body {
 }
 @keyframes blink-animation {
   to {
-    visibility: hidden;
+    /*visibility: hidden;*/
+    mix-blend-mode:color-burn;
+    /*background-color: red;*/
   }
 }
 @keyframes stella {
