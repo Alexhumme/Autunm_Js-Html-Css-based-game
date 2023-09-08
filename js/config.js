@@ -27,18 +27,16 @@ const game = {
     player: new Player(), // crear jugador
     changeScene: (scene) => {
         game.currentScene = scene;
+        game.gameSpace.className = "changing";
         switch (game.currentScene) {
-            case "startMenu":
-                game.pause = true;
-                game.gameOver = true;
-                game.drawMenu();
-                break;
-            case "game":
-                game.start();
-                break;
+            case "startMenu": game.drawMenu(); break;
+            case "game": game.reset(); break;
             default:
                 break;
         }
+        setTimeout(() => {
+            game.gameSpace.classList.remove("changing");
+        }, 1000);
     },
     handleKeyDown: (ev) => {
         game.keys = (game.keys || []);
@@ -127,9 +125,32 @@ const game = {
         })
         game.gameSpace.querySelector("#trash")?.remove();
     },
+    drawPauseMenu: () => {
+        game.gameSpace.querySelector("#game__pause-menu")?.remove();
+        const pauseMenu = document.createElement("div");
+        pauseMenu.id = "game__pause-menu";
+        pauseMenu.appendChild(document.createElement("h3"));
+        pauseMenu.querySelector("h3").innerText = "Opciones"
+        const optionsList = document.createElement("ul");
+        const options = [
+            { title: "salir", onClick: () => game.changeScene("startMenu") },
+        ]
+        options.forEach((option) => {
+            const optionElement = document.createElement("li")
+            optionElement.innerText = option.title;
+            optionsList.appendChild(optionElement);
+            optionElement.addEventListener("click", () => option.onClick(), false);
+        })
+        pauseMenu.appendChild(optionsList);
+        game.gameSpace.appendChild(pauseMenu);
+    },
     drawMenu: () => {
-        game.cleanMap()
-        //game.gameSpace.style.backgroundImage = "."
+        game.cleanMap();
+        document.getElementById("project__container").className = "";
+        game.gameSpace.innerHTML = "";
+        game.pause = false;
+        game.gameOver = false;
+
         const options = [
             { title: "Iniciar", scene: "game" },
             { title: "Opciones", scene: "" },
@@ -149,8 +170,10 @@ const game = {
             opt.innerText = option.title;
             menu.appendChild(opt);
         })
-        game.gameSpace.appendChild(menu);
-
+        clearInterval(game.loop);
+        setTimeout(() => {
+            game.gameSpace.appendChild(menu);
+        }, 500);
     },
     // dibujar los tiles del mapa actual incluyendo al jugador
     drawMap: () => {
@@ -184,6 +207,7 @@ const game = {
                 switch (enemieType) {
                     case "z": enemie = new Zombie(); break;
                     case "k": enemie = new Pumpkin(); break;
+                    case "g": enemie = new GreenPumpkin(); break;
                     default: return false;
                 }
                 enemie.element.style.top = `${y * 50}px`;
@@ -195,7 +219,7 @@ const game = {
     },
     // Verificar si el juego ha terminado de manera más eficiente
     checkGameOver: () => {
-        if (game.player.hearts.quantity <= 0 || parseInt(game.player.element.style.top) > game.gameSize.y) {
+        if (game.player?.hearts.quantity <= 0 || parseInt(game.player?.element.style.top) > game.gameSize.y) {
             game.gameOver = true;
         }
         if (game.gameOver) {
@@ -204,6 +228,7 @@ const game = {
         }
     },
     start: () => {
+        game.drawPauseMenu();
         game.drawMap();
         const container = document.getElementById("project__container");
         container.className = "started"
@@ -218,19 +243,22 @@ const game = {
     reset: () => {
         clearInterval(game.loop);
         if (game.pause) game.changePause();
-        game.player = new Player;
-        game.drops = [];
-        game.gameSpace.innerHTML = "";
-        game.gameOver = false;
-        game.gameSpace.className = "";
-        game.currentMap = 0;
-        window.removeEventListener("keydown",
-            game.handleKeyDown
-            , false);
-        window.removeEventListener("keyup",
-            game.handleKeyUp
-            , false);
-        game.start();
+        game.gameSpace.className = "changing";
+        setTimeout(() => {
+            game.player = new Player();
+            game.drops = [];
+            game.gameSpace.innerHTML = "";
+            game.gameOver = false;
+            game.currentMap = 0;
+            window.removeEventListener("keydown",
+                game.handleKeyDown
+                , false);
+            window.removeEventListener("keyup",
+                game.handleKeyUp
+                , false);
+            game.gameSpace.classList.remove("changing")
+            game.start();
+        }, 500);
     },
     // pausar el juego
     changePause: () => {
@@ -238,12 +266,9 @@ const game = {
         if (game.gameSpace.classList.contains("game__paused")) {
             game.gameSpace.classList.remove("game__paused");
             document.getElementById("game__pause").className = "";
-
-            console.log("continue");
         } else {
             game.gameSpace.classList.add("game__paused");
             document.getElementById("game__pause").className = "game__continue";
-            console.log("pause");
         }
     },
     // cambiar de mapa

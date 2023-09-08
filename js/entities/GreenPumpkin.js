@@ -1,9 +1,9 @@
-class Pumpkin extends Npc {
+class GreenPumpkin extends Npc {
     constructor() {
         super();
-        this.hearts.quantity = 1;
-        this.maxSpeed = 3;
-        this.createElement("pumpkin harmful enemie");
+        this.hearts.quantity = 2;
+        this.maxSpeed = 4;
+        this.createElement("green-pumpkin harmful enemie");
     }
     update () {
         this.handleGravity();
@@ -11,7 +11,8 @@ class Pumpkin extends Npc {
         this.checkWeaponCollision();
         this.checkOutOfBounds(game.enemies);
         this.updateHearts();
-        this.autoMove();
+        if (this.checkCloseToPlayer()) this.followPlayer()
+        else this.autoMove();
         this.checkDeath();
     }
 }

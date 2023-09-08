@@ -28,6 +28,10 @@ body {
 }
 
 /* *** Interfaz *** */
+#startMenu {
+  position: absolute;
+  z-index: 6;
+}
 #startMenu li:hover {
   cursor: pointer;
   color: aliceblue;
@@ -48,6 +52,7 @@ body {
   background-image: url(../assets/images/backgrounds/background-clouds.png);
 }
 #game__container::after {
+  content: "";
   transition: 0.5s;
   opacity: 0;
   width: 100%;
@@ -74,13 +79,48 @@ body {
   background-color: aliceblue;
   opacity: 1;
 }
+#game__container.changing::after {
+  opacity: 1;
+  background-color: #000000;
+}
+/* pause menu */
+#game__pause-menu {
+  transition: 0.5s;
+  width: 200px;
+  min-height: 390px;
+  position: absolute;
+  right: -210px;
+  z-index: 6;
+  border: solid 5px rgb(20, 34, 46);
+  background-color: rgb(175, 196, 215);
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+}
+.game__paused #game__pause-menu {
+  right: 0px;
+}
+#game__pause-menu ul{
+  width: 100%;
+  list-style: none;
+  cursor: pointer;
+  padding: 0px;
+}
+#game__pause-menu li {
+  padding-block: 10px;
+  text-align: center;
+}
+#game__pause-menu li:hover{
+  color: rgb(89, 101, 111);
+  background-color: yellow;
+}
 /* navbar */
 #game__navbar {
-  height: 20px;
+  height: 50px;
   overflow: hidden;
   background-image: url(../assets/images/interface/nav-bar.png);
   display: flex;
-  background-size:contain;
   background-repeat: no-repeat;
   background-position: center;
   justify-content: space-between;
@@ -92,9 +132,7 @@ body {
   opacity: 0;
   transition: 0.4s;
 }
-.started #game__navbar{
-  height: 50px;
-}
+
 .started #game__navbar div{
   opacity: 1;
 }
@@ -161,7 +199,13 @@ body {
   padding-inline: 20px;
   background-image: url(../assets/images/interface/player-menu.png);
 }
-
+#game__bottombar div {
+  opacity: 0;
+  transition: 0.5s;
+} 
+.started #game__bottombar div{
+  opacity: 1;
+}
 #game__hearts {
   display: flex;
 }
@@ -355,6 +399,12 @@ body {
   height: 40px;
   width: 40px;
   background-image: url(../assets/images/entities/pumpkin/run/run-pumpkin.gif);
+  position: absolute;
+}
+.green-pumpkin {
+  height: 40px;
+  width: 40px;
+  background-image: url(../assets/images/entities/green_pumpkin/run-green-pumpkin.gif);
   position: absolute;
 }
 /* zombie */

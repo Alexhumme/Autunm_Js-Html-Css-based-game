@@ -1,5 +1,5 @@
 class Npc extends Entity {
-    constructor () {
+    constructor() {
         super();
         this.autoLeft = false;
     }
@@ -7,23 +7,46 @@ class Npc extends Entity {
         if (this.autoLeft) this.accelerateLeft();
         else this.accelerateRight();
         this.handleHorizontalMovement();
-        //this.moveCliffChecker();
         this.checkCliff();
     }
-    checkCliff() {
-        if(this.floor){
-            if(
+    followPlayer() {
+        if (
+            parseInt(this.element.getBoundingClientRect().left) <
+            parseInt(game.player.element.getBoundingClientRect().left)
+        ) this.accelerateRight();
+        else this.accelerateLeft();
+        
+        this.handleHorizontalMovement();
+        if (
+            parseInt(this.element.style.top) >
+            parseInt(game.player.element.style.top)
+        ) {
+            this.handleJump();
+        }
+        
+        this.checkCliff(true);
+    }
+    checkCloseToPlayer() {
+        const myRect = this.element.getBoundingClientRect();
+        const playerRect = game.player.element.getBoundingClientRect();
+        return Math.abs(myRect.left) - Math.abs(playerRect.left) < 200;
+    }
+    checkCliff(jump = false) {
+        if (this.floor) {
+            if (
                 this.floorType.includes("ground-corner-left") ||
                 this.floorType.includes("platform-ground-left") ||
                 parseInt(this.element.style.left) <= 0
-                 ){
-                this.autoLeft = false;
+            ) {
+                if (!jump) this.autoLeft = false;
+                else this.handleJump();
             } else if (
                 this.floorType.includes("ground-corner-right") ||
                 this.floorType.includes("platform-ground-right") ||
                 this.element.getBoundingClientRect().left >= game.gameSize.x
-                 ){
-                this.autoLeft = true;
+            ) {
+                if (!jump) this.autoLeft = true;
+                else this.handleJump();
             }
         }
     }

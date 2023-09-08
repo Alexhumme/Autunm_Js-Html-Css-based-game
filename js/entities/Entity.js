@@ -92,14 +92,16 @@ class Entity {
 
     checkWallCollision() {
         const walls = document.querySelectorAll(".wall");
-        walls.forEach((wall) => {
-            this.handleWallCollision(this.checkCollisionWith(wall), {
-                top: true,
-                left: true,
-                right: true,
-                bottom: true,
+        if (!this.death)  {
+            walls.forEach((wall) => {
+                this.handleWallCollision(this.checkCollisionWith(wall), {
+                    top: true,
+                    left: true,
+                    right: true,
+                    bottom: true,
+                });
             });
-        });
+        }
     }
 
     checkOutOfBounds(list) {
