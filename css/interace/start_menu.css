@@ -1,0 +1,11 @@
+#startMenu {
+    position: absolute;
+    z-index: 6;
+  }
+  #startMenu li:hover {
+    cursor: pointer;
+    color: aliceblue;
+  }
+  #startMenu li:active {
+    color: yellow;
+  }

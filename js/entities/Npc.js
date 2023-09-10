@@ -10,26 +10,33 @@ class Npc extends Entity {
         this.checkCliff();
     }
     followPlayer() {
+        // moverse horizontalmente
         if (
             parseInt(this.element.getBoundingClientRect().left) <
             parseInt(game.player.element.getBoundingClientRect().left)
-        ) this.accelerateRight();
+        )
+            this.accelerateRight();
         else this.accelerateLeft();
-        
         this.handleHorizontalMovement();
+        // moverse verticalmente
         if (
-            parseInt(this.element.style.top) >
-            parseInt(game.player.element.style.top)
+            parseInt(this.element.style.top) > parseInt(game.player.element.style.top)
         ) {
-            this.handleJump();
-        }
-        
+            if (this.fly) this.accelerateUp();
+            else this.handleJump();
+        } else if (this.fly) this.accelerateDown();
+        if (this.fly) this.handleVerticalMovement();
+
+        // saltar en los acantilados
         this.checkCliff(true);
     }
     checkCloseToPlayer() {
         const myRect = this.element.getBoundingClientRect();
         const playerRect = game.player.element.getBoundingClientRect();
-        return Math.abs(myRect.left) - Math.abs(playerRect.left) < 200;
+        return (
+            Math.abs(myRect.left) - Math.abs(playerRect.left) < 200 &&
+            Math.abs(myRect.top) - Math.abs(playerRect.top) < 200
+        );
     }
     checkCliff(jump = false) {
         if (this.floor) {

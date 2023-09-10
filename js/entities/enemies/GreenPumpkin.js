@@ -4,6 +4,7 @@ class GreenPumpkin extends Npc {
         this.hearts.quantity = 2;
         this.maxSpeed = 4;
         this.createElement("green-pumpkin harmful enemie");
+        this.fly = false;
     }
     update () {
         this.handleGravity();

@@ -208,6 +208,7 @@ const game = {
                     case "z": enemie = new Zombie(); break;
                     case "k": enemie = new Pumpkin(); break;
                     case "g": enemie = new GreenPumpkin(); break;
+                    case "h": enemie = new Ghost(); break;
                     default: return false;
                 }
                 enemie.element.style.top = `${y * 50}px`;

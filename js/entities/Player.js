@@ -1,7 +1,7 @@
 class Player extends Entity {
     constructor(weight = 1) {
         super();
-        this.acelerationX = 5.5;
+        this.acceleration = 5.5;
         this.weight = weight;
         this.hearts = {
             quantity: 6,
@@ -12,25 +12,31 @@ class Player extends Entity {
         this.shoot = {
             active: false,
             duration: 5,
-            force: this.acelerationX,
+            force: this.acceleration,
             counter: 0,
             bullets: {
                 actives: [],
-                quantity: 10
+                quantity: 1000
             }
         };
+        this.axeAttack = {
+            state: 0,
+            maxFrames: 8
+        }
         this.slots = {
             slot1: { item: null, amount: 0 },
             slot2: { item: null, amount: 0 },
             slot3: { item: null, amount: 0 },
             slot4: { item: null, amount: 0 },
         }
+
     }
 
     update() {
         if (game.keys) {
             this.handleJumpAndRun();
             this.handleShooting();
+            this.handleAxeAttack();
         }
 
         this.handleFrictionAndStop();
@@ -43,7 +49,7 @@ class Player extends Entity {
         this.checkDropCollision();
         this.checkHarmfulCollision();
     }
-    
+
     checkDropCollision() {
         const drops = document.querySelectorAll(".drop");
         drops.forEach(drop => {
@@ -74,7 +80,7 @@ class Player extends Entity {
         if (game.keys[87]) this.handleJump();
     }
 
-    
+
     handleShooting() {
         if (game.keys[75] && !this.shoot.active && this.shoot.bullets.quantity) {
             this.vel.x -= this.shoot.force * (this.element.classList.contains("left") ? -1 : 1);
@@ -97,6 +103,17 @@ class Player extends Entity {
             this.shoot.bullets.quantity--;
             game.drawInterface();
         }
+    }
+    handleAxeAttack() {
+        if (this.axeAttack.state == this.axeAttack.maxFrames) { 
+            this.axeAttack.state = 0;
+            this.element.classList.remove(`attack-1-frame-${this.axeAttack.maxFrames}`);
+        };
+        if ((game.keys[74] && !this.axeAttack.state) || this.axeAttack.state) this.axeAttack.state++;
+        if (this.axeAttack.state) {
+            this.element.classList.remove(`attack-1-frame-${this.axeAttack.state-1}`)
+            this.element.classList.add(`attack-1-frame-${this.axeAttack.state}`);
+        };
     }
 
     handleFrictionAndStop() {

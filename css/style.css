@@ -1,253 +1,11 @@
 /* *** pagina *** */
-@font-face {
-  font-family: "press-start";
-  src: url(../assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf);
-}
-html {
-  height: 100%;
-}
-body {
-  font-family: "press-start";
-  display: flex;
-  height: 100%;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  background-color: #000000;
-  background-size: 128px 128px;
-}
-#test_info {
-  color: white;
-  position: absolute;
-  left: 10px;
-  top: 10px;
-  padding: 10px;
-  background-color: #00000038;
-  border-radius: 10px;
-  z-index: 999;
-}
-
+@import url(./general.css);
 /* *** Interfaz *** */
-#startMenu {
-  position: absolute;
-  z-index: 6;
-}
-#startMenu li:hover {
-  cursor: pointer;
-  color: aliceblue;
-}
-#startMenu li:active {
-  color: yellow;
-}
-#project__container {
-  display: grid;
-}
-
-#game__container {
-  position: relative;
-  overflow: hidden;
-  width: 700px;
-  height: 400px;
-  background-color: rgb(0, 0, 0);
-  background-image: url(../assets/images/backgrounds/background-clouds.png);
-}
-#game__container::after {
-  content: "";
-  transition: 0.5s;
-  opacity: 0;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  font-size: x-large;
-  color: white;
-  z-index: 5;
-  background-color: rgba(0, 0, 0, 0.338);
-}
-#game__container.game__over::after {
-  content: "Game Over";
-  opacity: 1;
-}
-#game__container.game__paused::after {
-  content: "Pause";
-  opacity: 1;
-}
-#game__container.game__loading::after {
-  content: url(../assets/images/interface/loading.gif);
-  background-color: aliceblue;
-  opacity: 1;
-}
-#game__container.changing::after {
-  opacity: 1;
-  background-color: #000000;
-}
-/* pause menu */
-#game__pause-menu {
-  transition: 0.5s;
-  width: 200px;
-  min-height: 390px;
-  position: absolute;
-  right: -210px;
-  z-index: 6;
-  border: solid 5px rgb(20, 34, 46);
-  background-color: rgb(175, 196, 215);
-  display: flex;
-  flex-direction: column;
-  justify-content: start;
-  align-items: center;
-}
-.game__paused #game__pause-menu {
-  right: 0px;
-}
-#game__pause-menu ul{
-  width: 100%;
-  list-style: none;
-  cursor: pointer;
-  padding: 0px;
-}
-#game__pause-menu li {
-  padding-block: 10px;
-  text-align: center;
-}
-#game__pause-menu li:hover{
-  color: rgb(89, 101, 111);
-  background-color: yellow;
-}
-/* navbar */
-#game__navbar {
-  height: 50px;
-  overflow: hidden;
-  background-image: url(../assets/images/interface/nav-bar.png);
-  display: flex;
-  background-repeat: no-repeat;
-  background-position: center;
-  justify-content: space-between;
-  align-items: center;
-  padding-inline: 8px;
-  transition: 0.3s;
-}
-#game__navbar div {
-  opacity: 0;
-  transition: 0.4s;
-}
-
-.started #game__navbar div{
-  opacity: 1;
-}
-
-#game__maps {
-  display: flex;
-}
-.map-item,.map-item__disabled {
-  width: 94px;
-  height: 32px;
-  font-size: x-small;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.map-item{
-  background-image: url(../assets/images/interface/map-item.png);
-}
-.map-item__disabled{
-  background-image: url(../assets/images/interface/map-item-disabled.png);
-}
-#game__actions {
-  display: flex;
-}
-#game__actions div {
-  width: 42px;
-  height: 36px;
-  cursor: pointer;
-  background-size: cover;
-}
-#game__actions div::after {
-  width: 40px;
-  height: 33px;
-  content:"";
-  display: block;
-  position: absolute;
-  background-color: #00000054;
-
-}
-#game__actions div:hover::after {
-  background-color: #ffffff00;
-}
-#game__actions div:active::after {
-  border: solid 2px yellow;
-  background-color: rgb(255, 255, 0);
-  mix-blend-mode:color;
-
-}
-#game__reset {
-  background-image: url(../assets/images/interface/button-reset.png);
-}
-#game__pause {
-  background-image: url(../assets/images/interface/button-pause.png);
-}
-#game__pause.game__continue {
-  background-image: url(../assets/images/interface/button-continue.png);
-}
-/* bottom bar */
-#game__bottombar {
-  height: 70px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-inline: 20px;
-  background-image: url(../assets/images/interface/player-menu.png);
-}
-#game__bottombar div {
-  opacity: 0;
-  transition: 0.5s;
-} 
-.started #game__bottombar div{
-  opacity: 1;
-}
-#game__hearts {
-  display: flex;
-}
-.heart {
-  margin-inline: 3px;
-  background-image: url(../assets/images/interface/heart.png);
-  height: 25px;
-  width: 25px;
-}
-.heart__container {
-  margin-inline: 3px;
-  background-image: url(../assets/images/interface/heart-container.png);
-  height: 25px;
-  width: 25px;
-}
-.hearts-mini_container {
-  height: 25px;
-  width: 80px;
-  position: absolute;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-}
-.hearts-mini_container div{
-  background-image: url(../assets/images/interface/heart.png);
-  background-size: cover;
-  height: 20px;
-  width: 20px;
-}
-#game__items {
-  display: flex;
-}
-.player_slot {
-  margin-inline: 3px;
-  width: 37px;
-  height: 37px;
-  background-image: url(../assets/images/interface/slot.png);
-}
-#game__points {
-  color: white;
-}
-
+@import url(./interace/start_menu.css);
+/* *** estructura *** */
+@import url(./interace/structure.css);
+/* *** player *** */
+@import url(./entities/player.css);
 /* *** tiles *** */
 
 .tile {
@@ -303,6 +61,9 @@ body {
 .platform-ground-between {
   background-image: url(../assets/images/walls/platform-ground-between.png);
 }
+.platform-ground-pilar-node {
+  background-image: url(../assets/images/walls/platform-ground-pilar-node.png);
+}
 .ground-pilar-top {
   background-image: url(../assets/images/walls/ground-pilar-top.png);
 }
@@ -329,54 +90,7 @@ body {
   background-image: url(../assets/images/middleground/tree.png);
 }
 
-/* *** player *** */
 
-#player {
-  z-index: 1;
-  width: 40px;
-  height: 49px;
-  position: absolute;
-}
-.left {
-  transform: scaleX(-1);
-}
-#player.idle::after {
-  content: url(../assets/images/entities/player/idle/idle-player.gif);
-}
-#player.run::after {
-  content: url(../assets/images/entities/player/run/run-player.gif);
-}
-#player.jump::after {
-  content: url(../assets/images/entities/player/jump/jump-player.png);
-}
-#player.shooting::after {
-  content: url(../assets/images/entities/player/shot/shot-player.gif);
-}
-#player.run.shooting::after {
-  content: url(../assets/images/entities/player/shot/shot-running-player.gif);
-}
-/* bullet */
-.bullet {
-  position: absolute;
-  width: 20px;
-  height: 10px;
-  background-image: url(../assets/images/entities/bullet/bullet.png);
-  background-repeat: no-repeat;
-}
-.bullet:not(.broken)::after {
-  content: "";
-  animation: stella 1s;
-  margin-left: -20px;
-  background-image: linear-gradient(to Left, rgba(255, 255, 255, 0.59), rgba(255, 255, 255, 0.155));
-  position: absolute;
-  height: 10px;
-  width: 20px;
-}
-.bullet.broken {
-  width: 10px;
-  height: 10px;
-  background-image: url(../assets/images/entities/bullet/broken-bullet.png);
-}
 /* *** drops *** */
 .drop {
   width: 30px;
@@ -422,6 +136,14 @@ body {
   width: 10px;
 }
 
+/* ghost */
+.ghost {
+  width: 50px;
+  height: 50px;
+  background-image: url(../assets/images/entities/ghost/run/run-ghost.gif);
+  position: absolute;
+  background-repeat: no-repeat;
+}
 /* water */
 .water-top {
   height: 50px;

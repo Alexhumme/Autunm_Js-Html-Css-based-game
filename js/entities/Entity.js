@@ -4,7 +4,7 @@ class Entity {
         this.idle = true;
         this.floor = true;
         this.floorType = "";
-        this.acelerationX = 1.3;
+        this.acceleration = 1.3;
         this.jump = 15;
         this.maxSpeed = 7;
         this.element = HTMLElement.prototype;
@@ -22,6 +22,7 @@ class Entity {
             active: 0,
             max: 10,
         };
+        this.fly = false;
     }
 
     checkCollisionWith(otherElement) {
@@ -66,13 +67,13 @@ class Entity {
             if (collision.data.y === "bottom" && bottom) {
                 this.floorType = collision.element.className;
                 this.element.style.top =
-                `${parseFloat(collision.element.style.top) - rect1.height}px`;
+                    `${parseFloat(collision.element.style.top) - rect1.height}px`;
                 this.floor = true;
             }
             if (collision.data.y === "top" && top) {
                 this.floorType = collision.element.className;
                 this.element.style.top =
-                `${parseFloat(collision.element.style.top) + rect2.height + 1}px`;
+                    `${parseFloat(collision.element.style.top) + rect2.height + 1}px`;
                 this.vel.y = -this.vel.y / 2;
             }
             if (collision.data.x === "right" && right) {
@@ -85,14 +86,14 @@ class Entity {
                     `${parseFloat(collision.element.style.left) + rect2.width}px`;
                 this.autoLeft = false;
             }
-        }else{
+        } else {
 
         }
     }
 
     checkWallCollision() {
         const walls = document.querySelectorAll(".wall");
-        if (!this.death)  {
+        if (!this.death) {
             walls.forEach((wall) => {
                 this.handleWallCollision(this.checkCollisionWith(wall), {
                     top: true,
@@ -165,6 +166,11 @@ class Entity {
         this.element.style.left = `${parseInt(this.element.style.left) + this.vel.x
             }px`;
     }
+    handleVerticalMovement() {
+        this.element.style.top = `${parseInt(this.element.style.top) + this.vel.y
+            }px`;
+    }
+
 
     handleJump() {
         if (this.floor || this.fly) {
@@ -181,7 +187,7 @@ class Entity {
     }
     accelerateLeft() {
         if (this.vel.x > -this.maxSpeed) {
-            this.vel.x -= this.acelerationX;
+            this.vel.x -= this.acceleration;
             this.element.classList.remove("right");
             this.element.classList.add("run");
             this.element.classList.add("left");
@@ -190,10 +196,22 @@ class Entity {
 
     accelerateRight() {
         if (this.vel.x < this.maxSpeed) {
-            this.vel.x += this.acelerationX;
+            this.vel.x += this.acceleration;
             this.element.classList.remove("left");
             this.element.classList.add("run");
             this.element.classList.add("right");
+        }
+    }
+
+    accelerateUp() {
+        if (this.vel.y > -this.maxSpeed) {
+            this.vel.y -= this.acceleration;
+        }
+    }
+    
+    accelerateDown() {
+        if (this.vel.y < this.maxSpeed) {
+            this.vel.y += this.acceleration;
         }
     }
 

@@ -1,0 +1,81 @@
+#player {
+  z-index: 1;
+  width: 40px;
+  height: 49px;
+  position: absolute;
+}
+.left {
+  transform: scaleX(-1);
+}
+#player::after {position: absolute;}
+#player.idle::after {
+  content: url(../../assets/images/entities/player/idle/idle-player.gif);
+}
+#player.run::after {
+  content: url(../../assets/images/entities/player/run/run-player.gif);
+}
+#player.jump::after {
+  content: url(../../assets/images/entities/player/jump/jump-player.png);
+}
+#player.shooting::after {
+  content: url(../../assets/images/entities/player/shot/shot-player.gif);
+}
+#player.run.shooting::after {
+  content: url(../../assets/images/entities/player/shot/shot-running-player.gif);
+}
+/* * axe combo * */
+/* attack 1 */
+#player[class*="attack-1"]::after {
+  margin-top: -15px;
+  margin-left: -5px;
+}
+#player.attack-1-frame-1::after {
+    content: url(../../assets/images/entities/player/axe/attack1/player-attack-1.png);
+}
+#player.attack-1-frame-2::after {
+    content: url(../../assets/images/entities/player/axe/attack1/player-attack-2.png);
+}
+#player.attack-1-frame-3::after {
+    content: url(../../assets/images/entities/player/axe/attack1/player-attack-3.png);
+}
+#player.attack-1-frame-4::after {
+    content: url(../../assets/images/entities/player/axe/attack1/player-attack-4.png);
+}
+#player.attack-1-frame-5::after {
+    content: url(../../assets/images/entities/player/axe/attack1/player-attack-5.png);
+}
+#player.attack-1-frame-6::after {
+    content: url(../../assets/images/entities/player/axe/attack1/player-attack-6.png);
+}
+#player.attack-1-frame-7::after {
+    content: url(../../assets/images/entities/player/axe/attack1/player-attack-7.png);
+}
+#player.attack-1-frame-8::after {
+    content: url(../../assets/images/entities/player/axe/attack1/player-attack-8.png);
+}
+/* * bullet * */
+.bullet {
+  position: absolute;
+  width: 20px;
+  height: 10px;
+  background-image: url(../../assets/images/entities/bullet/bullet.png);
+  background-repeat: no-repeat;
+}
+.bullet:not(.broken)::after {
+  content: "";
+  animation: stella 1s;
+  margin-left: -20px;
+  background-image: linear-gradient(
+    to Left,
+    rgba(255, 255, 255, 0.59),
+    rgba(255, 255, 255, 0.155)
+  );
+  position: absolute;
+  height: 10px;
+  width: 20px;
+}
+.bullet.broken {
+  width: 10px;
+  height: 10px;
+  background-image: url(../../assets/images/entities/bullet/broken-bullet.png);
+}
