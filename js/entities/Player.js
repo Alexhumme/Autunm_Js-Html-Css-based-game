@@ -21,7 +21,8 @@ class Player extends Entity {
         };
         this.axeAttack = {
             state: 0,
-            maxFrames: 8
+            maxFrames: 8,
+            axe: new Axe(),
         }
         this.slots = {
             slot1: { item: null, amount: 0 },
@@ -29,7 +30,6 @@ class Player extends Entity {
             slot3: { item: null, amount: 0 },
             slot4: { item: null, amount: 0 },
         }
-
     }
 
     update() {
@@ -82,7 +82,7 @@ class Player extends Entity {
 
 
     handleShooting() {
-        if (game.keys[75] && !this.shoot.active && this.shoot.bullets.quantity) {
+        if (game.keys[75] && !this.shoot.active && this.shoot.bullets.quantity && !this.axeAttack.state) {
             this.vel.x -= this.shoot.force * (this.element.classList.contains("left") ? -1 : 1);
             this.shoot.active = true;
             this.element.classList.add("shooting");
@@ -105,13 +105,20 @@ class Player extends Entity {
         }
     }
     handleAxeAttack() {
-        if (this.axeAttack.state == this.axeAttack.maxFrames) { 
+        if (this.axeAttack.state == this.axeAttack.maxFrames) {
             this.axeAttack.state = 0;
             this.element.classList.remove(`attack-1-frame-${this.axeAttack.maxFrames}`);
         };
-        if ((game.keys[74] && !this.axeAttack.state) || this.axeAttack.state) this.axeAttack.state++;
+        if ((game.keys[74] && !this.axeAttack.state) || this.axeAttack.state) {
+            if (!this.axeAttack.axe.element) this.axeAttack.axe.createElememt();
+            this.axeAttack.state++;
+            this.axeAttack.axe.animation.state = this.axeAttack.state;
+            this.axeAttack.axe.pos.x = parseInt(this.element.style.left);
+            this.axeAttack.axe.pos.y = parseInt(this.element.style.top);
+            this.axeAttack.axe.update();
+        }
         if (this.axeAttack.state) {
-            this.element.classList.remove(`attack-1-frame-${this.axeAttack.state-1}`)
+            this.element.classList.remove(`attack-1-frame-${this.axeAttack.state - 1}`)
             this.element.classList.add(`attack-1-frame-${this.axeAttack.state}`);
         };
     }
@@ -136,5 +143,4 @@ class Player extends Entity {
             }
         }
     }
-
 }

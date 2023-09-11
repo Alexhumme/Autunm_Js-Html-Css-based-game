@@ -54,7 +54,6 @@ class Bullet extends Entity {
         );
         game.gameSpace.appendChild(this.element);
         this.element.style.left = `${this.pos.x}px`;
-        this.element.style.top = `${this
-.pos.y}px`;
+        this.element.style.top = `${this.pos.y}px`;
     }
 }

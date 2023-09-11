@@ -29,6 +29,7 @@
   margin-top: -15px;
   margin-left: -5px;
 }
+
 #player.attack-1-frame-1::after {
     content: url(../../assets/images/entities/player/axe/attack1/player-attack-1.png);
 }
@@ -52,6 +53,43 @@
 }
 #player.attack-1-frame-8::after {
     content: url(../../assets/images/entities/player/axe/attack1/player-attack-8.png);
+}
+
+#player[class*="attack-1"] .axe__element {
+  width: 90px;
+  height: 60px;
+}
+.axe__element {
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  margin-top: -15px;
+  margin-left: 15px;
+  z-index: 2;
+}
+#player.attack-1-frame-1 .axe__element{
+  background-image: url(../../assets/images/entities/player/axe/attack1-stella/attack1-stella1.png);
+}
+#player.attack-1-frame-2 .axe__element{
+  background-image: url(../../assets/images/entities/player/axe/attack1-stella/attack1-stella2.png);
+}
+#player.attack-1-frame-3 .axe__element{
+  background-image: url(../../assets/images/entities/player/axe/attack1-stella/attack1-stella3.png);
+}
+#player.attack-1-frame-4 .axe__element{
+  background-image: url(../../assets/images/entities/player/axe/attack1-stella/attack1-stella4.png);
+}
+#player.attack-1-frame-5 .axe__element{
+  background-image: url(../../assets/images/entities/player/axe/attack1-stella/attack1-stella5.png);
+}
+#player.attack-1-frame-6 .axe__element{
+  background-image: url(../../assets/images/entities/player/axe/attack1-stella/attack1-stella6.png);
+}
+#player.attack-1-frame-7 .axe__element{
+  background-image: url(../../assets/images/entities/player/axe/attack1-stella/attack1-stella7.png);
+}
+#player.attack-1-frame-8 .axe__element{
+  background-image: url(../../assets/images/entities/player/axe/attack1-stella/attack1-stella8.png);
 }
 /* * bullet * */
 .bullet {
