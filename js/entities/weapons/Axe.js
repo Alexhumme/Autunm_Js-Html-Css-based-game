@@ -2,10 +2,11 @@ class Axe extends Entity {
     constructor() {
         super();
         this.animation = {
-            state : 0,
-            maxframes : 8,
+            state: 0,
+            maxframes: 8,
         };
         this.state = 0;
+        this.comboState = 1;
         this.pos = {
             x: 0,
             y: 0,
@@ -22,8 +23,8 @@ class Axe extends Entity {
     }
     updateState() {
         if (this.animation.state) {
-            this.element.classList.add(`frame-${this.state}`);
-            this.element.classList.remove(`frame-${this.state-1}`);
+            this.element.classList.add(`frame-${this.comboState}-${this.state}`);
+            this.element.classList.remove(`frame-${this.comboState}-${this.state - 1}`);
         } else {
             this.element.className = "weapon axe__element";
         };

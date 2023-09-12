@@ -23,6 +23,7 @@ class Entity {
             max: 10,
         };
         this.fly = false;
+        this.dir = 1;
     }
 
     checkCollisionWith(otherElement) {
@@ -191,6 +192,7 @@ class Entity {
             this.element.classList.remove("right");
             this.element.classList.add("run");
             this.element.classList.add("left");
+            this.dir = -1;
         }
     }
 
@@ -200,6 +202,7 @@ class Entity {
             this.element.classList.remove("left");
             this.element.classList.add("run");
             this.element.classList.add("right");
+            this.dir = 1;
         }
     }
 
