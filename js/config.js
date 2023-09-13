@@ -4,7 +4,7 @@ const game = {
     currentMap: 0,
     maps: [map1, map2, map3],
     gameOver: false,
-    fps: 25,
+    fps: 20,
     drops: [],
     dropSpan: {
         rate: 2000,
@@ -236,7 +236,7 @@ const game = {
         game.drawInterface();
         game.player.element = document.getElementById("player");
         setEventListeners();
-        game.loop = window.setInterval(() => refreshGame(), 25);
+        game.loop = window.setInterval(() => refreshGame(), 1000/game.fps);
         game.gameOver = false;
         game.pause = false;
     },
