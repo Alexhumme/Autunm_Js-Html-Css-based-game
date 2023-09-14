@@ -17,6 +17,9 @@
 #player.jump::after {
   content: url(../../assets/images/entities/player/jump/jump-player.png);
 }
+#player.fall::after {
+  content: url(../../assets/images/entities/player/fall/fall-player.png);
+}
 #player.shooting::after {
   content: url(../../assets/images/entities/player/shot/shot-player.gif);
 }

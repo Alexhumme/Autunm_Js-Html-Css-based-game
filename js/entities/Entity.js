@@ -45,7 +45,11 @@ class Entity {
             if (
                 xOverlap >=
                 yOverlap - 13 // se restan 20 a overlap para corregir la deteccion supersencible de colisiones left
-            ) { collisionY = dy > 0 ? "top" : "bottom" } else { collisionX = dx > 0 ? "left" : "right" }
+            ) {
+                collisionY = dy > 0 ? "top" : "bottom";
+            } else {
+                collisionX = dx > 0 ? "left" : "right";
+            }
 
             return { element: otherElement, data: { x: collisionX, y: collisionY } };
         } else {
@@ -67,28 +71,27 @@ class Entity {
             const rect2 = collision.element.getBoundingClientRect();
             if (collision.data.y === "bottom" && bottom) {
                 this.floorType = collision.element.className;
-                this.element.style.top =
-                    `${parseFloat(collision.element.style.top) - rect1.height}px`;
+                this.element.style.top = `${parseFloat(collision.element.style.top) - rect1.height
+                    }px`;
                 this.floor = true;
             }
             if (collision.data.y === "top" && top) {
                 this.floorType = collision.element.className;
-                this.element.style.top =
-                    `${parseFloat(collision.element.style.top) + rect2.height + 1}px`;
+                this.element.style.top = `${parseFloat(collision.element.style.top) + rect2.height + 1
+                    }px`;
                 this.vel.y = -this.vel.y / 2;
             }
             if (collision.data.x === "right" && right) {
-                this.element.style.left =
-                    `${parseFloat(collision.element.style.left) - rect1.width}px`;
+                this.element.style.left = `${parseFloat(collision.element.style.left) - rect1.width
+                    }px`;
                 this.autoLeft = true;
             }
             if (collision.data.x === "left" && left) {
-                this.element.style.left =
-                    `${parseFloat(collision.element.style.left) + rect2.width}px`;
+                this.element.style.left = `${parseFloat(collision.element.style.left) + rect2.width
+                    }px`;
                 this.autoLeft = false;
             }
         } else {
-
         }
     }
 
@@ -152,7 +155,7 @@ class Entity {
                             : this.vel.x > 0
                                 ? -5
                                 : 5;
-                this.handleJump()
+                this.handleJump();
             }
         }
         if (this.invincibility.active) this.invincibility.active--;
@@ -172,7 +175,6 @@ class Entity {
             }px`;
     }
 
-
     handleJump() {
         if (this.floor || this.fly) {
             this.vel.y = -this.jump;
@@ -181,8 +183,13 @@ class Entity {
         }
     }
     detectFloor() {
-        if (this.floor && this.element.classList.contains("jump")) {
+        if (
+            this.floor &&
+            (this.element.classList.contains("jump") ||
+                this.element.classList.contains("jump"))
+        ) {
             this.element.classList.remove("jump");
+            this.element.classList.remove("fall");
             this.floor = true;
         }
     }
@@ -211,18 +218,24 @@ class Entity {
             this.vel.y -= this.acceleration;
         }
     }
-    
+
     accelerateDown() {
         if (this.vel.y < this.maxSpeed) {
             this.vel.y += this.acceleration;
         }
     }
-
+    handleFalling() {
+        if (this.vel.y > 0 && !this.floor) {
+            this.element.classList.add("fall");
+        }
+    }
     handleGravity() {
         if (this.vel.y < game.fallLimit * this.weight) {
             this.vel.y += game.gravity;
         }
-        this.element.style.top = `${parseInt(this.element.style.top) + this.vel.y}px`;
+        this.element.style.top = `${parseInt(this.element.style.top) + this.vel.y
+            }px`;
+        this.handleFalling();
     }
 
     createElement(className) {
@@ -235,11 +248,10 @@ class Entity {
         this.heartsContainer = hearts;
         game.gameSpace.appendChild(hearts);
 
-        this.updateHeartsContainer()
+        this.updateHeartsContainer();
 
         this.element = element;
     }
-
 
     checkWeaponCollision() {
         const weapons = document.querySelectorAll(".weapon");
