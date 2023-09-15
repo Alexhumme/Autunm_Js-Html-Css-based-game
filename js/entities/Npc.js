@@ -57,19 +57,5 @@ class Npc extends Entity {
             }
         }
     }
-    updateHeartsContainer() {
-        this.heartsContainer.innerHTML = "";
-        for (let heartN = 0; heartN < this.hearts.quantity; heartN++) {
-            this.heartsContainer.appendChild(document.createElement("div"));
-        }
-    }
-    updateHearts() {
-        this.heartsContainer.style.top = `${parseInt(this.element.style.top) -
-            this.heartsContainer.getBoundingClientRect().height
-            }px`;
-        this.heartsContainer.style.left = `${parseInt(this.element.style.left) -
-            this.heartsContainer.getBoundingClientRect().width / 2 +
-            this.element.getBoundingClientRect().width / 2
-            }px`;
-    }
+    
 }

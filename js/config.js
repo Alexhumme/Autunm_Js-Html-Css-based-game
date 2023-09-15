@@ -19,7 +19,7 @@ const game = {
     gameSize: { x: 700, y: 400 },
     tileWidth: 50,
     tileHeight: 50,
-    gravity: 2,
+    gravity: 3,
     fallLimit: 12,
     glide: 0.8,
     keys: [],

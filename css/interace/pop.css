@@ -1,0 +1,11 @@
+.pop {
+    position: absolute;
+    height: 20px;
+    width: 20px;
+    background-color: red;
+    margin-top: -20px;
+    top:0px;
+}
+.left .pop {
+    transform: scaleX(-1);
+}

@@ -1,14 +1,14 @@
 class Player extends Entity {
-    constructor(weight = 1) {
+    constructor() {
         super();
-        this.acceleration = 5.5;
-        this.weight = weight;
+        this.acceleration = 6.5;
+        this.weight = 1.6;
         this.hearts = {
             quantity: 6,
             max: 6,
         };
         this.invincibility.max = 25;
-        this.maxSpeed = 7;
+        this.maxSpeed = 8;
         this.shoot = {
             active: false,
             duration: 5,
@@ -19,6 +19,7 @@ class Player extends Entity {
                 quantity: 1000,
             },
         };
+        this.jump = 20;
         this.axeAttack = {
             state: 0,
             maxFrames: 8,
@@ -49,6 +50,8 @@ class Player extends Entity {
         this.checkWallCollision();
         this.checkDropCollision();
         this.checkHarmfulCollision();
+
+        this.updatePops();
     }
 
     checkDropCollision() {
@@ -113,7 +116,7 @@ class Player extends Entity {
     }
     handleAxeAttack() {
         if (this.axeAttack.state === this.axeAttack.maxFrames) {
-            if (this.axeAttack.comboAttack === 2) this.vel.x += 5*this.dir;
+            if (game.keys[74] && this.axeAttack.comboAttack === 1) this.vel.x += 5*this.dir;
             if (game.keys[74] && this.axeAttack.comboAttack < 2) {
                 this.axeAttack.state = 1;
                 this.axeAttack.comboAttack = 2;

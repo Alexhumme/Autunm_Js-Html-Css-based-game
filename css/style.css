@@ -6,6 +6,8 @@
 @import url(./interace/structure.css);
 /* *** player *** */
 @import url(./entities/player.css);
+/* *** utils *** */
+@import url(./interace/pop.css);
 /* *** tiles *** */
 
 .tile {

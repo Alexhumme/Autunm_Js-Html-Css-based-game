@@ -1,3 +1,43 @@
+class Pop {
+    constructor(text = "", color = "", classNames = []) {
+        this.text = text;
+        this.color = color;
+        this.classNames = classNames;
+        this.element = HTMLElement.prototype;
+        this.counter = 10;
+    }
+    update() {
+        if (this.counter) {
+            this.counter--;
+            this.element.style.top = `${parseInt(this.element.style.top)-2}px`;
+            this.element.style.opacity = `${parseFloat(this.element.style.opacity)*0.9}`
+            game.info(this.element.style.top);
+        } else {
+            this.destroy();
+        }
+    }
+    createElementIn(parent = HTMLElement.prototype) {
+        const element = document.createElement("span");
+        element.style.top = "0px";
+        element.style.opacity = "1";
+        element.style.left = `${Math.floor(Math.random()*20)}px`;
+        element.classList.add(["pop", ...this.classNames]);
+        element.innerText = this.text;
+        element.style.color = this.color;
+        parent.appendChild(element);
+        this.element = element;
+    }
+    retireList(list) {
+        const thisIndex = list.indexOf(this);
+        if (thisIndex !== -1) {
+            list.splice(thisIndex, 1);
+        }
+    }
+    destroy() {
+        this.element.remove();
+    }
+}
+
 class Entity {
     constructor() {
         this.vel = { x: 0, y: 0 };
@@ -10,6 +50,7 @@ class Entity {
         this.element = HTMLElement.prototype;
         this.weight = 1;
         this.collisions = [];
+        this.pops = [];
         this.hearts = {
             quantity: 2,
             max: 2,
@@ -120,16 +161,21 @@ class Entity {
         ) {
             this.heartsContainer && this.heartsContainer.remove();
             this.destroy();
-            const thisIndex = list.indexOf(this);
-            if (thisIndex !== -1) {
-                list.splice(thisIndex, 1);
-            }
+            this.retireList(list)
         }
     }
+
     checkDeath() {
         if (this.hearts.quantity <= 0) {
             this.death = true;
             this.element.classList.remove("harmful");
+        }
+    }
+
+    retireList(list) {
+        const thisIndex = list.indexOf(this);
+        if (thisIndex !== -1) {
+            list.splice(thisIndex, 1);
         }
     }
 
@@ -141,6 +187,7 @@ class Entity {
     ) {
         if (collision) {
             if (!this.invincibility.active) {
+                this.popMessage();
                 this.invincibility.active = this.invincibility.max;
                 this.element.classList.add("blinking");
                 this.hearts.quantity--;
@@ -242,15 +289,23 @@ class Entity {
         const element = document.createElement("div");
         element.className = className;
         game.gameSpace.appendChild(element);
+        this.element = element;
+        this.drawHearts();
+        this.updateHeartsContainer();
+    }
 
+    drawHearts () {
         const hearts = document.createElement("div");
         hearts.className = "hearts-mini_container";
+        this.element.appendChild(hearts);
         this.heartsContainer = hearts;
-        game.gameSpace.appendChild(hearts);
+    }
 
-        this.updateHeartsContainer();
-
-        this.element = element;
+    updateHeartsContainer() {
+        this.heartsContainer.innerHTML = "";
+        for (let heartN = 0; heartN < this.hearts.quantity; heartN++) {
+            this.heartsContainer.appendChild(document.createElement("div"));
+        }
     }
 
     checkWeaponCollision() {
@@ -259,5 +314,17 @@ class Entity {
             this.handleHarm(this.checkCollisionWith(weapon));
             this.updateHeartsContainer();
         });
+    }
+
+    popMessage(text = "", color = "white", types = []) {
+        const newPop = new Pop(text = text, color = color);
+        newPop.createElementIn(this.element);
+        this.pops.push(newPop);
+    }
+
+    updatePops() {
+        this.pops.forEach((pop)=>{
+            pop.update();
+        })
     }
 }

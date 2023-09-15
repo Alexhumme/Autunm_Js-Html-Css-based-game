@@ -17,6 +17,7 @@ class Zombie extends Npc {
       this.checkWeaponCollision();
       this.checkOutOfBounds(game.zombies);
       this.updateHearts();
+      this.updatePops();
       this.checkDeath();
     }
   
