@@ -1,0 +1,39 @@
+.wall {
+  z-index: 2;
+}
+.ground {
+  background-image: url(../../assets/images/walls/ground.png);
+}
+.ground-corner-right {
+  background-image: url(../../assets/images/walls/ground-corner-left.png);
+}
+.ground-corner-left {
+  background-image: url(../../assets/images/walls/ground-corner-right.png);
+}
+
+.ground-left-top {
+  background-image: url(../../assets/images/walls/ground-curve-left-top.png);
+}
+.ground-right-top {
+  background-image: url(../../assets/images/walls/ground-curve-right-top.png);
+}
+.ground-solid {
+  background-image: url(../../assets/images/walls/ground-solid.png);
+}
+
+.ground-wall-right {
+  background-image: url(../../assets/images/walls/ground-wall-right.png);
+}
+.ground-wall-left {
+  background-image: url(../../assets/images/walls/ground-wall-left.png);
+}
+
+.ground-pilar-top {
+  background-image: url(../../assets/images/walls/ground-pilar-top.png);
+}
+.ground-pilar-body {
+  background-image: url(../../assets/images/walls/ground-pilar-body.png);
+}
+.ground-pilar-node {
+  background-image: url(../../assets/images/walls/ground-pilar-node.png);
+}

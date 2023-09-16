@@ -4,95 +4,14 @@
 @import url(./interace/start_menu.css);
 /* *** estructura *** */
 @import url(./interace/structure.css);
-/* *** player *** */
-@import url(./entities/player.css);
 /* *** utils *** */
 @import url(./interace/pop.css);
+/* *** entitie *** */
+@import url(./entities/index.css);
 /* *** tiles *** */
-
-.tile {
-  width: 50px;
-  height: 50px;
-  position: absolute;
-  background-repeat: no-repeat;
-}
-.tile[class*="platform"] {
-  height: 32px;
-
-}
-/* walls */
-.wall {
-  z-index: 2;
-}
-.ground {
-  background-image: url(../assets/images/walls/ground.png);
-}
-.ground-corner-right {
-  background-image: url(../assets/images/walls/ground-corner-left.png);
-}
-.ground-corner-left {
-  background-image: url(../assets/images/walls/ground-corner-right.png);
-}
-
-.ground-left-top {
-  background-image: url(../assets/images/walls/ground-curve-left-top.png);
-}
-.ground-right-top {
-  background-image: url(../assets/images/walls/ground-curve-right-top.png);
-}
-.ground-solid {
-  background-image: url(../assets/images/walls/ground-solid.png);
-}
-
-.ground-wall-right {
-  background-image: url(../assets/images/walls/ground-wall-right.png);
-}
-.ground-wall-left {
-  background-image: url(../assets/images/walls/ground-wall-left.png);
-}
-
-.platform-ground {
-  background-image: url(../assets/images/walls/platform-ground.png);
-}
-.platform-ground-left {
-  background-image: url(../assets/images/walls/platform-ground-left.png);
-}
-.platform-ground-right {
-  background-image: url(../assets/images/walls/platform-ground-right.png);
-}
-.platform-ground-between {
-  background-image: url(../assets/images/walls/platform-ground-between.png);
-}
-.platform-ground-pilar-node {
-  background-image: url(../assets/images/walls/platform-ground-pilar-node.png);
-}
-.ground-pilar-top {
-  background-image: url(../assets/images/walls/ground-pilar-top.png);
-}
-.ground-pilar-body {
-  background-image: url(../assets/images/walls/ground-pilar-body.png);
-}
-.ground-pilar-node {
-  background-image: url(../assets/images/walls/ground-pilar-node.png);
-}
-/* *** middleground *** */
-.middle {
-  z-index: 0;
-}
-.bush-small {
-  background-image: url(../assets/images/middleground/bush-small.png);
-}
-.bush-small-creature {
-  background-image: url(../assets/images/middleground/bush-small-creature.png);
-}
-.tree {
-  margin-top: -150px;
-  height: 200px;
-  width: 150px;
-  background-image: url(../assets/images/middleground/tree.png);
-}
-
-
+@import url(./tiles/index.css);
+/* *** particles *** */
+@import url(./particles/index.css);
 /* *** drops *** */
 .drop {
   width: 30px;
@@ -107,61 +26,6 @@
 }
 .drop.red {
   background-image: url(../assets/images/entities/gifts/red/gift-red.gif);
-}
-
-/*** enemies ***/
-
-.pumpkin {
-  height: 40px;
-  width: 40px;
-  background-image: url(../assets/images/entities/pumpkin/run/run-pumpkin.gif);
-  position: absolute;
-}
-.green-pumpkin {
-  height: 40px;
-  width: 40px;
-  background-image: url(../assets/images/entities/green_pumpkin/run-green-pumpkin.gif);
-  position: absolute;
-}
-/* zombie */
-
-.zombie {
-  height: 80px;
-  width: 60px;
-  background-image: url(../assets/images/entities/zombie/walk/zombie-walk.gif);
-  position: absolute;
-  background-repeat: no-repeat;
-}
-.zombie-heart {
-  background-size: cover;
-  height: 10px;
-  width: 10px;
-}
-
-/* ghost */
-.ghost {
-  width: 50px;
-  height: 50px;
-  background-image: url(../assets/images/entities/ghost/run/run-ghost.gif);
-  position: absolute;
-  background-repeat: no-repeat;
-}
-/* water */
-.water-top {
-  height: 50px;
-  width: 50px;
-  position: absolute;
-  background-image: url(../assets/images/middleground/water-top.gif);
-  opacity: 0.5;
-  z-index: 4;
-}
-.water-solid {
-  height: 50px;
-  width: 50px;
-  position: absolute;
-  background-image: url(../assets/images/middleground/water-solid.png);
-  opacity: 0.5;
-  z-index: 4;
 }
 /* animaciones */
 

@@ -179,23 +179,6 @@
     height: 25px;
     width: 25px;
   }
-  .hearts-mini_container {
-    height: 25px;
-    min-width: 30px;
-    position: absolute;
-    margin-top: -25px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .hearts-mini_container div{
-    background-image: url(../../assets/images/interface/heart.png);
-    background-size: cover;
-    height: 10px;
-    width: 10px;
-    margin-inline: 2px;
-    margin-top: 10px;
-  }
   #game__items {
     display: flex;
   }

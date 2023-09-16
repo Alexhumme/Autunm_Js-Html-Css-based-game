@@ -1,17 +1,16 @@
 class Pop {
-    constructor(text = "", color = "", classNames = []) {
+    constructor({ text = "", color = "", type = "" }) {
         this.text = text;
         this.color = color;
-        this.classNames = classNames;
+        this.classNames = type;
         this.element = HTMLElement.prototype;
         this.counter = 10;
     }
     update() {
         if (this.counter) {
             this.counter--;
-            this.element.style.top = `${parseInt(this.element.style.top)-2}px`;
-            this.element.style.opacity = `${parseFloat(this.element.style.opacity)*0.9}`
-            game.info(this.element.style.top);
+            this.element.style.top = `${parseInt(this.element.style.top) - 2}px`;
+            this.element.style.opacity = `${parseFloat(this.element.style.opacity) * 0.9}`;
         } else {
             this.destroy();
         }
@@ -20,8 +19,8 @@ class Pop {
         const element = document.createElement("span");
         element.style.top = "0px";
         element.style.opacity = "1";
-        element.style.left = `${Math.floor(Math.random()*20)}px`;
-        element.classList.add(["pop", ...this.classNames]);
+        element.style.left = `${Math.floor(Math.random() * 20)}px`;
+        element.classList.add("pop", this.classNames);
         element.innerText = this.text;
         element.style.color = this.color;
         parent.appendChild(element);
@@ -187,22 +186,24 @@ class Entity {
     ) {
         if (collision) {
             if (!this.invincibility.active) {
-                this.popMessage();
+                this.popMessage({ text: "", types: "broken-heart" });
                 this.invincibility.active = this.invincibility.max;
                 this.element.classList.add("blinking");
                 this.hearts.quantity--;
                 game.drawInterface();
 
-                this.vel.y -= 10;
                 this.vel.x =
                     collision.data.x === "right"
-                        ? -5
+                        ? -7
                         : collision.data.x === "left"
-                            ? 5
+                            ? 7
                             : this.vel.x > 0
-                                ? -5
-                                : 5;
-                this.handleJump();
+                                ? -7
+                                : 7;
+                if (!this.fly) {
+                    this.vel.y -= 10;
+                    this.handleJump();
+                }
             }
         }
         if (this.invincibility.active) this.invincibility.active--;
@@ -294,7 +295,7 @@ class Entity {
         this.updateHeartsContainer();
     }
 
-    drawHearts () {
+    drawHearts() {
         const hearts = document.createElement("div");
         hearts.className = "hearts-mini_container";
         this.element.appendChild(hearts);
@@ -316,14 +317,14 @@ class Entity {
         });
     }
 
-    popMessage(text = "", color = "white", types = []) {
-        const newPop = new Pop(text = text, color = color);
+    popMessage({ text = "", types = "" }) {
+        const newPop = new Pop({ text: text, type: types });
         newPop.createElementIn(this.element);
         this.pops.push(newPop);
     }
 
     updatePops() {
-        this.pops.forEach((pop)=>{
+        this.pops.forEach((pop) => {
             pop.update();
         })
     }

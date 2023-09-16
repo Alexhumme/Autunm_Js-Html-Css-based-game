@@ -1,0 +1,36 @@
+.middle {
+  z-index: 0;
+}
+
+.bush-small {
+  background-image: url(../../assets/images/middleground/bush-small.png);
+}
+
+.bush-small-creature {
+  background-image: url(../../assets/images/middleground/bush-small-creature.png);
+}
+
+.tree {
+  margin-top: -150px;
+  height: 200px;
+  width: 150px;
+  background-image: url(../../assets/images/middleground/tree.png);
+}
+
+.water-top {
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  background-image: url(../../assets/images/middleground/water-top.gif);
+  opacity: 0.5;
+  z-index: 4;
+}
+
+.water-solid {
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  background-image: url(../../assets/images/middleground/water-solid.png);
+  opacity: 0.5;
+  z-index: 4;
+}

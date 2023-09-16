@@ -4,7 +4,7 @@ const game = {
     currentMap: 0,
     maps: [map1, map2, map3],
     gameOver: false,
-    fps: 20,
+    fps: 35,
     drops: [],
     dropSpan: {
         rate: 2000,

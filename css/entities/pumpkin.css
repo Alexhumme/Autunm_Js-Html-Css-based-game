@@ -1,0 +1,12 @@
+.pumpkin {
+  height: 40px;
+  width: 40px;
+  background-image: url(../../assets/images/entities/pumpkin/run/run-pumpkin.gif);
+  position: absolute;
+}
+.green-pumpkin {
+  height: 40px;
+  width: 40px;
+  background-image: url(../../assets/images/entities/green_pumpkin/run-green-pumpkin.gif);
+  position: absolute;
+}

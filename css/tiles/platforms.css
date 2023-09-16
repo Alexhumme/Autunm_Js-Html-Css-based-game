@@ -1,0 +1,15 @@
+.platform-ground {
+  background-image: url(../../assets/images/walls/platform-ground.png);
+}
+.platform-ground-left {
+  background-image: url(../../assets/images/walls/platform-ground-left.png);
+}
+.platform-ground-right {
+  background-image: url(../../assets/images/walls/platform-ground-right.png);
+}
+.platform-ground-between {
+  background-image: url(../../assets/images/walls/platform-ground-between.png);
+}
+.platform-ground-pilar-node {
+  background-image: url(../../assets/images/walls/platform-ground-pilar-node.png);
+}
