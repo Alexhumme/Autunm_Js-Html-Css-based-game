@@ -1,35 +1,36 @@
 class Drop extends Entity {
-    constructor(weight = 1, type = 0, pos = { x: 0, y: 0 }) {
+    constructor( type = "coin", pos = { x: 0, y: 0 }) {
         super();
-        this.weight = weight;
         this.type = type;
         this.pos = pos;
-        this.floor = false;
         this.timer = 0;
-        this.fading = false;
+        this.maxSpeed = 10;
+        this.createElement();
     }
     update() {
         this.handleGravity();
-        const walls = document.querySelectorAll(".wall");
-
-        walls.forEach(wall => {
-            this.handleWallCollision(
-                this.checkCollisionWith(wall)
-            );
-        });
-        this.handleFade()
+        this.checkWallCollision();
+        //this.floor && this.handleFloat();
+        //this.handleVerticalMovement();
     }
-    handleFade() {
-        this.timer > (game.dropSpan.rate) * (game.dropSpan.limit - 1) && !this.fading ?
-            (this.fading = true && this.element.classList.add("blinking")) :
-            this.timer++
+    handleFloat() {
+        if (this.timer < 40){
+            this.accelerateUp()
+            game.info(this.element.style.top);
+        }else if(this.timer < 80) {
+            game.info("bajar");
+            this.accelerateDown();
+        }
+        this.timer === 80 && 
+        (this.timer = 0);
+        this.timer++;
     }
     createElement() {
         const element = document.createElement("div");
         element.classList.add("drop", this.type);
         element.style.top = `${this.pos.y}px`;
         element.style.left = `${this.pos.x}px`;
-        game.gameSpace.insertBefore(element, null);
+        game.gameSpace.appendChild(element);
         this.element = element;
     }
     

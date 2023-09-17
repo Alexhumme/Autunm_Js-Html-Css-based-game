@@ -1,0 +1,13 @@
+.coin {
+    background-image: url(../../assets/images/interface/rotating-coin.gif);
+}
+.rotating-coin {
+    background-image: url(../../assets/images/interface/rotating-coin.gif);
+}
+
+.drop {
+    margin-top: -10px;
+    margin-left: 10px;
+    z-index: 1;
+    position: absolute;
+}

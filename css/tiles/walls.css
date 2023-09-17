@@ -1,6 +1,3 @@
-.wall {
-  z-index: 2;
-}
 .ground {
   background-image: url(../../assets/images/walls/ground.png);
 }

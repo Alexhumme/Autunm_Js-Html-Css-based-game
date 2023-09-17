@@ -14,6 +14,7 @@ const refreshGame = () => {
         game.checkGameOver();
         game.player.update();
         game.updateEnemies();
+        game.updateDrops();
         game.player.shoot.bullets.actives.forEach(bullet =>{
             bullet.update();
         })

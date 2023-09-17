@@ -2,16 +2,13 @@ const game = {
     pause: false,
     gameSpace: document.getElementById("game__container"),
     currentMap: 0,
-    maps: [map1, map2, map3],
+    maps: [map1],
     gameOver: false,
     fps: 35,
     drops: [],
-    dropSpan: {
-        rate: 2000,
-        counter: 0,
-        limit: 30,
-    },
     enemies: [],
+    enemieKeys: ["z", "k", "g", "h"],
+    dropKeys: ["c", "b", "q"],
     currentScene: "menu",
     frameRate: 0,
     currentSec: 0,
@@ -29,8 +26,12 @@ const game = {
         game.currentScene = scene;
         game.gameSpace.className = "changing";
         switch (game.currentScene) {
-            case "startMenu": game.drawMenu(); break;
-            case "game": game.reset(); break;
+            case "startMenu":
+                game.drawMenu();
+                break;
+            case "game":
+                game.reset();
+                break;
             default:
                 break;
         }
@@ -39,42 +40,29 @@ const game = {
         }, 1000);
     },
     handleKeyDown: (ev) => {
-        game.keys = (game.keys || []);
+        game.keys = game.keys || [];
         game.keys[ev.keyCode] = true;
         game.player.idle = false;
     },
     handleKeyUp: (ev) => {
         game.keys[ev.keyCode] = false;
         game.player.idle = true;
-        (ev.key === ("a") || ev.key === ("d"))
-            && game.player.element.classList.remove("run");
+        (ev.key === "a" || ev.key === "d") &&
+            game.player.element.classList.remove("run");
         game.player.element.classList.add("idle");
     },
     // Función para mostrar información en el espacio de información
     info: (info) => {
         game.infoSpace.innerText += `\n${info}`;
     },
-
-    // Generar gotas de manera más eficiente
-    generateDrops: () => {
-        if (game.dropSpan.counter > game.dropSpan.rate) {
-            const xPos = Math.random() * (game.gameSize.x - game.tileWidth);
-            const yPos = -100;
-            const types = ["blue", "red", "green"];
-            const drop = new Drop(Math.random() * 0.3, types[Math.floor(Math.random() * 3)], { x: xPos, y: yPos });
-            drop.createElement();
-            game.drops.push(drop);
-            game.dropSpan.counter = 0;
-        } else {
-            game.dropSpan.counter++;
-        }
-        if (game.drops.length > game.dropSpan.limit) {
-            game.drops.shift().destroy();
-        }
-    },
     updateEnemies: () => {
-        game.enemies.forEach(enemie => {
-            enemie.update()
+        game.enemies.forEach((enemie) => {
+            enemie.update();
+        });
+    },
+    updateDrops: () => {
+        game.drops.forEach((drop) => {
+            drop.update();
         });
     },
     // Dibujar la interfaz del juego de manera más eficiente
@@ -91,13 +79,15 @@ const game = {
 
         game.maps.forEach((map, index) => {
             const mapItem = document.createElement("div");
-            mapItem.className = index === game.currentMap ? "map-item" : "map-item__disabled";
+            mapItem.className =
+                index === game.currentMap ? "map-item" : "map-item__disabled";
             mapItem.innerText = map.name;
             mapsContainer.appendChild(mapItem);
         });
         for (let index = 0; index < game.player.hearts.max; index++) {
             const heart = document.createElement("div");
-            heart.className = index >= game.player.hearts.quantity ? "heart__container" : "heart";
+            heart.className =
+                index >= game.player.hearts.quantity ? "heart__container" : "heart";
             hContainer.appendChild(heart);
         }
         for (slot in game.player.slots) {
@@ -105,24 +95,25 @@ const game = {
             newSlot.classList.add("player_slot");
             slotsContainer.appendChild(newSlot);
         }
-        pointsContainer.innerText = game.player.shoot.bullets.quantity + " Bullets";
-
+        pointsContainer.innerText = `${game.player.shoot.bullets.quantity}Bs ${game.player.coins}Bs`;
     },
     cleanMap: () => {
         game.gameSpace.querySelector("#startMenu")?.remove();
-        game.player.shoot.bullets.actives.forEach(bullet => bullet.destroy());
+        game.player.shoot.bullets.actives.forEach((bullet) => bullet.destroy());
         game.player.shoot.bullets.actives = [];
-        game.enemies.forEach(enemie => enemie.destroy());
+        game.enemies.forEach((enemie) => enemie.destroy());
         game.enemies = [];
-        game.gameSpace.querySelectorAll(".hearts-mini_container").forEach((container) => {
-            container.remove()
-        })
+        game.gameSpace
+            .querySelectorAll(".hearts-mini_container")
+            .forEach((container) => {
+                container.remove();
+            });
         game.gameSpace.querySelectorAll(".wall").forEach((wall) => {
-            wall.remove()
-        })
+            wall.remove();
+        });
         game.gameSpace.querySelectorAll(".middle").forEach((middle) => {
-            middle.remove()
-        })
+            middle.remove();
+        });
         game.gameSpace.querySelector("#trash")?.remove();
     },
     drawPauseMenu: () => {
@@ -130,17 +121,17 @@ const game = {
         const pauseMenu = document.createElement("div");
         pauseMenu.id = "game__pause-menu";
         pauseMenu.appendChild(document.createElement("h3"));
-        pauseMenu.querySelector("h3").innerText = "Opciones"
+        pauseMenu.querySelector("h3").innerText = "Opciones";
         const optionsList = document.createElement("ul");
         const options = [
             { title: "salir", onClick: () => game.changeScene("startMenu") },
-        ]
+        ];
         options.forEach((option) => {
-            const optionElement = document.createElement("li")
+            const optionElement = document.createElement("li");
             optionElement.innerText = option.title;
             optionsList.appendChild(optionElement);
             optionElement.addEventListener("click", () => option.onClick(), false);
-        })
+        });
         pauseMenu.appendChild(optionsList);
         game.gameSpace.appendChild(pauseMenu);
     },
@@ -165,11 +156,11 @@ const game = {
             const opt = document.createElement("li");
             opt.addEventListener("click", () => {
                 game.changeScene(option.scene);
-            })
+            });
             //opt.innerHTML = document.createElement("button");
             opt.innerText = option.title;
             menu.appendChild(opt);
-        })
+        });
         clearInterval(game.loop);
         setTimeout(() => {
             game.gameSpace.appendChild(menu);
@@ -180,47 +171,73 @@ const game = {
         // limpiar el gameSpace
         game.cleanMap();
         // rellenar el gameSpace
-        game.maps[game.currentMap].middleground.forEach((row, y) => {
-            row.forEach((t, x) => {
-                t !== " " &&
-                    game.gameSpace
-                        .insertBefore(
-                            tile(t, { x: x, y: y }, "middle"),
-                            null);
-            });
-        });
-        game.maps[game.currentMap].walls.forEach((row, y) => {
-            row.forEach((t, x) => {
-                t !== " " &&
-                    game.gameSpace
-                        .insertBefore(
-                            tile(t, { x: x, y: y }, "wall"),
-                            null);
-            });
-        });
-        game.drawMapEnemies();
+        game.drawMapBack();
+        game.drawMapMiddle();
+        game.drawMapFront();
     },
-    drawMapEnemies: () => {
-        game.maps[game.currentMap].enemies.forEach((row, y) => {
-            row.forEach((enemieType, x) => {
+    drawMapBack: () => {
+        game.maps[game.currentMap].back?.forEach((row, y) => {
+            row.forEach((t, x) => {
+                t !== " " &&
+                    game.gameSpace.insertBefore(tile(t, { x: x, y: y }, "back"), null);
+            });
+        });
+    },
+    drawMapMiddle: () => {
+        game.maps[game.currentMap].middle.forEach((row, y) => {
+            row.forEach((t, x) => {
+                t !== " " && game.drawTile(t, { x: x, y: y }, "middle");
+            });
+        });
+    },
+    drawMapFront: () => {
+        game.maps[game.currentMap].front?.forEach((row, y) => {
+            row.forEach((t, x) => {
+                t !== " " &&
+                    game.gameSpace.insertBefore(tile(t, { x: x, y: y }, "front"), null);
+            });
+        });
+    },
+    drawTile: (t, pos = { x: Number.prototype, y: Number.prototype }, depth) => {
+        if (depth === "middle") {
+            if (game.enemieKeys.includes(t)) {
                 let enemie = false;
-                switch (enemieType) {
+                switch (t) {
                     case "z": enemie = new Zombie(); break;
                     case "k": enemie = new Pumpkin(); break;
                     case "g": enemie = new GreenPumpkin(); break;
                     case "h": enemie = new Ghost(); break;
-                    default: return false;
+                    default: return;
                 }
-                enemie.element.style.top = `${y * 50}px`;
-                enemie.element.style.left = `${x * 50}px`;
+                enemie.element.style.top = `${pos.y * 50}px`;
+                enemie.element.style.left = `${pos.x * 50}px`;
                 game.enemies.push(enemie);
-
-            })
-        });
+                return;
+            }
+            if (game.dropKeys.includes(t)) {
+                let dropType = "";
+                switch (t) {
+                    case "c": dropType = "coin";  break;
+                    case "b": dropType = ""; break;
+                    default: return;
+                }
+                game.drops.push(
+                    new Drop(dropType, {
+                        x: pos.x * game.tileWidth,
+                        y: pos.y * game.tileHeight,
+                    })
+                );
+                return;
+            }
+            game.gameSpace.appendChild(tile(t, { x: pos.x, y: pos.y }, "wall"));
+        } else  game.gameSpace.appendChild(tile(t, { x: pos.x, y: pos.y }, depth));
     },
     // Verificar si el juego ha terminado de manera más eficiente
     checkGameOver: () => {
-        if (game.player?.hearts.quantity <= 0 || parseInt(game.player?.element.style.top) > game.gameSize.y) {
+        if (
+            game.player?.hearts.quantity <= 0 ||
+            parseInt(game.player?.element?.style.top) > game.gameSize.y
+        ) {
             game.gameOver = true;
         }
         if (game.gameOver) {
@@ -232,11 +249,11 @@ const game = {
         game.drawPauseMenu();
         game.drawMap();
         const container = document.getElementById("project__container");
-        container.className = "started"
+        container.className = "started";
         game.drawInterface();
         game.player.element = document.getElementById("player");
         setEventListeners();
-        game.loop = window.setInterval(() => refreshGame(), 1000/game.fps);
+        game.loop = window.setInterval(() => refreshGame(), 1000 / game.fps);
         game.gameOver = false;
         game.pause = false;
     },
@@ -248,16 +265,13 @@ const game = {
         setTimeout(() => {
             game.player = new Player();
             game.drops = [];
+            game.enemies= [];
             game.gameSpace.innerHTML = "";
             game.gameOver = false;
             game.currentMap = 0;
-            window.removeEventListener("keydown",
-                game.handleKeyDown
-                , false);
-            window.removeEventListener("keyup",
-                game.handleKeyUp
-                , false);
-            game.gameSpace.classList.remove("changing")
+            window.removeEventListener("keydown", game.handleKeyDown, false);
+            window.removeEventListener("keyup", game.handleKeyUp, false);
+            game.gameSpace.classList.remove("changing");
             game.start();
         }, 500);
     },
@@ -294,5 +308,5 @@ const game = {
                 game.player.element.style.left = "-24px";
             }
         }
-    }
+    },
 };

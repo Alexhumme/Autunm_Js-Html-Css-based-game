@@ -19,6 +19,7 @@ class Player extends Entity {
                 quantity: 1000,
             },
         };
+        this.coins = 0;
         this.jump = 20;
         this.axeAttack = {
             state: 0,
@@ -74,7 +75,14 @@ class Player extends Entity {
         }
     ) {
         if (collision) {
-            collision.element.remove();
+            const dropItem = game.drops.find((drop) => drop.element === collision.element);
+            this.popMessage({types:dropItem.type});
+            switch (dropItem.type) {
+                case "coin": this.coins++; break;       
+                default: break;
+            }
+            game.drawInterface();
+            dropItem.destroy();
         }
     }
 
