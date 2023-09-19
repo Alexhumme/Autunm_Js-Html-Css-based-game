@@ -1,1 +1,9 @@
 @import url(./run.css);
+
+.dust {
+    background-color: aliceblue;
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    z-index: 0;
+}

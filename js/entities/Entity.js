@@ -11,6 +11,7 @@ class Entity {
         this.weight = 1;
         this.collisions = [];
         this.pops = [];
+        this.particles = [];
         this.hearts = {
             quantity: 2,
             max: 2,
@@ -25,8 +26,10 @@ class Entity {
         };
         this.fly = false;
         this.dir = 1;
+        this.deathState = 0;
     }
 
+    onDeath(){};
     checkCollisionWith(otherElement) {
         const rect1 = this.element.getBoundingClientRect();
         const rect2 = otherElement.getBoundingClientRect();
@@ -59,6 +62,10 @@ class Entity {
     }
     destroy() {
         this.element.remove();
+        this.particles.forEach((particle) => {
+            particle.destroy();
+            particle.retireList(this.particles);
+        })
         this.cliffChecker && this.cliffChecker.destroy();
         delete this;
     }
@@ -129,6 +136,8 @@ class Entity {
         if (this.hearts.quantity <= 0) {
             this.death = true;
             this.element.classList.remove("harmful");
+            this.pops = [];
+            this.onDeath();
         }
     }
 
@@ -169,10 +178,9 @@ class Entity {
         }
         if (this.invincibility.active) this.invincibility.active--;
         if (
-            !this.invincibility.active &&
-            this.element.classList.contains("blinking")
-        )
-            this.element.classList.remove("blinking");
+            !this.invincibility.active 
+        ) this.element.classList.remove("blinking");
+        game.info(this.invincibility.active);
     }
 
     handleHorizontalMovement() {
@@ -186,6 +194,7 @@ class Entity {
 
     handleJump() {
         if (this.floor || this.fly) {
+            !this.fly && this.createParticle();
             this.vel.y = -this.jump;
             this.element.classList.add("jump");
             this.floor = false;
@@ -204,6 +213,7 @@ class Entity {
     }
     accelerateLeft() {
         if (this.vel.x > -this.maxSpeed) {
+            this.createParticle();
             this.vel.x -= this.acceleration;
             this.element.classList.remove("right");
             this.element.classList.add("run");
@@ -214,6 +224,7 @@ class Entity {
 
     accelerateRight() {
         if (this.vel.x < this.maxSpeed) {
+            this.createParticle();
             this.vel.x += this.acceleration;
             this.element.classList.remove("left");
             this.element.classList.add("run");
@@ -278,9 +289,20 @@ class Entity {
         });
     }
 
+    handleFrictionAndStop() {
+        if (this.element.classList.contains("idle") && this.vel.x != 0) {
+            this.vel.x *= game.glide;
+        }
+
+        if (this.vel.x < 0.1 && this.vel.x > -0.1) {
+            this.vel.x = 0;
+        }
+    }
+    
     popMessage({ text = "", types = "" }) {
         const newPop = new Pop({ text: text, type: types });
         newPop.createElementIn(this.element);
+        newPop.list = this.pops;
         this.pops.push(newPop);
     }
 
@@ -289,4 +311,34 @@ class Entity {
             pop.update();
         })
     }
+
+    createParticle () {
+        const newParticle = new DustParticle();
+        newParticle.createElementIn(game.gameSpace);
+      
+        newParticle.element.style.top = 
+        `${
+            parseInt(this.element.style.top) + 
+            this.element.getBoundingClientRect().height -
+            newParticle.element.getBoundingClientRect().height
+        }px`;
+
+        
+        newParticle.element.style.left = this.vel.x < 0 
+        ? `${
+            parseInt(this.element.style.left) + 
+            this.element.getBoundingClientRect().width
+        }px`: this.element.style.left;
+
+        newParticle.list = this.particles;
+
+        this.particles.push(newParticle);
+    }
+
+    updateParticles() {
+        this.particles.forEach((particle) => {
+            particle.update();
+        })
+    }
+
 }

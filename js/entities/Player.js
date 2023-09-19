@@ -16,7 +16,7 @@ class Player extends Entity {
             counter: 0,
             bullets: {
                 actives: [],
-                quantity: 1000,
+                quantity: 10,
             },
         };
         this.coins = 0;
@@ -53,6 +53,7 @@ class Player extends Entity {
         this.checkHarmfulCollision();
 
         this.updatePops();
+        this.updateParticles();
     }
 
     checkDropCollision() {
@@ -66,6 +67,9 @@ class Player extends Entity {
         harms.forEach((harm) => {
             this.handleHarm(this.checkCollisionWith(harm));
         });
+        if (
+            !this.invincibility.active 
+        ) this.element.classList.remove("blinking");
     }
 
     handleDropCollision(
@@ -152,16 +156,6 @@ class Player extends Entity {
                 `attack-${this.axeAttack.comboAttack}-frame-${this.axeAttack.state - 1}`
             );
             this.element.classList.add(`attack-${this.axeAttack.comboAttack}-frame-${this.axeAttack.state}`);
-        }
-    }
-
-    handleFrictionAndStop() {
-        if (this.element.classList.contains("idle") && this.vel.x != 0) {
-            this.vel.x *= game.glide;
-        }
-
-        if (this.vel.x < 0.1 && this.vel.x > -0.1) {
-            this.vel.x = 0;
         }
     }
 

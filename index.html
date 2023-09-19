@@ -20,7 +20,16 @@
         <div id="game__bottombar">
             <div id="game__items"></div>
             <div id="game__hearts"></div>
-            <div id="game__points"></div>
+            <div id="game__points">
+                <div class="coins">
+                    <span></span>
+                    <div></div>
+                </div>
+                <div class="bullets">
+                    <span></span>
+                    <div></div>
+                </div>
+            </div>
         </div>
     </div>
     <span id="test_info"></span>
@@ -28,13 +37,17 @@
     <script src="./js/map.js"></script>
     <script src="./js/tiles.js"></script>
     <!-- entidades -->
-    <script src="./js/entities/Pop.js"></script>
     <script src="./js/entities/Entity.js"></script>
     <script src="./js/entities/weapons/Bullet.js"></script>
     <script src="./js/entities/weapons/Axe.js"></script>
     <script src="./js/entities/Player.js"></script>
     <script src="./js/entities/Npc.js"></script>
     <script src="./js/entities/Drop.js"></script>
+    <!-- particulas -->
+    <script src="./js/entities/particles/Particle.js"></script>
+    <script src="./js/entities/particles/Pop.js"></script>
+    <script src="./js/entities/particles/DustParticle.js"></script>
+    <!-- enemigos -->
     <script src="./js/entities/enemies/Pumpkin.js"></script>
     <script src="./js/entities/enemies/GreenPumpkin.js"></script>
     <script src="./js/entities/enemies/Ghost.js"></script>

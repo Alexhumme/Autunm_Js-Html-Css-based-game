@@ -1,5 +1,5 @@
 class Drop extends Entity {
-    constructor( type = "coin", pos = { x: 0, y: 0 }) {
+    constructor(type = "coin", pos = { x: 0, y: 0 }) {
         super();
         this.type = type;
         this.pos = pos;
@@ -14,15 +14,15 @@ class Drop extends Entity {
         //this.handleVerticalMovement();
     }
     handleFloat() {
-        if (this.timer < 40){
+        if (this.timer < 40) {
             this.accelerateUp()
             game.info(this.element.style.top);
-        }else if(this.timer < 80) {
+        } else if (this.timer < 80) {
             game.info("bajar");
             this.accelerateDown();
         }
-        this.timer === 80 && 
-        (this.timer = 0);
+        this.timer === 80 &&
+            (this.timer = 0);
         this.timer++;
     }
     createElement() {
@@ -33,5 +33,5 @@ class Drop extends Entity {
         game.gameSpace.appendChild(element);
         this.element = element;
     }
-    
+
 }

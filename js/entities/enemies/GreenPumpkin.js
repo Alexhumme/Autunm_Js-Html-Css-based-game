@@ -2,7 +2,7 @@ class GreenPumpkin extends Npc {
     constructor() {
         super();
         this.hearts.quantity = 2;
-        this.maxSpeed = 4;
+        this.maxSpeed = 7;
         this.jump = 20;
         this.createElement("green-pumpkin harmful enemie");
         this.fly = false;
@@ -16,5 +16,6 @@ class GreenPumpkin extends Npc {
         if (this.checkCloseToPlayer()) this.followPlayer()
         else this.autoMove();
         this.checkDeath();
+        this.updateParticles();
     }
 }

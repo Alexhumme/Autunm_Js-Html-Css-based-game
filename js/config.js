@@ -75,8 +75,7 @@ const game = {
         mapsContainer.innerHTML = "";
         hContainer.innerHTML = "";
         slotsContainer.innerHTML = "";
-        pointsContainer.innerHTML = "";
-
+        
         game.maps.forEach((map, index) => {
             const mapItem = document.createElement("div");
             mapItem.className =
@@ -95,12 +94,18 @@ const game = {
             newSlot.classList.add("player_slot");
             slotsContainer.appendChild(newSlot);
         }
-        pointsContainer.innerText = `${game.player.shoot.bullets.quantity}Bs ${game.player.coins}Bs`;
+
+        pointsContainer.querySelector(".coins")
+        .querySelector("span").innerText = game.player.coins;
+
+        pointsContainer.querySelector(".bullets")
+        .querySelector("span").innerText = game.player.shoot.bullets.quantity;
     },
     cleanMap: () => {
         game.gameSpace.querySelector("#startMenu")?.remove();
         game.player.shoot.bullets.actives.forEach((bullet) => bullet.destroy());
         game.player.shoot.bullets.actives = [];
+
         game.enemies.forEach((enemie) => enemie.destroy());
         game.enemies = [];
         game.gameSpace
@@ -108,12 +113,7 @@ const game = {
             .forEach((container) => {
                 container.remove();
             });
-        game.gameSpace.querySelectorAll(".wall").forEach((wall) => {
-            wall.remove();
-        });
-        game.gameSpace.querySelectorAll(".middle").forEach((middle) => {
-            middle.remove();
-        });
+        game.gameSpace.querySelectorAll(".tile").forEach((tile) => tile.remove());
         game.gameSpace.querySelector("#trash")?.remove();
     },
     drawPauseMenu: () => {
@@ -237,9 +237,8 @@ const game = {
         if (
             game.player?.hearts.quantity <= 0 ||
             parseInt(game.player?.element?.style.top) > game.gameSize.y
-        ) {
-            game.gameOver = true;
-        }
+        ) game.gameOver = true;
+
         if (game.gameOver) {
             clearInterval(game.loop);
             game.gameSpace.classList.add("game__over");

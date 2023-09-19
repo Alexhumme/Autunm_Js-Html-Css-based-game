@@ -13,7 +13,7 @@
 }
 #startMenu li {
   margin-block: 2px;
-  color: rgba(52, 52, 52, 0.783)
+  color: rgba(0, 0, 0, 0.537)
 }
 #startMenu li:hover {
   cursor: pointer;

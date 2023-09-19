@@ -57,5 +57,18 @@ class Npc extends Entity {
             }
         }
     }
-    
+    onDeath() {
+        if (!this.deathState) {
+            this.spawnDrop();
+            this.deathState++;
+        }
+    }
+    spawnDrop() {
+        const newDrop = new Drop("coin", {
+            x: parseFloat(this.element.style.left),
+            y: parseFloat(this.element.style.top),
+        });
+        game.drops.push(newDrop);
+        newDrop.handleJump();
+    }
 }
