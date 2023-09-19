@@ -16,6 +16,7 @@ const tile = (t, pos = { x: 50, y: 50 }, depth) => {
         case "-": newTile.classList.add("tile", "platform-ground", depth); break;
         case "=": newTile.classList.add("tile", "platform-ground-between", depth); break;
         case "x": newTile.classList.add("tile", "platform-ground-pilar-node", depth); break;
+        case "H": newTile.classList.add("tile", "platform-pilar-node", depth); break;
         case "m": newTile.classList.add("tile", "bush-small", depth); break;
         case "w": newTile.classList.add("tile", "bush-small-creature", depth); break;
         case "T": newTile.classList.add("tile", "ground-pilar-top", depth); break;

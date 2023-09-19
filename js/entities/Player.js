@@ -1,7 +1,7 @@
 class Player extends Entity {
     constructor() {
         super();
-        this.acceleration = 6.5;
+        this.acceleration = 5;
         this.weight = 1.6;
         this.hearts = {
             quantity: 6,

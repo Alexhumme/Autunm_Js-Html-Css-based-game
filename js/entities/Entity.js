@@ -4,7 +4,7 @@ class Entity {
         this.idle = true;
         this.floor = true;
         this.floorType = "";
-        this.acceleration = 1.3;
+        this.acceleration = 0.5;
         this.jump = 15;
         this.maxSpeed = 7;
         this.element = HTMLElement.prototype;
@@ -180,12 +180,12 @@ class Entity {
         if (
             !this.invincibility.active 
         ) this.element.classList.remove("blinking");
-        game.info(this.invincibility.active);
     }
 
     handleHorizontalMovement() {
         this.element.style.left = `${parseInt(this.element.style.left) + this.vel.x
             }px`;
+        !this.fly && this.updateParticles();
     }
     handleVerticalMovement() {
         this.element.style.top = `${parseInt(this.element.style.top) + this.vel.y

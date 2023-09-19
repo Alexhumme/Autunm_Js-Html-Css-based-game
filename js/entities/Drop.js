@@ -16,9 +16,7 @@ class Drop extends Entity {
     handleFloat() {
         if (this.timer < 40) {
             this.accelerateUp()
-            game.info(this.element.style.top);
         } else if (this.timer < 80) {
-            game.info("bajar");
             this.accelerateDown();
         }
         this.timer === 80 &&
