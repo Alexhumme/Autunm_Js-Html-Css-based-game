@@ -16,3 +16,9 @@
 .platform-pilar-node {
   background-image: url(../../assets/images/walls/platform-pilar-node.png);
 }
+.platform-wall-left-node {
+  background-image: url(../../assets/images/walls/platform-wall-left-node.png);
+}
+.platform-wall-right-node {
+  background-image: url(../../assets/images/walls/platform-wall-right-node.png);
+}

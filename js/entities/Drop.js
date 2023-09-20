@@ -25,8 +25,9 @@ class Drop extends Entity {
     }
     createElement() {
         const element = document.createElement("div");
-        element.classList.add("drop", this.type);
+        element.className = `drop ${this.type}`;
         element.style.top = `${this.pos.y}px`;
+        
         element.style.left = `${this.pos.x}px`;
         game.gameSpace.appendChild(element);
         this.element = element;

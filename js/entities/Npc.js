@@ -64,7 +64,9 @@ class Npc extends Entity {
         }
     }
     spawnDrop() {
-        const newDrop = new Drop("coin", {
+        const dropTypes = ["coin", "bullet-load"];
+        const dropType = dropTypes[Math.floor(Math.random() * dropTypes.length)];
+        const newDrop = new Drop(dropType, {
             x: parseFloat(this.element.style.left),
             y: parseFloat(this.element.style.top),
         });

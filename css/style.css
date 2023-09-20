@@ -18,14 +18,8 @@
   height: 30px;
   position: absolute;
 }
-.drop.blue {
-  background-image: url(../assets/images/entities/gifts/blue/gift-blue.gif);
-}
-.drop.green {
-  background-image: url(../assets/images/entities/gifts/green/gift-green.gif);
-}
-.drop.red {
-  background-image: url(../assets/images/entities/gifts/red/gift-red.gif);
+.bullet-load {
+  background-image: url(../assets/images/items/bullet.png);
 }
 /* animaciones */
 

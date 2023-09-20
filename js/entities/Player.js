@@ -53,7 +53,7 @@ class Player extends Entity {
         this.checkHarmfulCollision();
 
         this.updatePops();
-        this.updateParticles();
+        this.updateDust();
     }
 
     checkDropCollision() {
@@ -83,8 +83,16 @@ class Player extends Entity {
             this.popMessage({types:dropItem.type});
             switch (dropItem.type) {
                 case "coin": this.coins++; break;       
+                case "bullet-load": this.shoot.bullets.quantity++; break;       
                 default: break;
-            }
+            };
+
+            dropItem.element.classList.contains("mapDrop") && (
+            game
+            .maps[game.currentMap]
+            .middle[dropItem.pos.y/50]
+            [dropItem.pos.x/50] = " ");
+
             game.drawInterface();
             dropItem.destroy();
         }

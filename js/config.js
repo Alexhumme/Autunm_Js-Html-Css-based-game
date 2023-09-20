@@ -2,7 +2,7 @@ const game = {
     pause: false,
     gameSpace: document.getElementById("game__container"),
     currentMap: 0,
-    maps: [map1],
+    maps: [...maps],
     gameOver: false,
     fps: 35,
     drops: [],
@@ -13,7 +13,7 @@ const game = {
     frameRate: 0,
     currentSec: 0,
     loop: null,
-    gameSize: { x: 700, y: 400 },
+    gameSize: { x: 700, y: 450 },
     tileWidth: 50,
     tileHeight: 50,
     gravity: 3,
@@ -104,6 +104,8 @@ const game = {
     cleanMap: () => {
         game.gameSpace.querySelector("#startMenu")?.remove();
         game.player.shoot.bullets.actives.forEach((bullet) => bullet.destroy());
+        game.drops.forEach((drop) => drop.destroy());
+
         game.player.shoot.bullets.actives = [];
 
         game.enemies.forEach((enemie) => enemie.destroy());
@@ -113,6 +115,7 @@ const game = {
             .forEach((container) => {
                 container.remove();
             });
+        game.gameSpace.querySelectorAll(".dust").forEach((dust) => dust.remove());
         game.gameSpace.querySelectorAll(".tile").forEach((tile) => tile.remove());
         game.gameSpace.querySelector("#trash")?.remove();
     },
@@ -222,7 +225,7 @@ const game = {
                     default: return;
                 }
                 game.drops.push(
-                    new Drop(dropType, {
+                    new Drop(`${dropType} mapDrop`, {
                         x: pos.x * game.tileWidth,
                         y: pos.y * game.tileHeight,
                     })

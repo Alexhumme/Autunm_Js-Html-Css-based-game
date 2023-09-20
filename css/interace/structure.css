@@ -6,9 +6,10 @@
   position: relative;
   overflow: hidden;
   width: 700px;
-  height: 400px;
+  height: 450px;
   background-color: rgb(0, 0, 0);
   background-image: url(../../assets/images/backgrounds/background-clouds.png);
+  background-size: cover;
 }
 #game__container::after {
   content: "";

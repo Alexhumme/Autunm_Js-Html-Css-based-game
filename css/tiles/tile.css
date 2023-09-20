@@ -4,7 +4,9 @@
   position: absolute;
   background-repeat: no-repeat;
 }
-.tile[class*="platform"]:not(.platform-pilar-node) {
+.tile[class*="platform"]
+:not(.platform-pilar-node)
+:not(.tile[class*="wall"]) {
   height: 32px;
 }
 .back {
