@@ -1,7 +1,7 @@
 class Player extends Entity {
     constructor() {
         super();
-        this.acceleration = 5;
+        this.acceleration = 4.5;
         this.weight = 1.6;
         this.hearts = {
             quantity: 6,
@@ -44,7 +44,7 @@ class Player extends Entity {
 
         this.handleFrictionAndStop();
         this.handleHorizontalMovement();
-        this.handleGravity();
+        //this.handleGravity();
 
         this.updateShootStatus();
 
@@ -53,7 +53,7 @@ class Player extends Entity {
         this.checkHarmfulCollision();
 
         this.updatePops();
-        this.updateDust();
+        this.updateParticles();
     }
 
     checkDropCollision() {
@@ -80,8 +80,11 @@ class Player extends Entity {
     ) {
         if (collision) {
             const dropItem = game.drops.find((drop) => drop.element === collision.element);
+            const pureType =  dropItem.type.replace(" mapDrop", "");
             this.popMessage({types:dropItem.type});
-            switch (dropItem.type) {
+            console.log(pureType);
+            switch (pureType) {
+                case "coin": this.coins++; break;       
                 case "coin": this.coins++; break;       
                 case "bullet-load": this.shoot.bullets.quantity++; break;       
                 default: break;

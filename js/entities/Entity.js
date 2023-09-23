@@ -8,6 +8,7 @@ class Entity {
         this.jump = 15;
         this.maxSpeed = 7;
         this.element = HTMLElement.prototype;
+        this.noParticles = true;
         this.weight = 1;
         this.collisions = [];
         this.pops = [];
@@ -29,8 +30,9 @@ class Entity {
         this.deathState = 0;
     }
 
-    onDeath() { };
+    onDeath() { }
     checkCollisionWith(otherElement) {
+        /*
         const rect1 = this.element.getBoundingClientRect();
         const rect2 = otherElement.getBoundingClientRect();
 
@@ -38,6 +40,14 @@ class Entity {
         const dy = rect1.top + rect1.height / 2 - (rect2.top + rect2.height / 2);
         const width = (rect1.width + rect2.width) / 2;
         const height = (rect1.height + rect2.height) / 2;
+        */
+        const rect1 = this.element.style;
+        const rect2 = otherElement.style;
+
+        const dx = parseFloat(rect1.left) + parseFloat(rect1.width) / 2 - (parseFloat(rect2.left) + parseFloat(rect2.width) / 2);
+        const dy = parseFloat(rect1.top) + parseFloat(rect1.height) / 2 - (parseFloat(rect2.top) + parseFloat(rect2.height) / 2);
+        const width = (parseFloat(rect1.width) + parseFloat(rect2.width)) / 2;
+        const height = (parseFloat(rect1.height) + parseFloat(rect2.height)) / 2;
 
         let collisionX = "";
         let collisionY = "";
@@ -64,7 +74,7 @@ class Entity {
         this.particles.forEach((particle) => {
             particle.element.remove();
             particle.retireList(this.particles);
-        })
+        });
         this.element.remove();
         delete this;
     }
@@ -125,12 +135,12 @@ class Entity {
             -this.element.getBoundingClientRect().width * 2 ||
             parseInt(this.element.style.top) > parseInt(gameSize.y)
         ) {
-            this.particles.forEach(particle => {
-                particle.destroy()
-            })
+            this.particles.forEach((particle) => {
+                particle.destroy();
+            });
             this.heartsContainer && this.heartsContainer.remove();
             this.destroy();
-            this.retireList(list)
+            this.retireList(list);
         }
     }
 
@@ -180,16 +190,14 @@ class Entity {
             }
         }
         if (this.invincibility.active) this.invincibility.active--;
-        if (
-            !this.invincibility.active
-        ) this.element.classList.remove("blinking");
+        if (!this.invincibility.active) this.element.classList.remove("blinking");
     }
 
     handleHorizontalMovement() {
         this.element.style.left = `${parseInt(this.element.style.left) + this.vel.x
             }px`;
-        //!this.fly && 
-        this.updateDust();
+        //!this.fly &&
+        this.updateParticles();
     }
     handleVerticalMovement() {
         this.element.style.top = `${parseInt(this.element.style.top) + this.vel.y
@@ -198,7 +206,7 @@ class Entity {
 
     handleJump() {
         if (this.floor || this.fly) {
-            !this.fly && this.createDust();
+            if (!this.fly && !this.noParticles) for (let i = 0; i < 6; i++) this.createJumpDust();
             this.vel.y = -this.jump;
             this.element.classList.add("jump");
             this.floor = false;
@@ -217,7 +225,7 @@ class Entity {
     }
     accelerateLeft() {
         if (this.vel.x > -this.maxSpeed) {
-            this.createDust();
+            if (this.floor && !this.noParticles) this.createDust();
             this.vel.x -= this.acceleration;
             this.element.classList.remove("right");
             this.element.classList.add("run");
@@ -228,7 +236,7 @@ class Entity {
 
     accelerateRight() {
         if (this.vel.x < this.maxSpeed) {
-            this.createDust();
+            if (this.floor && !this.noParticles) this.createDust();
             this.vel.x += this.acceleration;
             this.element.classList.remove("left");
             this.element.classList.add("run");
@@ -313,34 +321,51 @@ class Entity {
     updatePops() {
         this.pops.forEach((pop) => {
             pop.update();
-        })
+        });
+    }
+
+    createJumpDust() { 
+        const newParticle = new DustParticle();
+        newParticle.createElementIn(game.gameSpace);
+
+        newParticle.element.style.top = `${parseFloat(this.element.style.top) +
+            this.element.getBoundingClientRect().height/2 +
+            this.element.getBoundingClientRect().height/2 * Math.random()
+            }px`;
+
+        newParticle.element.style.left =
+                `${parseFloat(this.element.style.left) +
+                this.element.getBoundingClientRect().width * Math.random()
+                }px`;
+
+        newParticle.list = this.particles;
+        this.particles.push(newParticle);
     }
 
     createDust() {
         const newParticle = new DustParticle();
         newParticle.createElementIn(game.gameSpace);
 
-        newParticle.element.style.top =
-            `${parseInt(this.element.style.top) +
+        newParticle.element.style.top = `${parseInt(this.element.style.top) +
             this.element.getBoundingClientRect().height -
             newParticle.element.getBoundingClientRect().height
             }px`;
 
-
-        newParticle.element.style.left = this.vel.x < 0
-            ? `${parseInt(this.element.style.left) +
-            this.element.getBoundingClientRect().width
-            }px` : this.element.style.left;
+        newParticle.element.style.left =
+            this.vel.x < 0
+                ? `${parseInt(this.element.style.left) +
+                this.element.getBoundingClientRect().width
+                }px`
+                : this.element.style.left;
 
         newParticle.list = this.particles;
-
         this.particles.push(newParticle);
     }
 
-    updateDust() {
+    updateParticles() {
         this.particles.forEach((particle) => {
             particle.update();
-        })
+        });
     }
 
     bleed(dir) {
@@ -351,21 +376,20 @@ class Entity {
 
             bloodDrop.createElementIn(game.gameSpace);
 
-            bloodDrop.element.style.top =
-                `${parseInt(this.element.style.top) +
-                this.element.getBoundingClientRect().height/2
+            bloodDrop.element.style.top = `${parseInt(this.element.style.top) +
+                this.element.getBoundingClientRect().height / 2
                 }px`;
 
-
-            bloodDrop.element.style.left = this.vel.x < 0
-                ? `${parseInt(this.element.style.left) +
-                this.element.getBoundingClientRect().width
-                }px` : this.element.style.left;
+            bloodDrop.element.style.left =
+                this.vel.x < 0
+                    ? `${parseInt(this.element.style.left) +
+                    this.element.getBoundingClientRect().width
+                    }px`
+                    : this.element.style.left;
 
             bloodDrop.list = this.particles;
 
             this.particles.push(bloodDrop);
         }
     }
-
 }

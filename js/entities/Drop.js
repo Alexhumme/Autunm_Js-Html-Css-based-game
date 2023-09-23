@@ -5,13 +5,12 @@ class Drop extends Entity {
         this.pos = pos;
         this.timer = 0;
         this.maxSpeed = 10;
+        this.noParticles = true;
         this.createElement();
     }
     update() {
         this.handleGravity();
         this.checkWallCollision();
-        //this.floor && this.handleFloat();
-        //this.handleVerticalMovement();
     }
     handleFloat() {
         if (this.timer < 40) {
