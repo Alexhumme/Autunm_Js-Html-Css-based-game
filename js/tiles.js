@@ -1,38 +1,48 @@
+const tileKeys = [
+    { key: "0", class: `ground-solid` },
+    { key: "1", class: "ground" },
+    { key: "2", class: "item" },
+    { key: "3", class: `ground-solid-only` },
+    { key: "y", class: "ground-corner-left" },
+    { key: "p", class: "ground-corner-right" },
+    { key: "?", class: "platform-ground-right" },
+    { key: "¿", class: "platform-ground-left" },
+    { key: "-", class: "platform-ground" },
+    { key: "=", class: "platform-ground-between" },
+    { key: "x", class: "platform-ground-pilar-node" },
+    { key: "H", class: "platform-pilar-node" },
+    { key: "9", class: "platbottom-wall-left-node" },
+    { key: "6", class: "platbottom-wall-right-node" },
+    { key: "m", class: "bush-small" },
+    { key: "w", class: "bush-small-creature" },
+    { key: "T", class: "ground-pilar-top" },
+    { key: "i", class: "ground-pilar-body" },
+    { key: "v", class: "ground-pilar-node" },
+    { key: "d", class: "ground-left-top" },
+    { key: "f", class: "ground-right-top" },
+    { key: "r", class: "ground-wall-right" },
+    { key: "l", class: "ground-wall-left" },
+    { key: "W", class: "water-top" },
+    { key: "s", class: "water-solid" },
+    { key: "t", class: "tree" },
+];
+
 const tile = (t, pos = { x: 50, y: 50 }, depth) => {
-    
     const newTile = document.createElement("div");
-    switch (t) {
-        case "P":
-            newTile.setAttribute("id", !document.querySelector("#player") ? "player" : "trash");
-            newTile.classList.add("idle");
-            break;
-        case "0": newTile.classList.add("tile", "ground-solid", depth); break;
-        case "1": newTile.classList.add("tile", "ground", depth); break;
-        case "2": newTile.classList.add("tile", "item", depth); break;
-        case "y": newTile.classList.add("tile", "ground-corner-left", depth); break;
-        case "p": newTile.classList.add("tile", "ground-corner-right", depth); break;
-        case "?": newTile.classList.add("tile", "platform-ground-right", depth); break;
-        case "¿": newTile.classList.add("tile", "platform-ground-left", depth); break;
-        case "-": newTile.classList.add("tile", "platform-ground", depth); break;
-        case "=": newTile.classList.add("tile", "platform-ground-between", depth); break;
-        case "x": newTile.classList.add("tile", "platform-ground-pilar-node", depth); break;
-        case "H": newTile.classList.add("tile", "platform-pilar-node", depth); break;
-        case "9": newTile.classList.add("tile", "platbottom-wall-left-node", depth); break;
-        case "6": newTile.classList.add("tile", "platbottom-wall-right-node", depth); break;
-        case "m": newTile.classList.add("tile", "bush-small", depth); break;
-        case "w": newTile.classList.add("tile", "bush-small-creature", depth); break;
-        case "T": newTile.classList.add("tile", "ground-pilar-top", depth); break;
-        case "i": newTile.classList.add("tile", "ground-pilar-body", depth); break;
-        case "v": newTile.classList.add("tile", "ground-pilar-node", depth); break;
-        case "d": newTile.classList.add("tile", "ground-left-top", depth); break;
-        case "f": newTile.classList.add("tile", "ground-right-top", depth); break;
-        case "r": newTile.classList.add("tile", "ground-wall-right", depth); break;
-        case "l": newTile.classList.add("tile", "ground-wall-left", depth); break;
-        case "W": newTile.classList.add("tile", "water-top", depth); break;
-        case "s": newTile.classList.add("tile", "water-solid", depth); break;
-        case "t": newTile.classList.add("tile", "tree", depth); break;
-        default: break;
-    };
+    if (t == "P") {
+        if (document.querySelector("#player")) {
+            newTile.remove();
+            return;
+        };
+        newTile.setAttribute( "id", "player");
+        newTile.classList.add("idle");
+    } else {
+        newTile.classList.add(
+            "tile",
+            tileKeys.find((k) => t == k.key).class,
+            depth
+        );
+    }
     newTile.style.left = pos.x * game.tileWidth + "px";
     newTile.style.top = pos.y * game.tileHeight + "px";
     return newTile;

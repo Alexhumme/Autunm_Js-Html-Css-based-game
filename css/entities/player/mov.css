@@ -1,0 +1,31 @@
+#player {
+  z-index: 0;
+  width: 40px;
+  height: 49px;
+  position: absolute;
+}
+.left {
+  transform: scaleX(-1);
+}
+#player::after {
+  position: absolute;
+  margin-top: -1px;
+}
+#player.idle::after {
+  content: url(../../../assets/images/entities/player/idle/idle-player.gif);
+}
+#player.run::after {
+  content: url(../../../assets/images/entities/player/run/run-player.gif);
+}
+#player.jump::after {
+  content: url(../../../assets/images/entities/player/jump/jump-player.png);
+}
+#player.fall::after {
+  content: url(../../../assets/images/entities/player/fall/fall-player.png);
+}
+#player.shooting::after {
+  content: url(../../../assets/images/entities/player/shot/shot-player.gif);
+}
+#player.run.shooting::after {
+  content: url(../../../assets/images/entities/player/shot/shot-running-player.gif);
+}

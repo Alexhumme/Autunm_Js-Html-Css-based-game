@@ -14,7 +14,7 @@ class Ghost extends Npc {
         this.checkOutOfBounds(game.enemies);
         this.updatePops();
         if (this.checkCloseToPlayer()) this.followPlayer()
+        else this.handleFrictionAndStop();
         this.checkDeath();
-
     }
 }

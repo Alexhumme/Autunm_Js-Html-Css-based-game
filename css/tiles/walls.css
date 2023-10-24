@@ -17,6 +17,12 @@
 .ground-solid {
   background-image: url(../../assets/images/walls/ground-solid.png);
 }
+.ground-solid-2 {
+  background-image: url(../../assets/images/walls/ground-solid-2.png);
+}
+.ground-solid-only {
+  background-image: url(../../assets/images/walls/ground-solid-only.png);
+}
 
 .ground-wall-right {
   background-image: url(../../assets/images/walls/ground-wall-right.png);

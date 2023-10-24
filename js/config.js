@@ -4,7 +4,7 @@ const game = {
     currentMap: 0,
     maps: [...maps],
     gameOver: false,
-    fps: 35,
+    fps: 28,
     drops: [],
     enemies: [],
     enemieKeys: ["z", "k", "g", "h"],
@@ -26,14 +26,10 @@ const game = {
         game.currentScene = scene;
         game.gameSpace.className = "changing";
         switch (game.currentScene) {
-            case "startMenu":
-                game.drawMenu();
-                break;
-            case "game":
-                game.reset();
-                break;
-            default:
-                break;
+            case "startMenu": game.drawMenu(); break;
+            case "game": game.reset(); break;
+            case "maps": game.editMode(); break;
+            default: break;
         }
         setTimeout(() => {
             game.gameSpace.classList.remove("changing");
@@ -66,6 +62,9 @@ const game = {
         });
     },
     // Dibujar la interfaz del juego de manera más eficiente
+    newMap: () => {
+
+    },
     drawInterface: () => {
         const mapsContainer = document.getElementById("game__maps");
         const hContainer = document.getElementById("game__hearts");
@@ -147,6 +146,7 @@ const game = {
 
         const options = [
             { title: "Iniciar", scene: "game" },
+            { title: "Mapas", scene: "maps" },
             { title: "Opciones", scene: "" },
             { title: "Creditos", scene: "" },
         ];
@@ -232,6 +232,7 @@ const game = {
                 );
                 return;
             }
+            if (t === "P" && document.querySelector("#player")) return;
             game.gameSpace.appendChild(tile(t, { x: pos.x, y: pos.y }, "wall"));
         } else  game.gameSpace.appendChild(tile(t, { x: pos.x, y: pos.y }, depth));
     },
@@ -310,5 +311,37 @@ const game = {
                 game.player.element.style.left = "-24px";
             }
         }
+    },
+    editMode: () => {
+        game.cleanMap();
+        game.gameSpace.classList.add("edit__mode");
+        const layer1 = {
+            space: document.createElement("div"),
+            selected: false,
+            tiles: [],
+        };
+        const layer2 = {
+            space: document.createElement("div"),
+            selected: false,
+            tiles: [],
+        };
+        const layer3 = {
+            space: document.createElement("div"),
+            selected: false,
+            tiles: [],
+        };
+        [layer1,layer2,layer3].forEach((layer, index)=>{
+            layer.space.className = "edit-layer-"+(index+1);
+            game.gameSpace.appendChild(layer.space)
+            for (let col = 0; col < 14; col++) {
+                layer.tiles.push([]);
+                for (let row = 0; row < 9; row++) {
+                    const cell = document.createElement("button");
+                    cell.className = "cell-button";
+                    layer.tiles[col].push("");
+                    layer.space.appendChild(cell);
+                }
+            }
+        });
     },
 };

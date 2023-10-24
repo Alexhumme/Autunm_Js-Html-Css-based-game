@@ -11,7 +11,7 @@
   background-image: url(../../assets/images/backgrounds/background-clouds.png);
   background-size: cover;
 }
-#game__container::after {
+#game__container:not(.edit__mode):after {
   content: "";
   transition: 0.5s;
   opacity: 0;

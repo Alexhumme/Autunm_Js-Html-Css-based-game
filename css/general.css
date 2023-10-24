@@ -1,28 +1,27 @@
 @font-face {
-    font-family: "press-start";
-    src: url(../assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf);
-  }
-  html {
-    height: 100%;
-  }
-  body {
-    font-family: "press-start";
-    display: flex;
-    height: 100%;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-    background-color: #000000;
-    background-size: 128px 128px;
-  }
-  #test_info {
-    color: white;
-    position: absolute;
-    left: 10px;
-    top: 10px;
-    padding: 10px;
-    background-color: #00000038;
-    border-radius: 10px;
-    z-index: 999;
-  }
-  
+  font-family: "press-start";
+  src: url(../assets/fonts/Press_Start_2P/PressStart2P-Regular.ttf);
+}
+html {
+  height: 100%;
+}
+body {
+  font-family: "press-start";
+  display: flex;
+  height: 100%;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  background-color: #000000;
+  background-size: 128px 128px;
+}
+#test_info {
+  color: white;
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  padding: 10px;
+  background-color: #00000038;
+  border-radius: 10px;
+  z-index: 999;
+}

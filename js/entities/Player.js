@@ -44,7 +44,7 @@ class Player extends Entity {
 
         this.handleFrictionAndStop();
         this.handleHorizontalMovement();
-        //this.handleGravity();
+        this.handleGravity();
 
         this.updateShootStatus();
 
@@ -143,12 +143,14 @@ class Player extends Entity {
             if (game.keys[74] && this.axeAttack.comboAttack < 2) {
                 this.axeAttack.state = 1;
                 this.axeAttack.comboAttack = 2;
-                this.axeAttack.maxFrames = 6;
+                this.axeAttack.maxFrames = 8;
             } else {
                 this.axeAttack.state = 0;
                 this.axeAttack.comboAttack = 1;
-                this.axeAttack.maxFrames = 8;
+                this.axeAttack.maxFrames = 6;
                 this.element.classList.remove(
+                    `attack-2-frame-8`,
+                    `attack-1-frame-6`,
                     `attack-1-frame-8`,
                     `attack-2-frame-6`,
                 );

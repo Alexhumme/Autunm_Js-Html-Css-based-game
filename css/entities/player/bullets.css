@@ -1,0 +1,25 @@
+.bullet {
+  position: absolute;
+  width: 20px;
+  height: 10px;
+  background-image: url(../../../assets/images/entities/bullet/bullet.png);
+  background-repeat: no-repeat;
+}
+.bullet:not(.broken)::after {
+  content: "";
+  animation: stella 1s;
+  margin-left: -20px;
+  background-image: linear-gradient(
+    to Left,
+    rgba(255, 255, 255, 0.59),
+    rgba(255, 255, 255, 0.155)
+  );
+  position: absolute;
+  height: 10px;
+  width: 20px;
+}
+.bullet.broken {
+  width: 10px;
+  height: 10px;
+  background-image: url(../../../assets/images/entities/bullet/broken-bullet.png);
+}

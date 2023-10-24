@@ -1,4 +1,4 @@
-#project__container:not(.started) #game__container {
+#project__container:not(.started) #game__container:not(.edit__mode) {
   display: flex;
   justify-content: center;
   align-items: center;

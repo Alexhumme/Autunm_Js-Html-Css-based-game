@@ -1,0 +1,26 @@
+[class*="edit-layer"] {
+    display: grid;
+    grid-template-columns: repeat(14, 50px);
+    grid-template-rows: repeat(9,50px);
+    position: absolute;
+}
+.edit-layer-1 .cell-button:hover{
+    background-color: blue;
+} 
+.edit-layer-2 .cell-button:hover{
+    background-color: red;
+} 
+.edit-layer-3 .cell-button:active{
+    background-color: green;
+    border: solid 2px black;
+
+} 
+.edit-layer-1 .cell-button{
+    background-color: blue;
+} 
+.edit-layer-2 .cell-button{
+    background-color: red;
+} 
+.edit-layer-3 .cell-button{
+    background-color: green;
+} 
