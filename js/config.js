@@ -21,6 +21,7 @@ const game = {
     glide: 0.8,
     keys: [],
     infoSpace: document.getElementById("test_info"),
+    showJoysticks: false,
     player: new Player(), // crear jugador
     changeScene: (scene) => {
         game.currentScene = scene;
@@ -34,6 +35,7 @@ const game = {
         setTimeout(() => {
             game.gameSpace.classList.remove("changing");
         }, 1000);
+        console.log(`- going ${scene}`);
     },
     handleKeyDown: (ev) => {
         game.keys = game.keys || [];
@@ -74,7 +76,7 @@ const game = {
         mapsContainer.innerHTML = "";
         hContainer.innerHTML = "";
         slotsContainer.innerHTML = "";
-        
+
         game.maps.forEach((map, index) => {
             const mapItem = document.createElement("div");
             mapItem.className =
@@ -95,10 +97,10 @@ const game = {
         }
 
         pointsContainer.querySelector(".coins")
-        .querySelector("span").innerText = game.player.coins;
+            .querySelector("span").innerText = game.player.coins;
 
         pointsContainer.querySelector(".bullets")
-        .querySelector("span").innerText = game.player.shoot.bullets.quantity;
+            .querySelector("span").innerText = game.player.shoot.bullets.quantity;
     },
     cleanMap: () => {
         game.gameSpace.querySelector("#startMenu")?.remove();
@@ -126,6 +128,7 @@ const game = {
         pauseMenu.querySelector("h3").innerText = "Opciones";
         const optionsList = document.createElement("ul");
         const options = [
+            { title: ` joysticks: ${game.showJoysticks ? "on" : "off"}`, onClick: () => game.switchShowJoysticks() },
             { title: "salir", onClick: () => game.changeScene("startMenu") },
         ];
         options.forEach((option) => {
@@ -136,6 +139,7 @@ const game = {
         });
         pauseMenu.appendChild(optionsList);
         game.gameSpace.appendChild(pauseMenu);
+        console.log("- menu drawn");
     },
     drawMenu: () => {
         game.cleanMap();
@@ -168,6 +172,7 @@ const game = {
         setTimeout(() => {
             game.gameSpace.appendChild(menu);
         }, 500);
+        console.log("- menu drawn");
     },
     // dibujar los tiles del mapa actual incluyendo al jugador
     drawMap: () => {
@@ -220,7 +225,7 @@ const game = {
             if (game.dropKeys.includes(t)) {
                 let dropType = "";
                 switch (t) {
-                    case "c": dropType = "coin";  break;
+                    case "c": dropType = "coin"; break;
                     case "b": dropType = ""; break;
                     default: return;
                 }
@@ -234,7 +239,7 @@ const game = {
             }
             if (t === "P" && document.querySelector("#player")) return;
             game.gameSpace.appendChild(tile(t, { x: pos.x, y: pos.y }, "wall"));
-        } else  game.gameSpace.appendChild(tile(t, { x: pos.x, y: pos.y }, depth));
+        } else game.gameSpace.appendChild(tile(t, { x: pos.x, y: pos.y }, depth));
     },
     // Verificar si el juego ha terminado de manera más eficiente
     checkGameOver: () => {
@@ -249,6 +254,7 @@ const game = {
         }
     },
     start: () => {
+        console.log("- STARTING");
         game.drawPauseMenu();
         game.drawMap();
         const container = document.getElementById("project__container");
@@ -263,12 +269,12 @@ const game = {
     // Función de reinicio (dejar en blanco o agregar lógica si es necesario)
     reset: () => {
         clearInterval(game.loop);
-        if (game.pause) game.changePause();
+        if (game.pause) game.switchPause();
         game.gameSpace.className = "changing";
         setTimeout(() => {
             game.player = new Player();
             game.drops = [];
-            game.enemies= [];
+            game.enemies = [];
             game.gameSpace.innerHTML = "";
             game.gameOver = false;
             game.currentMap = 0;
@@ -277,9 +283,10 @@ const game = {
             game.gameSpace.classList.remove("changing");
             game.start();
         }, 500);
+        console.log("- reset completed");
     },
     // pausar el juego
-    changePause: () => {
+    switchPause: () => {
         game.pause = !game.pause;
         if (game.gameSpace.classList.contains("game__paused")) {
             game.gameSpace.classList.remove("game__paused");
@@ -288,6 +295,7 @@ const game = {
             game.gameSpace.classList.add("game__paused");
             document.getElementById("game__pause").className = "game__continue";
         }
+        console.log(`- set pause: ${game.pause ? "on" : "off"}`);
     },
     // cambiar de mapa
     checkMapChange: () => {
@@ -312,6 +320,56 @@ const game = {
             }
         }
     },
+    addButtonsEvl: () => {
+        const resetButton = document.getElementById("game__reset");
+        resetButton.addEventListener("click", () => game.reset(), false);
+        const pauseButton = document.getElementById("game__pause");
+        pauseButton.addEventListener("click", () => game.switchPause(), false);
+
+        console.log("- buttons eventListenaers");
+    },
+    addJoystick: () => {
+        function addMouseToKeyListener(element = HTMLElement.prototype, keys = []) {
+            element.addEventListener("mousedown", () => {
+                keys.forEach(key => {
+                    game.keys[key] = true;
+                });
+            }, false);
+            element.addEventListener("mouseup", () => {
+                keys.forEach(key => {
+                    game.keys[key] = false;
+                });
+            }, false);
+            console.log("actuar")
+        }
+
+        const joystickLeft = document.createElement("div");
+        const joystickRight = document.createElement("div");
+        joystickLeft.classList.add("joystick", "jt-left", "hide");
+        joystickRight.classList.add("joystick", "jt-right", "hide");
+
+        const dirButtons = [
+            { "axis": "top-left", "keys": [87, 65] },
+            { "axis": "top", "keys": [87] },
+            { "axis": "top-right", "keys": [87, 68] },
+            { "axis": "left", "keys": [65] },
+            { "axis": "+", "keys": [0] },
+            { "axis": "right", "keys": [68] },
+        ];
+
+        dirButtons.forEach((b) => {
+            const eButton = document.createElement("button");
+            eButton.classList.add("jt-button");
+            eButton.innerText = b.axis;
+            addMouseToKeyListener(eButton, b.keys);
+            joystickLeft.appendChild(eButton);
+        });
+
+        document.body.appendChild(joystickLeft);
+        document.body.appendChild(joystickRight);
+
+        console.log("- joysticks created");
+    },
     editMode: () => {
         game.cleanMap();
         game.gameSpace.classList.add("edit__mode");
@@ -330,8 +388,8 @@ const game = {
             selected: false,
             tiles: [],
         };
-        [layer1,layer2,layer3].forEach((layer, index)=>{
-            layer.space.className = "edit-layer-"+(index+1);
+        [layer1, layer2, layer3].forEach((layer, index) => {
+            layer.space.className = "edit-layer-" + (index + 1);
             game.gameSpace.appendChild(layer.space)
             for (let col = 0; col < 14; col++) {
                 layer.tiles.push([]);
@@ -343,5 +401,18 @@ const game = {
                 }
             }
         });
+        console.log("-> open Edit mode");
+
     },
+    switchShowJoysticks: () => {
+        game.showJoysticks = !game.showJoysticks;
+        const joisticksArr = document.querySelectorAll(".joystick");
+        joisticksArr.forEach(jt => {
+            game.showJoysticks
+                ? jt.classList.add("hide")
+                : jt.classList.remove("hide");
+        });
+        console.log(`- set showJoysticks: ${game.showJoysticks ? "on" : "off"}`);
+    }
 };
+

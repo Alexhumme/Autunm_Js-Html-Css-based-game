@@ -1,0 +1,27 @@
+.joystick {
+    position: fixed;
+    width: 300px;
+    height: 200px;
+    bottom: 0px;
+    z-index: 9999;
+}
+.jt-left {
+    left: 0px;
+}
+.jt-right {
+    right: 0px;
+}
+.jt-button {
+    border-radius: 90px;
+    opacity: 0.5;
+    height: 100px;
+    width: 100px;
+    background-color: aliceblue;
+    border: solid 3px gray;
+}
+.jt-button:active {
+    opacity: 1;
+}
+.hide {
+    opacity: 0;
+}

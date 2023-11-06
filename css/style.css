@@ -1,12 +1,7 @@
 /* *** pagina *** */
 @import url(./general.css);
 /* *** Interfaz *** */
-@import url(./interace/start_menu.css);
-@import url(./interace/edit_mode.css);
-/* *** estructura *** */
-@import url(./interace/structure.css);
-/* *** utils *** */
-@import url(./interace/pop.css);
+@import url(./interace/index.css);
 /* *** entitie *** */
 @import url(./entities/index.css);
 /* *** tiles *** */

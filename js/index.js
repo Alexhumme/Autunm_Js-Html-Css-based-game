@@ -1,6 +1,3 @@
-const resetButton = document.getElementById("game__reset");
-resetButton.addEventListener("click", () => game.reset(), false);
-const pauseButton = document.getElementById("game__pause");
-pauseButton.addEventListener("click", () => game.changePause(), false);
-
+game.addButtonsEvl();
+game.addJoystick();
 window.addEventListener("load", game.changeScene("startMenu"), false);
