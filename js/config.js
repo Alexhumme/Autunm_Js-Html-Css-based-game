@@ -349,20 +349,33 @@ const game = {
         joystickRight.classList.add("joystick", "jt-right", "hide");
 
         const dirButtons = [
-            { "axis": "top-left", "keys": [87, 65] },
-            { "axis": "top", "keys": [87] },
-            { "axis": "top-right", "keys": [87, 68] },
-            { "axis": "left", "keys": [65] },
-            { "axis": "+", "keys": [0] },
-            { "axis": "right", "keys": [68] },
+            { "title": "top-left", "keys": [87, 65] },
+            { "title": "top", "keys": [87] },
+            { "title": "top-right", "keys": [87, 68] },
+            { "title": "left", "keys": [65] },
+            { "title": "+", "keys": [0] },
+            { "title": "right", "keys": [68] },
         ];
 
         dirButtons.forEach((b) => {
             const eButton = document.createElement("button");
             eButton.classList.add("jt-button");
-            eButton.innerText = b.axis;
+            eButton.innerText = b.title;
             addMouseToKeyListener(eButton, b.keys);
             joystickLeft.appendChild(eButton);
+        });
+
+        const actButtons = [
+            {"title": "axe", "keys": [74]},
+            {"title": "gun", "keys": [75]},
+        ];
+
+        actButtons.forEach((b) => {
+            const eButton = document.createElement("button");
+            eButton.classList.add("jt-button");
+            eButton.innerText = b.title;
+            addMouseToKeyListener(eButton, b.keys);
+            joystickRight.appendChild(eButton);
         });
 
         document.body.appendChild(joystickLeft);

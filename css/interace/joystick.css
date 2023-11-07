@@ -10,9 +10,12 @@
 }
 .jt-right {
     right: 0px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 .jt-button {
-    border-radius: 90px;
+    border-radius: 10px;
     opacity: 0.5;
     height: 100px;
     width: 100px;
