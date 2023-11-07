@@ -330,12 +330,12 @@ const game = {
     },
     addJoystick: () => {
         function addMouseToKeyListener(element = HTMLElement.prototype, keys = []) {
-            element.addEventListener("mousedown", () => {
+            element.addEventListener("pointerdown", () => {
                 keys.forEach(key => {
                     game.keys[key] = true;
                 });
             }, false);
-            element.addEventListener("mouseup", () => {
+            element.addEventListener("pointerup", () => {
                 keys.forEach(key => {
                     game.keys[key] = false;
                 });
