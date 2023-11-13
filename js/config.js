@@ -45,7 +45,7 @@ const game = {
     handleKeyUp: (ev) => {
         game.keys[ev.keyCode] = false;
         game.player.idle = true;
-        (ev.key === "a" || ev.key === "d") &&
+        (ev.keyCode === 65 || ev.keyCode === 68) &&
             game.player.element.classList.remove("run");
         game.player.element.classList.add("idle");
     },
@@ -331,14 +331,10 @@ const game = {
     addJoystick: () => {
         function addMouseToKeyListener(element = HTMLElement.prototype, keys = []) {
             element.addEventListener("pointerdown", () => {
-                keys.forEach(key => {
-                    game.keys[key] = true;
-                });
+                keys.forEach(key => game.handleKeyDown({ keyCode: key }));
             }, false);
             element.addEventListener("pointerup", () => {
-                keys.forEach(key => {
-                    game.keys[key] = false;
-                });
+                keys.forEach(key => game.handleKeyUp({ keyCode: key }));
             }, false);
             console.log("actuar")
         }
@@ -366,8 +362,8 @@ const game = {
         });
 
         const actButtons = [
-            {"title": "axe", "keys": [74]},
-            {"title": "gun", "keys": [75]},
+            { "title": "axe", "keys": [74] },
+            { "title": "gun", "keys": [75] },
         ];
 
         actButtons.forEach((b) => {
@@ -425,6 +421,7 @@ const game = {
                 ? jt.classList.add("hide")
                 : jt.classList.remove("hide");
         });
+        game.drawPauseMenu();
         console.log(`- set showJoysticks: ${game.showJoysticks ? "on" : "off"}`);
     }
 };
