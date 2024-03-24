@@ -29,7 +29,8 @@ const game = {
         switch (game.currentScene) {
             case "startMenu": game.drawMenu(); break;
             case "game": game.reset(); break;
-            case "maps": game.editMode(); break;
+            case "maps": game.mapsListed(); break;
+            case "editMode": game.editMode(); break;
             default: break;
         }
         setTimeout(() => {
@@ -378,6 +379,31 @@ const game = {
         document.body.appendChild(joystickRight);
 
         console.log("- joysticks created");
+    },
+    loadMaps: () => {
+        const maps = JSON.parse(localStorage.getItem("maps"));
+        if (maps != null) game.maps.concat(maps);
+    },
+    mapsListed:() => {
+        game.cleanMap();
+        game.loadMaps();
+        game.gameSpace.classList.add("maps__mode");
+        const mapsList = document.createElement("div");
+        mapsList.classList.add("maps-list");
+        game.gameSpace.appendChild(mapsList);
+        game.maps.forEach((map) => {
+            const mapElement = document.createElement("div");
+            mapElement.classList.add("map");
+            mapElement.innerText = map.name;
+            mapsList.appendChild(mapElement);
+        })
+        const mapAdder = document.createElement("div");
+        mapAdder.className = "map";
+        mapAdder.innerText = "+";
+        mapAdder.addEventListener("click", (ev) => {
+            game.changeScene("editMode")
+        }, false);
+        mapsList.appendChild(mapAdder);
     },
     editMode: () => {
         game.cleanMap();

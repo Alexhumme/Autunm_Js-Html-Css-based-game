@@ -3,6 +3,33 @@
   justify-content: center;
   align-items: center;
 }
+.maps__mode {
+}
+.map {
+  height: 100px;
+  width: 150px;
+  background-color: gray;
+  border: solid 3px rgb(214, 214, 214);
+  color: rgb(214, 214, 214);
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.map:hover {
+  border: solid 2px yellow;
+
+}
+.maps-list {
+  position: absolute;
+  display: inline-flex;
+  flex-wrap: wrap;
+  height: 100%;
+  width: 100%;
+  flex-direction: row;
+  align-content: baseline;
+}
 
 #startMenu {
   margin: auto;
