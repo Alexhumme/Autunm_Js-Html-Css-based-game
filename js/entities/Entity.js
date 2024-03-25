@@ -29,7 +29,10 @@ class Entity {
         this.dir = 1;
         this.deathState = 0;
     }
-
+    getPos(){
+      let {x,y} = this.element.getBoundingClientRect();
+      return {x,y}
+    }
     onDeath() { }
     checkCollisionWith(otherElement) {
         const rect1 = this.element.getBoundingClientRect();

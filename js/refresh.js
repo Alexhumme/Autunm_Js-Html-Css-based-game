@@ -11,6 +11,7 @@ function showFrameRate() {
 const refreshGame = () => {
     if (!game.pause) {
         game.infoSpace.innerText = "";
+        game.moveCamera();
         game.checkGameOver();
         game.player.update();
         game.updateEnemies();

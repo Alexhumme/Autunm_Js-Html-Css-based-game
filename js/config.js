@@ -405,6 +405,22 @@ const game = {
         }, false);
         mapsList.appendChild(mapAdder);
     },
+    moveCamera: () => {
+      if (
+          (
+            (game.player.getPos().x > game.gameSize.x / 2) &&
+            (game.player.vel.x > 1)
+          ) ||
+            (game.player.getPos().x + 50 < game.gameSize.x) &&
+            (game.player.vel.x < -1) &&
+          ( game.gameSpace )
+        ) {
+        game.info(`(p:${game.player.getPos().x},mx:${game.gameSize.x})`);
+        game.gameSpace.querySelectorAll("div").forEach((tile)=>{
+            tile.style.left = `${parseInt(tile.style.left) - game.player.vel.x}px`;
+        })
+      }
+    },
     editMode: () => {
         game.cleanMap();
         game.gameSpace.classList.add("edit__mode");
