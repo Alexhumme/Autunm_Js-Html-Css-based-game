@@ -4,9 +4,13 @@
     height: 200px;
     bottom: 0px;
     z-index: 9999;
+    padding: 20px;
 }
 .jt-left {
     left: 0px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
 }
 .jt-right {
     right: 0px;

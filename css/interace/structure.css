@@ -8,7 +8,7 @@
   width: 700px;
   height: 450px;
   background-color: rgb(0, 0, 0);
-  background-image: url(../../assets/images/backgrounds/background-clouds.png);
+  background-image: url(../../assets/images/backgrounds/bg-forest-2.png);
   background-size: cover;
 }
 #game__container:not(.edit__mode):not(.maps__mode)::after {
@@ -153,9 +153,11 @@
   height: 70px;
   display: flex;
   align-items: center;
+  width: 660px;
+  margin-top: 50px;
   justify-content: space-between;
   padding-inline: 20px;
-  background-image: url(../../assets/images/interface/player-menu.png);
+  position: absolute;
 }
 #game__bottombar div {
   opacity: 0;

@@ -8,7 +8,7 @@ class Entity {
         this.jump = 15;
         this.maxSpeed = 7;
         this.element = HTMLElement.prototype;
-        this.noParticles = true;
+        this.noParticles = false;
         this.weight = 1;
         this.collisions = [];
         this.pops = [];
@@ -241,7 +241,7 @@ class Entity {
     }
     accelerateLeft() {
         if (this.vel.x > -this.maxSpeed) {
-            if (this.floor && !this.noParticles) this.createDust();
+            //if (this.floor && !this.noParticles) this.createDust();
             this.vel.x -= this.acceleration;
             this.element.classList.remove("right");
             this.element.classList.add("run");
@@ -252,7 +252,7 @@ class Entity {
 
     accelerateRight() {
         if (this.vel.x < this.maxSpeed) {
-            if (this.floor && !this.noParticles) this.createDust();
+            //if (this.floor && !this.noParticles) this.createDust();
             this.vel.x += this.acceleration;
             this.element.classList.remove("left");
             this.element.classList.add("run");

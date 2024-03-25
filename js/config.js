@@ -346,9 +346,8 @@ const game = {
         joystickRight.classList.add("joystick", "jt-right", "hide");
 
         const dirButtons = [
-            { "title": "top-left", "keys": [87, 65] },
-            { "title": "top", "keys": [87] },
-            { "title": "top-right", "keys": [87, 68] },
+            //{ "title": "top-left", "keys": [87, 65] },
+            //{ "title": "top-right", "keys": [87, 68] },
             { "title": "left", "keys": [65] },
             { "title": "+", "keys": [0] },
             { "title": "right", "keys": [68] },
@@ -365,6 +364,7 @@ const game = {
         const actButtons = [
             { "title": "axe", "keys": [74] },
             { "title": "gun", "keys": [75] },
+            { "title": "top", "keys": [87] },
         ];
 
         actButtons.forEach((b) => {
