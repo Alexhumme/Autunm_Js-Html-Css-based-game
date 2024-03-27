@@ -348,29 +348,30 @@ const game = {
         const dirButtons = [
             //{ "title": "top-left", "keys": [87, 65] },
             //{ "title": "top-right", "keys": [87, 68] },
-            { "title": "left", "keys": [65] },
+            { "title": "left", "keys": [65], "img": "left-icon.png" },
             { "title": "+", "keys": [0] },
-            { "title": "right", "keys": [68] },
+            { "title": "right", "keys": [68], "img": "right-icon.png" },
         ];
 
         dirButtons.forEach((b) => {
             const eButton = document.createElement("button");
             eButton.classList.add("jt-button");
-            eButton.innerText = b.title;
+            eButton.style.backgroundImage = `url(assets/images/interface/joystick/${b.img})`;
             addMouseToKeyListener(eButton, b.keys);
             joystickLeft.appendChild(eButton);
         });
 
         const actButtons = [
-            { "title": "axe", "keys": [74] },
-            { "title": "gun", "keys": [75] },
-            { "title": "top", "keys": [87] },
+            { "title": "axe", "keys": [74], "img": "axe-icon.png"},
+            { "title": "gun", "keys": [75], "img": "gun-icon.png"},
+            { "title": "top", "keys": [87], "img": "up-icon.png" },
         ];
 
         actButtons.forEach((b) => {
             const eButton = document.createElement("button");
             eButton.classList.add("jt-button");
-            eButton.innerText = b.title;
+            eButton.style.backgroundImage = `url(assets/images/interface/joystick/${b.img})`;
+            console.log(eButton.style.backgroundImage)
             addMouseToKeyListener(eButton, b.keys);
             joystickRight.appendChild(eButton);
         });

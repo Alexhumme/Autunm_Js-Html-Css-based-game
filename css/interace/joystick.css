@@ -25,6 +25,9 @@
     width: 100px;
     background-color: aliceblue;
     border: solid 3px gray;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 }
 .jt-button:active {
     opacity: 1;
