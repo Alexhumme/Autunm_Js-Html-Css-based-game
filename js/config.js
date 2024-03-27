@@ -408,14 +408,13 @@ const game = {
     moveCamera: () => {
       if (
           (
-            (game.player.getPos().x > game.gameSize.x / 2) &&
+            (game.player.getPos().x > (game.gameSize.x / 2) + 300) &&
             (game.player.vel.x > 1)
           ) ||
-            (game.player.getPos().x + 50 < game.gameSize.x) &&
-            (game.player.vel.x < -1) &&
-          ( game.gameSpace )
+            (game.player.getPos().x - 50 < game.gameSize.x) &&
+            (game.player.vel.x < -1) 
         ) {
-        game.info(`(p:${game.player.getPos().x},mx:${game.gameSize.x})`);
+        //game.info(`(pvx:${game.player.vel.x}, px:${game.player.getPos().x}, mx:${(game.gameSize.x/2)+50})`);
         game.gameSpace.querySelectorAll("div").forEach((tile)=>{
             tile.style.left = `${parseInt(tile.style.left) - game.player.vel.x}px`;
         })
@@ -459,7 +458,7 @@ const game = {
         game.showJoysticks = !game.showJoysticks;
         const joisticksArr = document.querySelectorAll(".joystick");
         joisticksArr.forEach(jt => {
-            game.showJoysticks
+            !game.showJoysticks
                 ? jt.classList.add("hide")
                 : jt.classList.remove("hide");
         });

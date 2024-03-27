@@ -35,7 +35,7 @@ class Particle {
     createElementIn(
         parent = HTMLElement.prototype,
     ) {
-        const element = document.createElement("span");
+        const element = document.createElement("div");
         // posiscion vertical
         if (this.pos.y.top) element.style.top = "0px";
         else if (this.pos.y.bottom) {

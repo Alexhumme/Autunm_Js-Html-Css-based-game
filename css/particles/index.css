@@ -1,15 +1,16 @@
 @import url(./run.css);
 
 .dust {
-    background-color: aliceblue;
+    background-image: radial-gradient(aliceblue, white,transparent);
     position: absolute;
-    width: 5px;
+    width: 6px;
     height: 5px;
     z-index: 0;
 }
 .blood {
     background-color: red;
     position: absolute;
+    border-radius: 90px;
     width: 5px;
     height: 5px;
     z-index: 1;
