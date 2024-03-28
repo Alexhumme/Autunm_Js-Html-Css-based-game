@@ -4,6 +4,7 @@ class Npc extends Entity {
         this.autoLeft = false;
     }
     autoMove() {
+        this.detectFloor();
         if (this.autoLeft) this.accelerateLeft();
         else this.accelerateRight();
         this.handleHorizontalMovement();
@@ -18,6 +19,7 @@ class Npc extends Entity {
             this.accelerateRight();
         else this.accelerateLeft();
         this.handleHorizontalMovement();
+        this.detectFloor();
         // moverse verticalmente
         if (
             parseInt(this.element.style.top) > parseInt(game.player.element.style.top)

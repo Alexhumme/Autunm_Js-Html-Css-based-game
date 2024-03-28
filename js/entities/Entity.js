@@ -234,9 +234,9 @@ class Entity {
     detectFloor() {
         if (
             this.floor &&
-            (this.element.classList.contains("jump") ||
-                this.element.classList.contains("jump"))
+            this.element.classList.contains("jump")
         ) {
+            game.info(this.floor)
             this.element.classList.remove("jump");
             this.element.classList.remove("fall");
             this.floor = true;

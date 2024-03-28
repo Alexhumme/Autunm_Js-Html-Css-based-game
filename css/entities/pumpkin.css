@@ -10,3 +10,6 @@
   background-image: url(../../assets/images/entities/green_pumpkin/run-green-pumpkin.gif);
   position: absolute;
 }
+.green-pumpkin.jump {
+    background-image: url(../../assets/images/entities/green_pumpkin/jump-green-pumpkin.gif);
+}
