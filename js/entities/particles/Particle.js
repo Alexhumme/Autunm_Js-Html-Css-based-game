@@ -20,6 +20,7 @@ class Particle {
         this.dir = { x: 0, y: -2 };
         this.pos = pos;
         this.counter = 10;
+        this.maxCounter = this.counter;
         this.mainClass = mainClass;
         this.speed = 2;
         this.text = "";
@@ -66,7 +67,7 @@ class Particle {
         this.counter--;
         this.element.style.top = `${parseInt(this.element.style.top) + this.dir.y}px`;
         this.element.style.left = `${parseInt(this.element.style.left) + this.dir.x}px`;
-        this.element.style.opacity = `${parseFloat(this.element.style.opacity) * 0.9}`;
+        this.element.style.opacity = `${this.counter/this.maxCounter}`;
     }
     retireList(list) {
         const thisIndex = list.indexOf(this);

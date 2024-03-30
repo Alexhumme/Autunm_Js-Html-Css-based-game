@@ -50,7 +50,7 @@ class Entity {
         const dy = rect1.top + rect1.height / 2 - (rect2.top + rect2.height / 2);
         const width = (rect1.width + rect2.width) / 2;
         const height = (rect1.height + rect2.height) / 2;
- 
+
         let collisionX = "";
         let collisionY = "";
 
@@ -220,9 +220,10 @@ class Entity {
             this.floor &&
             this.element.classList.contains("jump")
         ) {
-            game.info(this.floor)
+
             this.element.classList.remove("jump");
             this.element.classList.remove("fall");
+            for (let i = 0; i < 6; i++) this.createLandingDust();
             this.floor = true;
         }
     }
@@ -327,42 +328,42 @@ class Entity {
         });
     }
 
-    createJumpDust() {
+    createParticle({ yModifier = 0, xModifier = 0, xRandomModifier = 0, yRandomModifier = 0, yDirection = 0, xDirection = 0, duration =  10}) {
         const newParticle = new DustParticle();
+        newParticle.counter = duration;
         newParticle.createElementIn(game.gameSpace);
-
-        newParticle.element.style.top = `${parseFloat(this.element.style.top) +
-            this.element.getBoundingClientRect().height / 2 +
-            this.element.getBoundingClientRect().height / 2 * Math.random()
-            }px`;
-
-        newParticle.element.style.left =
-            `${parseFloat(this.element.style.left) +
-            this.element.getBoundingClientRect().width * Math.random()
-            }px`;
-
+    
+        const y = this.getRect().y + this.getRect().height * yModifier + Math.random() * yRandomModifier;
+        const x = this.getRect().x + this.getRect().width * xModifier + Math.random() * xRandomModifier;
+    
+        newParticle.element.style.top = `${y}px`;
+        newParticle.element.style.left = `${x}px`;
+    
+        newParticle.dir.y = yDirection;
+        newParticle.dir.x = xDirection;
         newParticle.list = this.particles;
         this.particles.push(newParticle);
     }
 
-    createDust() {
-        const newParticle = new DustParticle();
-        newParticle.createElementIn(game.gameSpace);
+    createJumpDust() {
+        const { width, height } = this.getRect();
+        this.createParticle({ yModifier: 0.5, xRandomModifier: width, yRandomModifier: height / 2, yDirection: -0.5, duration: 20 });
+    }
 
-        newParticle.element.style.top = `${parseInt(this.element.style.top) +
-            this.element.getBoundingClientRect().height -
-            newParticle.element.getBoundingClientRect().height
-            }px`;
+    createDashDust() {
+        const xDirection = Math.random() * this.vel.x < 0 ? 8 : -8;
+        const xModifier = Math.random() * this.vel.x < 0 ? 1.5 : -0.5;
+        this.createParticle({ xModifier, yRandomModifier: this.getRect().height - 5, xDirection, duration: 5 });
+    }
 
-        newParticle.element.style.left =
-            this.vel.x < 0
-                ? `${parseInt(this.element.style.left) +
-                this.element.getBoundingClientRect().width
-                }px`
-                : this.element.style.left;
+    createLandingDust() {
+        const yDirection = Math.random() * -1;
+        const xDirection = Math.random() * this.vel.x < 0.1 ? (this.vel.x > 0.1 ? 1 : 0) : -1;
+        this.createParticle({ yModifier: 0.8, xModifier: 1, yDirection, xDirection });
+    }
 
-        newParticle.list = this.particles;
-        this.particles.push(newParticle);
+    createRunDust() {
+        this.createParticle({ yModifier: 0.8, xModifier: 1, xRandomModifier: 0 });
     }
 
     updateParticles() {
