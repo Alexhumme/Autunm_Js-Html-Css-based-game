@@ -11,6 +11,11 @@
   position: absolute;
   margin-top: -1px;
 }
+#player::before {
+  content: "";
+  position: absolute;
+  border-radius: 90px;
+}
 #player.idle::after {
   content: url(../../../assets/images/entities/player/idle/idle-player.gif);
 }

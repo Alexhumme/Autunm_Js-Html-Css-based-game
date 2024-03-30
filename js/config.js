@@ -362,8 +362,8 @@ const game = {
         });
 
         const actButtons = [
-            { "title": "axe", "keys": [74], "img": "axe-icon.png"},
-            { "title": "gun", "keys": [75], "img": "gun-icon.png"},
+            { "title": "axe", "keys": [74], "img": "axe-icon.png" },
+            { "title": "gun", "keys": [75], "img": "gun-icon.png" },
             { "title": "top", "keys": [87], "img": "up-icon.png" },
         ];
 
@@ -385,7 +385,7 @@ const game = {
         const maps = JSON.parse(localStorage.getItem("maps"));
         if (maps != null) game.maps.concat(maps);
     },
-    mapsListed:() => {
+    mapsListed: () => {
         game.cleanMap();
         game.loadMaps();
         game.gameSpace.classList.add("maps__mode");
@@ -407,19 +407,16 @@ const game = {
         mapsList.appendChild(mapAdder);
     },
     moveCamera: () => {
-      if (
-          (
-            (game.player.getPos().x > (game.gameSize.x / 2) + 300) &&
-            (game.player.vel.x > 1)
-          ) ||
-            (game.player.getPos().x - 50 < game.gameSize.x) &&
-            (game.player.vel.x < -1) 
+        let { x } = game.player.getRect();
+        if (
+            ((x > game.gameSize.x / 2) && (game.player.vel.x > 1)) ||
+            (x - 50 < game.gameSize.x / 2) && (game.player.vel.x < -1)
         ) {
-        //game.info(`(pvx:${game.player.vel.x}, px:${game.player.getPos().x}, mx:${(game.gameSize.x/2)+50})`);
-        game.gameSpace.querySelectorAll("div").forEach((tile)=>{
-            tile.style.left = `${parseInt(tile.style.left) - game.player.vel.x}px`;
-        })
-      }
+            //game.info(`(pvx:${game.player.vel.x}, px:${game.player.getPos().x}, mx:${(game.gameSize.x/2)+50})`);
+            game.gameSpace.querySelectorAll("div").forEach((tile) => {
+                tile.style.left = `${parseFloat(tile.style.left) - game.player.vel.x}px`;
+            })
+        }
     },
     editMode: () => {
         game.cleanMap();

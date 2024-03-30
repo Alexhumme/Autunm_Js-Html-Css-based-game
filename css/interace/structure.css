@@ -11,7 +11,8 @@
   background-image: url(../../assets/images/backgrounds/bg-forest-2.png);
   background-size: cover;
 }
-#game__container:not(.edit__mode):not(.maps__mode)::after {
+#game__container::after, #game__container::before {
+/*#game__container:not(.edit__mode):not(.maps__mode)::after {*/
   content: "";
   transition: 0.5s;
   opacity: 0;
@@ -25,6 +26,12 @@
   color: white;
   z-index: 5;
   background-color: rgba(0, 0, 0, 0.338);
+}
+#game__container::before {
+  content: "";
+  opacity: 0;
+  background-color: rgb(47, 3, 109);
+  mix-blend-mode:darken;
 }
 #game__container.game__over::after {
   content: "Game Over";

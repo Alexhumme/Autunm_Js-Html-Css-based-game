@@ -29,44 +29,28 @@ class Entity {
         this.dir = 1;
         this.deathState = 0;
     }
-    getPos(){
-      let {x,y} = this.element.getBoundingClientRect();
-      return {x,y}
+    getRect(element = false) { // obtener un rect cuya posicion es relativa a la de la ventana del juego
+        let { x, y, width, height } =
+            element != false
+                ? element.getBoundingClientRect()
+                : this.element.getBoundingClientRect();
+        let rPos = {
+            ...{ width, height },
+            x: x - game.gameSpace.getBoundingClientRect().x,
+            y: y - game.gameSpace.getBoundingClientRect().y,
+        };
+        return rPos
     }
     onDeath() { }
     checkCollisionWith(otherElement) {
         const rect1 = this.element.getBoundingClientRect();
         const rect2 = otherElement.getBoundingClientRect();
-        
+
         const dx = rect1.left + rect1.width / 2 - (rect2.left + rect2.width / 2);
         const dy = rect1.top + rect1.height / 2 - (rect2.top + rect2.height / 2);
         const width = (rect1.width + rect2.width) / 2;
         const height = (rect1.height + rect2.height) / 2;
-        /*
-        const rect1 = this.element.style;
-        const rect2 = otherElement.style;
-        const rect1b = this.element.getBoundingClientRect();
-        const rect2b = otherElement.getBoundingClientRect();
-        
-        const dx = parseFloat(rect1.left) + rect1b.width / 2 - parseFloat(rect2.left) + rect2b.width / 2;
-        const dy = parseFloat(rect1.top) + rect1b.height / 2 - parseFloat(rect2.top) + rect2b.height / 2;
-        const width = (rect1b.width + rect2b.width) / 2;
-        const height = (rect1b.height + rect2b.height) / 2;
-        
-        if (this.element.id === "player") {
-            
-            otherElement.innerText =
-            `
-            height: ${height}\n
-            width: ${width}\n
-            dx: ${dx}\n
-            dy: ${dy}
-            `;
-            otherElement.style.color = "white";
-            otherElement.style.fontSize = "4px";
-        }
-        */
-        
+ 
         let collisionX = "";
         let collisionY = "";
 
@@ -112,7 +96,7 @@ class Entity {
             }
             if (collision.data.y === "top" && top) {
                 this.floorType = collision.element.className;
-                this.element.style.top = `${parseFloat(collision.element.style.top) + rect2.height 
+                this.element.style.top = `${parseFloat(collision.element.style.top) + rect2.height
                     }px`;
                 this.vel.y = -this.vel.y / 2;
             }
@@ -131,7 +115,7 @@ class Entity {
     }
 
     checkWallCollision() {
-        
+
         const walls = document.querySelectorAll(".wall");
         if (!this.death) {
             walls.forEach((wall) => {
