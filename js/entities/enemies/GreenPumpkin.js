@@ -12,7 +12,7 @@ class GreenPumpkin extends Npc {
         this.handleGravity();
         this.checkWallCollision();
         this.checkWeaponCollision();
-        this.checkOutOfBounds(game.enemies);
+        this.checkOutOfBounds(game.enemies, { left: false, right: false});
         this.updatePops();
         if (this.checkCloseToPlayer()) this.followPlayer()
         else this.autoMove();

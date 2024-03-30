@@ -10,7 +10,7 @@ class Pumpkin extends Npc {
         this.handleGravity();
         this.checkWallCollision();
         this.checkWeaponCollision();
-        this.checkOutOfBounds(game.enemies);
+        this.checkOutOfBounds(game.enemies, { left: false, right: false});
         this.updatePops();
         this.autoMove();
         this.checkDeath();

@@ -115,7 +115,6 @@ class Entity {
     }
 
     checkWallCollision() {
-
         const walls = document.querySelectorAll(".wall");
         if (!this.death) {
             walls.forEach((wall) => {
@@ -129,14 +128,13 @@ class Entity {
         }
     }
 
-    checkOutOfBounds(list) {
+    checkOutOfBounds(list, { left = true, right = true, bottom = true}) {
         const gameSize = game.gameSize;
+        const { x, y, width } = this.getRect();
         if (
-            parseInt(this.element.style.left) >
-            parseInt(gameSize.x) + this.element.getBoundingClientRect() ||
-            parseInt(this.element.style.left) <
-            -this.element.getBoundingClientRect().width * 2 ||
-            parseInt(this.element.style.top) > parseInt(gameSize.y)
+            (right && parseInt(x) > parseInt(gameSize.x) + width) ||
+            (left && parseInt(x) < -width * 2) ||
+            (bottom && parseInt(y) > parseInt(gameSize.y))
         ) {
             this.particles.forEach((particle) => {
                 particle.destroy();
@@ -328,17 +326,17 @@ class Entity {
         });
     }
 
-    createParticle({ yModifier = 0, xModifier = 0, xRandomModifier = 0, yRandomModifier = 0, yDirection = 0, xDirection = 0, duration =  10}) {
+    createParticle({ yModifier = 0, xModifier = 0, xRandomModifier = 0, yRandomModifier = 0, yDirection = 0, xDirection = 0, duration = 10 }) {
         const newParticle = new DustParticle();
         newParticle.counter = duration;
         newParticle.createElementIn(game.gameSpace);
-    
+
         const y = this.getRect().y + this.getRect().height * yModifier + Math.random() * yRandomModifier;
         const x = this.getRect().x + this.getRect().width * xModifier + Math.random() * xRandomModifier;
-    
+
         newParticle.element.style.top = `${y}px`;
         newParticle.element.style.left = `${x}px`;
-    
+
         newParticle.dir.y = yDirection;
         newParticle.dir.x = xDirection;
         newParticle.list = this.particles;
@@ -357,13 +355,14 @@ class Entity {
     }
 
     createLandingDust() {
-        const yDirection = Math.random() * -1;
-        const xDirection = Math.random() * this.vel.x < 0.1 ? (this.vel.x > 0.1 ? 1 : 0) : -1;
-        this.createParticle({ yModifier: 0.8, xModifier: 1, yDirection, xDirection });
+        const yDirection = Math.random() * -2;
+        const xModifier = Math.random() > 0.5 ? 1 : 0;
+        const xDirection = Math.random() * (xModifier == 0 ? -2 : 2);
+        this.createParticle({ yModifier: 1, xRandomModifier: 10, xModifier, yDirection, xDirection });
     }
 
     createRunDust() {
-        this.createParticle({ yModifier: 0.8, xModifier: 1, xRandomModifier: 0 });
+        this.createParticle({ yModifier: 0.8, xModifier: -0.2, xRandomModifier: 0 });
     }
 
     updateParticles() {

@@ -14,7 +14,7 @@ class Bullet extends Entity {
         this.handleHorizontalMovement();
         this.handleGravity();
         this.checkWallCollisions();
-        this.checkOutOfBounds(game.player.shoot.bullets.actives);
+        this.checkOutOfBounds(game.player.shoot.bullets.actives, {});
         if (!this.dying) for (let i = 0; i < 3; i++) this.createDashDust();
     }
 
