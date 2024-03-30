@@ -155,6 +155,7 @@ const game = {
             { title: "Opciones", scene: "" },
             { title: "Creditos", scene: "" },
         ];
+
         const menu = document.createElement("ul");
         menu.id = "startMenu";
         const menuTitle = document.createElement("h2");
@@ -165,7 +166,6 @@ const game = {
             opt.addEventListener("click", () => {
                 game.changeScene(option.scene);
             });
-            //opt.innerHTML = document.createElement("button");
             opt.innerText = option.title;
             menu.appendChild(opt);
         });
@@ -183,6 +183,17 @@ const game = {
         game.drawMapBack();
         game.drawMapMiddle();
         game.drawMapFront();
+        game.drawMapLimits();
+    },
+    drawMapLimits: () => {
+        game.limitRight = game.gameSpace.appendChild(document.createElement("div"));
+        game.limitRight.style.left = `${game.maps[game.currentMap].middle[0].length * game.tileWidth}px`;
+        game.limitRight.classList.add("map_lim");
+        game.limitRight.id = "map_end";
+        game.limitLeft = game.gameSpace.appendChild(document.createElement("div"));
+        game.limitLeft.style.left = "0px";
+        game.limitLeft.classList.add("map_lim");
+        game.limitLeft.id = "map_start";
     },
     drawMapBack: () => {
         game.maps[game.currentMap].back?.forEach((row, y) => {
@@ -305,19 +316,28 @@ const game = {
                 game.currentMap++;
                 game.drawInterface();
                 game.drawMap();
-                game.player.element.style.left = "-24px";
+                game.player.element.style.left = "-4px";
             } else {
                 game.player.element.style.left = `${game.gameSize.x - 26}px`;
             }
         }
-        if (parseInt(game.player.element.style.left) < -25) {
+        if (parseInt(game.player.element.style.left) < -5) {
             if (game.currentMap > 0) {
                 game.currentMap--;
                 game.drawInterface();
                 game.drawMap();
+                game.gameSpace.querySelectorAll("div").forEach((tile) => {
+                    tile.style.left = 
+                    `${parseFloat(tile.style.left) - 
+                        (
+                            game.maps[game.currentMap].middle[0].length * 
+                            game.tileWidth
+                        ) + 
+                        game.gameSize.x}px`;
+                })
                 game.player.element.style.left = `${game.gameSize.x - 26}px`;
             } else {
-                game.player.element.style.left = "-24px";
+                game.player.element.style.left = "-4px";
             }
         }
     },
@@ -409,10 +429,16 @@ const game = {
     moveCamera: () => {
         let { x } = game.player.getRect();
         if (
-            ((x > game.gameSize.x / 2) && (game.player.vel.x > 1)) ||
-            (x - 50 < game.gameSize.x / 2) && (game.player.vel.x < -1)
+            (
+                (x > game.gameSize.x / 2) &&
+                (game.player.vel.x > 1) &&
+                (parseFloat(game.limitRight.style.left) > game.gameSize.x)) ||
+            (
+                (x < game.gameSize.x / 2) &&
+                (game.player.vel.x < -1) &&
+                (parseFloat(game.limitLeft.style.left) < 0)
+            )
         ) {
-            //game.info(`(pvx:${game.player.vel.x}, px:${game.player.getPos().x}, mx:${(game.gameSize.x/2)+50})`);
             game.gameSpace.querySelectorAll("div").forEach((tile) => {
                 tile.style.left = `${parseFloat(tile.style.left) - game.player.vel.x}px`;
             })

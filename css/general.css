@@ -25,3 +25,12 @@ body {
   border-radius: 10px;
   z-index: 999;
 }
+.map_lim {
+  background-color: transparent;
+  position: absolute;
+  width: 0px;
+  height: 100%;
+}
+.map_end {
+  right: 0px;
+}

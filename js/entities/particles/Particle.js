@@ -68,7 +68,6 @@ class Particle {
         this.element.style.top = `${parseInt(this.element.style.top) + this.dir.y}px`;
         this.element.style.left = `${parseInt(this.element.style.left) + this.dir.x}px`;
         this.element.style.opacity = `${this.counter/this.maxCounter}`;
-        game.info(this.counter)
     }
     retireList(list) {
         const thisIndex = list.indexOf(this);
