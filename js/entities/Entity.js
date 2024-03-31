@@ -365,6 +365,12 @@ class Entity {
         this.createParticle({ yModifier: 0.8, xModifier: -0.2, xRandomModifier: 0 });
     }
 
+    createGlowingDust() {
+      const yDirection = Math.random() * -0.001 + -0.001;
+      const xRandomModifier = this.getRect().width;
+      this.createParticle({yDirection, yModifier: 0.7, xRandomModifier, duration: 50});
+    }
+
     updateParticles() {
         this.particles.forEach((particle) => {
             particle.update();

@@ -12,6 +12,7 @@ const game = {
     currentScene: "menu",
     frameRate: 0,
     currentSec: 0,
+    currentFrame: 0,
     loop: null,
     gameSize: { x: 700, y: 450 },
     tileWidth: 50,
@@ -357,7 +358,6 @@ const game = {
             element.addEventListener("pointerup", () => {
                 keys.forEach(key => game.handleKeyUp({ keyCode: key }));
             }, false);
-            console.log("actuar")
         }
 
         const joystickLeft = document.createElement("div");
