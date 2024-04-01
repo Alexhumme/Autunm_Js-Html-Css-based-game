@@ -51,7 +51,6 @@ class Player extends Entity {
         this.checkWallCollision();
         this.checkDropCollision();
         this.checkHarmfulCollision();
-        if (!(game.currentFrame % 12)) this.createGlowingDust();
 
         this.updatePops();
         this.updateParticles();
