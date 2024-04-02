@@ -1,3 +1,10 @@
+.bg-layer {
+    box-shadow: inset 0px 0px 100px 200px #3c001648;
+    background-position: left;
+    background-repeat: repeat-x;
+    position: absolute;
+    left: 0px;
+}
 .layer-1 {
     background-image: url(../../assets/images/backgrounds/forest/bg-forest-3.png);
 }
@@ -6,11 +13,4 @@
 }
 .layer-3 {
     background-image: url(../../assets/images/backgrounds/forest/bg-forest-1.png);
-}
-
-.bg-layer {
-    background-position: left;
-    background-repeat: repeat-x;
-    position: absolute;
-    left: 0px;
 }

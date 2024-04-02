@@ -7,7 +7,7 @@
   overflow: hidden;
   width: 700px;
   height: 450px;
-  background-color: #8e5252;
+  background-color: #fa6a0a;
   background-size: cover;
 }
 #game__container::after, #game__container::before {
@@ -27,10 +27,12 @@
   background-color: rgba(0, 0, 0, 0.338);
 }
 #game__container::before {
-  content: "";
   opacity: 0;
-  background-color: rgb(47, 3, 109);
-  mix-blend-mode:darken;
+  box-shadow: inset 0px 0px 100px 110px blue;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  mix-blend-mode: multiply;
 }
 #game__container.game__over::after {
   content: "Game Over";
@@ -80,6 +82,7 @@
   color: rgb(89, 101, 111);
   background-color: yellow;
 }
+
 /* navbar */
 #game__navbar {
   height: 50px;

@@ -50,3 +50,10 @@
   text-shadow: 2px 0 orange, -2px 0 orange, 0 2px orange, 0 -2px orange,
                1px 1px orange, -1px -1px orange, 1px -1px orange, -1px 1px orange;
 }
+#startMenu li:hover:before {
+  content: ">";
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  margin-left: -20px;
+}

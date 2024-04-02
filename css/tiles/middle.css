@@ -1,5 +1,14 @@
 .bush-small {
   background-image: url(../../assets/images/middleground/bush-small.png);
+  mix-blend-mode: color-dodge;
+}
+.bush-small::before {
+  content: "";
+  margin: 25px;
+  box-shadow: 0px 0px 100px 100px rgba(197, 157, 45, 0.52);
+  background-color: rgba(197, 157, 45, 0.52);
+  background-blend-mode:normal;
+  animation: glowing 4s infinite;
 }
 
 .bush-small-creature {
@@ -30,4 +39,14 @@
   background-image: url(../../assets/images/middleground/water-solid.png);
   opacity: 0.5;
 
+}
+@keyframes glowing {
+  0% {
+    box-shadow: 0px 0px 100px 100px rgba(197, 157, 45, 0.52);
+
+  }
+  50% {
+    box-shadow: 0px 0px 100px 50px rgba(197, 157, 45, 0.52);
+
+  }
 }
