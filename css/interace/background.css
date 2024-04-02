@@ -1,0 +1,16 @@
+.layer-1 {
+    background-image: url(../../assets/images/backgrounds/forest/bg-forest-3.png);
+}
+.layer-2 {
+    background-image: url(../../assets/images/backgrounds/forest/bg-forest-2.png);
+}
+.layer-3 {
+    background-image: url(../../assets/images/backgrounds/forest/bg-forest-1.png);
+}
+
+.bg-layer {
+    background-position: left;
+    background-repeat: repeat-x;
+    position: absolute;
+    left: 0px;
+}

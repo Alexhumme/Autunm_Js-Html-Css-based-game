@@ -2,6 +2,7 @@ const game = {
     pause: false,
     gameSpace: document.getElementById("game__container"),
     currentMap: 0,
+    bgLayers: [],
     maps: [...maps],
     gameOver: false,
     fps: 28,
@@ -15,6 +16,7 @@ const game = {
     currentFrame: 0,
     loop: null,
     gameSize: { x: 700, y: 450 },
+    mapWidth: 0,
     tileWidth: 50,
     tileHeight: 50,
     gravity: 3,
@@ -121,6 +123,8 @@ const game = {
         game.gameSpace.querySelectorAll(".dust").forEach((dust) => dust.remove());
         game.gameSpace.querySelectorAll(".tile").forEach((tile) => tile.remove());
         game.gameSpace.querySelector("#trash")?.remove();
+        game.gameSpace.querySelectorAll(".bg-layer").forEach((l) => l.remove());
+        game.bgLayers = [];
     },
     drawPauseMenu: () => {
         game.gameSpace.querySelector("#game__pause-menu")?.remove();
@@ -176,46 +180,67 @@ const game = {
         }, 500);
         console.log("- menu drawn");
     },
+    handleParallax: () => {
+        game.bgLayers.forEach((layer, index) => {
+            layer.style.left = `${parseFloat(layer.style.left) + index * (game.player.vel.x > 0 ? 1 : -1)}px`;
+        })
+    },
     // dibujar los tiles del mapa actual incluyendo al jugador
     drawMap: () => {
+        game.mapWidth = game.maps[game.currentMap].middle[0].length * game.tileWidth; // el ancho del mapa, se usa en varios metodos
         // limpiar el gameSpace
         game.cleanMap();
         // rellenar el gameSpace
-        game.drawMapBack();
+        game.drawBackground();
+        game.drawMapLayer("back");
         game.drawMapMiddle();
-        game.drawMapFront();
+        game.drawMapLayer("front");
         game.drawMapLimits();
     },
     drawMapLimits: () => {
+        game.gameSpace.querySelectorAll(".map_lim").forEach((lim) => lim.remove())
+
         game.limitRight = game.gameSpace.appendChild(document.createElement("div"));
-        game.limitRight.style.left = `${game.maps[game.currentMap].middle[0].length * game.tileWidth}px`;
+        game.limitRight.style.left = `${game.mapWidth}px`;
         game.limitRight.classList.add("map_lim");
         game.limitRight.id = "map_end";
         game.limitLeft = game.gameSpace.appendChild(document.createElement("div"));
         game.limitLeft.style.left = "0px";
         game.limitLeft.classList.add("map_lim");
         game.limitLeft.id = "map_start";
+
     },
-    drawMapBack: () => {
-        game.maps[game.currentMap].back?.forEach((row, y) => {
+    drawBackground: () => {
+        if (!game.gameSpace.querySelectorAll(".bg-layer").length) {
+            bgLayer1 = document.createElement("div");
+            bgLayer2 = document.createElement("div");
+            bgLayer3 = document.createElement("div");
+
+            game.bgLayers = [bgLayer1, bgLayer2, bgLayer3];
+            game.bgLayers.forEach((layer, i) => {
+                layer.classList.add("bg-layer", "layer-" + (i + 1));
+                layer.style.left = "0px";
+                layer.style.width = `${game.mapWidth}px`;
+                layer.style.height = `${game.gameSize.y}px`;
+            })
+
+            game.gameSpace.appendChild(bgLayer3);
+            game.gameSpace.appendChild(bgLayer2);
+            game.gameSpace.appendChild(bgLayer1);
+        }
+    },
+    drawMapLayer: (layerName) => {
+        game.maps[game.currentMap][layerName]?.forEach((row, y) => {
             row.forEach((t, x) => {
                 t !== " " &&
-                    game.gameSpace.insertBefore(tile(t, { x: x, y: y }, "back"), null);
+                    game.gameSpace.insertBefore(tile(t, { x, y }, layerName), null);
             });
         });
     },
     drawMapMiddle: () => {
         game.maps[game.currentMap].middle.forEach((row, y) => {
             row.forEach((t, x) => {
-                t !== " " && game.drawTile(t, { x: x, y: y }, "middle");
-            });
-        });
-    },
-    drawMapFront: () => {
-        game.maps[game.currentMap].front?.forEach((row, y) => {
-            row.forEach((t, x) => {
-                t !== " " &&
-                    game.gameSpace.insertBefore(tile(t, { x: x, y: y }, "front"), null);
+                t !== " " && game.drawTile(t, { x, y }, "middle");
             });
         });
     },
@@ -328,12 +353,9 @@ const game = {
                 game.drawInterface();
                 game.drawMap();
                 game.gameSpace.querySelectorAll("div").forEach((tile) => {
-                    tile.style.left = 
-                    `${parseFloat(tile.style.left) - 
-                        (
-                            game.maps[game.currentMap].middle[0].length * 
-                            game.tileWidth
-                        ) + 
+                    tile.style.left =
+                        `${parseFloat(tile.style.left) -
+                        game.mapWidth +
                         game.gameSize.x}px`;
                 })
                 game.player.element.style.left = `${game.gameSize.x - 26}px`;
@@ -439,6 +461,7 @@ const game = {
                 (parseFloat(game.limitLeft.style.left) < 0)
             )
         ) {
+            game.handleParallax();
             game.gameSpace.querySelectorAll("div").forEach((tile) => {
                 tile.style.left = `${parseFloat(tile.style.left) - game.player.vel.x}px`;
             })

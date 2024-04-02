@@ -7,8 +7,7 @@
   overflow: hidden;
   width: 700px;
   height: 450px;
-  background-color: rgb(0, 0, 0);
-  background-image: url(../../assets/images/backgrounds/bg-forest-2.png);
+  background-color: #8e5252;
   background-size: cover;
 }
 #game__container::after, #game__container::before {

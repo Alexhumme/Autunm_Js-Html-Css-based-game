@@ -14,6 +14,7 @@ function showFrameRate() {
 const refreshGame = () => {
     if (!game.pause) {
         game.infoSpace.innerText = "";
+        game.info("tiles: " + game.gameSpace.querySelectorAll("div").length)
         game.moveCamera();
         game.checkGameOver();
         game.player.update();
