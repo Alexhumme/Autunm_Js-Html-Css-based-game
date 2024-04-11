@@ -34,9 +34,13 @@
 #startMenu {
   margin: auto;
   z-index: 6;
-  padding: 0px;
+  padding: 10px;
   list-style: none;
   text-align: center;
+}
+#startMenu h2 {
+  text-shadow: 2px 0 orange, -2px 0 orange, 0 2px orange, 0 -2px orange,
+               1px 1px orange, -1px -1px orange, 1px -1px orange, -1px 1px orange;
 }
 #startMenu li {
   margin-block: 2px;

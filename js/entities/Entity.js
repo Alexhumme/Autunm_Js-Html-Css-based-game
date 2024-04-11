@@ -336,6 +336,10 @@ class Entity {
 
         newParticle.element.style.top = `${y}px`;
         newParticle.element.style.left = `${x}px`;
+        
+        const dustSize = Math.random() * 4 + 2;
+        newParticle.element.style.width = dustSize+'px';
+        newParticle.element.style.height = dustSize+'px';
 
         newParticle.dir.y = yDirection;
         newParticle.dir.x = xDirection;

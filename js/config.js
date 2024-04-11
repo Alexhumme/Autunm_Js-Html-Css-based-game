@@ -153,7 +153,9 @@ const game = {
         game.gameSpace.innerHTML = "";
         game.pause = false;
         game.gameOver = false;
-
+        
+        game.drawMap()
+        
         const options = [
             { title: "Iniciar", scene: "game" },
             { title: "Mapas", scene: "maps" },
@@ -164,7 +166,7 @@ const game = {
         const menu = document.createElement("ul");
         menu.id = "startMenu";
         const menuTitle = document.createElement("h2");
-        menuTitle.innerText = "Menu";
+        menuTitle.innerText = "Start Game";
         menu.appendChild(menuTitle);
         options.forEach((option) => {
             const opt = document.createElement("li");
@@ -182,7 +184,7 @@ const game = {
     },
     handleParallax: () => {
         game.bgLayers.forEach((layer, index) => {
-            layer.style.left = `${parseFloat(layer.style.left) + index * (game.player.vel.x > 0 ? 1 : -1)}px`;
+            layer.style.left = `${parseFloat(layer.style.left) + index * (game.player.vel.x > 0 ? 0.5 : -0.5)}px`;
         })
     },
     // dibujar los tiles del mapa actual incluyendo al jugador
@@ -283,7 +285,7 @@ const game = {
     checkGameOver: () => {
         if (
             game.player?.hearts.quantity <= 0 ||
-            parseInt(game.player?.element?.style.top) > game.gameSize.y
+            game.player?.getRect().y > game.gameSize.y
         ) game.gameOver = true;
 
         if (game.gameOver) {
