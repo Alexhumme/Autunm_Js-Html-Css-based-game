@@ -16,6 +16,7 @@ class Axe extends Entity {
     update() {
         //this.updatePosition();
         this.updateState();
+        this.checkTargetCollision();
     }
     updatePosition() {
         this.element.style.left = `${this.pos.x}px`;
@@ -34,6 +35,20 @@ class Axe extends Entity {
         this.element.className = "weapon axe__element";
         game.player.element.appendChild(this.element);
     }
-
+    handleTargetCollision(impact){
+      const {x, y} = impact.element.getBoundingClientRect();
+      const {_x, _y} = this.getRect()
+    }
+    checkTargetCollision() {
+        const targets = document.querySelectorAll(".target");
+        targets.forEach((target) => {
+          const impact = this.checkCollisionWith(target);
+          if (impact) {
+            this.handleTargetCollision(impact);
+            break;
+          }
+        
+        });
+    }
 
 }

@@ -1,7 +1,10 @@
 @import url(./run.css);
 
 .dust {
-    background-image: radial-gradient(aliceblue, white,transparent);
+    background-image: url(../../assets/images/particles/particle.png);
+    /*background-image: radial-gradient(aliceblue, white,transparent);*/
+    background-size:cover;
+    background-position: center;
     position: absolute;
     width: 6px;
     height: 5px;

@@ -55,7 +55,7 @@ class Entity {
         let collisionY = "";
 
         const xOverlap = width - Math.abs(dx);
-        const yOverlap = height - Math.abs(dy);
+        const yOverlap = height - 10 - Math.abs(dy);
 
         if (Math.abs(dx) <= width && Math.abs(dy) <= height) {
             if (
@@ -364,7 +364,10 @@ class Entity {
         const xDirection = Math.random() * (xModifier == 0 ? -2 : 2);
         this.createParticle({ yModifier: 1, xRandomModifier: 10, xModifier, yDirection, xDirection });
     }
-
+    
+    createImpactDust(){
+      this.createParticle({})
+    }
     createRunDust() {
         this.createParticle({ yModifier: 0.8, xModifier: -0.2, xRandomModifier: 0 });
     }

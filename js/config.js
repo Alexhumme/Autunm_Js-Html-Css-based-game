@@ -210,6 +210,11 @@ const game = {
         game.limitLeft.style.left = "0px";
         game.limitLeft.classList.add("map_lim");
         game.limitLeft.id = "map_start";
+        /*game.limitBottom = game.gameSpace.appendChild(document.createElement("div"));
+        game.limitBottom.style.top = "0px";
+        game.limitBottom.classList.add("map_lim");
+        game.limitBottom.id = "map_bottom";*/
+        
 
     },
     drawBackground: () => {
@@ -450,9 +455,12 @@ const game = {
         }, false);
         mapsList.appendChild(mapAdder);
     },
-    moveCamera: () => {
-        let { x } = game.player.getRect();
-        if (
+    moveCamera: () => { // mover todos los elementos en el contenedor en dirección opuesta al jugador
+        // mover siempre que la posición del jugador supere un limite 
+        // su velocidad debe superar un límite 
+        // debe estar a cierta distancia de los límites del mapa
+        let { x,y } = game.player.getRect();
+        if ( // movimiento horizontal 
             (
                 (x > game.gameSize.x / 2) &&
                 (game.player.vel.x > 1) &&
@@ -468,6 +476,24 @@ const game = {
                 tile.style.left = `${parseFloat(tile.style.left) - game.player.vel.x}px`;
             })
         }
+        /*
+        if ( // movimiento vertical 
+            (
+                (y > game.gameSize.y / 2) &&
+                (game.player.vel.y > 1) //&&
+                //(parseFloat(game.limitBottom.style.top) > game.gameSize.y)
+                ) ||
+            (
+                (y < game.gameSize.y / 2) &&
+                (game.player.vel.y < -1) //&&
+                //(parseFloat(game.limitTop.style.updateDrops) < 0)
+            )
+        ) {
+            //game.handleParallax();
+            game.gameSpace.querySelectorAll("div").forEach((tile) => {
+                tile.style.top = `${parseFloat(tile.style.top) - game.player.vel.y}px`;
+            })
+        }*/
     },
     editMode: () => {
         game.cleanMap();
